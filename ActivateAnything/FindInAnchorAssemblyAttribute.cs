@@ -8,10 +8,10 @@ namespace ActivateAnything
     /// This strategy will look only in the Assembly containing the <c>searchAnchor</c>.
     /// If no <c>searchAnchor</c> was specified, search only in the Assembly containing the <c>Type</c> to be instantiated.
     /// 
-    /// TODO: Split this into FindOnlyInAnchorAssembly and FindOnlyInSameAssembly
+    /// TODO: Split this into FindInAnchorAssembly and FindInSameAssembly
     /// 
     /// </summary>
-    public class FindOnlyInAnchorAssemblyAttribute : ActivateAnythingFindConcreteTypeRuleAttribute 
+    public class FindInAnchorAssemblyAttribute : ActivateAnythingFindConcreteTypeRuleAttribute 
     {
         public override Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object testFixtureType = null)
         {

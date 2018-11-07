@@ -4,14 +4,14 @@ using TestCases;
 using TestCases.AReferencedAssembly;
 using Assert = TestBase.Assert;
 
-namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes
+namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
 	[ActivateAnythingDefaultRules]
-    public class Given_DefaultRuleset__ForTestCaseWith3AbstractDependencies :
+    public class TheDefaultRulesetSufficesForTargetTypeWithAbstractDependencies :
         TestBaseFor<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
-        public void AndI_BuildRequestedType()
+        public void AACreatesAnInstance()
         {
             UnitUnderTest
                 .ShouldNotBeNull()
@@ -19,20 +19,20 @@ namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes
         }
 
         [Fact]
-        public void AndI_FindConcreteTypeForINterfaceWithClassInSameAssembly()
+        public void AAFulfillsConstructorDependencyOnINterfaceWithClassInSameAssembly()
         {
             UnitUnderTest.Param1.ShouldBeAssignableTo<INterfaceWithClassInSameAssembly>();
         }
 
         [Fact]
-        public void AndI_FindConcreteTypeForINterfaceWithFakeInTestAssembly()
+        public void AAFulfillsConstructorDependencyOnINterfaceWithFakeInTestAssembly()
         {
             UnitUnderTest.Param2.ShouldBeAssignableTo<INterfaceWithFakeInTestAssembly>();
             Assert.That(UnitUnderTest.Param2.GetType().Assembly, Is.EqualTo(this.GetType().Assembly));
         }
 
         [Fact]
-        public void AndI_FindConcreteTypeForInterfaceInAssembliesInBaseDirectoryEvenIfTheAssemblyIsntReferenced()
+        public void AAFulfillsConstructorDependencyOnInterfaceInAssembliesInBaseDirectoryEvenIfTheAssemblyIsntReferenced()
         {
             UnitUnderTest.Param3.ShouldBeAssignableTo<INterfaceWithClassInNotReferencedAssembly>();
             Assert.That(UnitUnderTest.Param3.GetType().Assembly.FullName.Contains("TestCases.ANotReferencedAssembly"));

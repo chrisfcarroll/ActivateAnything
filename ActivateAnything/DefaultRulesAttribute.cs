@@ -28,16 +28,16 @@ namespace ActivateAnything
         /// <summary>
         /// The default <see cref="IActivateAnythingFindConcreteTypeRule"/> sequence for finding a type to instantiate is, in this order:
         /// <see cref="FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute"/>, 
-        /// <see cref="FindOnlyInAnchorAssemblyAttribute"/>, 
-        /// <see cref="FindInAssembliesInAppDomainBaseDirectoryAttribute"/>
+        /// <see cref="FindInAnchorAssemblyAttribute"/>, 
+        /// <see cref="FindInDirectoryAttribute"/>
         /// </summary>
         public static readonly IList<IActivateAnythingFindConcreteTypeRule> 
                                    DefaultFindConcreteTypeRuleSequence = 
                                            new ReadOnlyCollection<IActivateAnythingFindConcreteTypeRule>(
                                                new IActivateAnythingFindConcreteTypeRule[]{ 
                                                    new FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute(), 
-                                                   new FindOnlyInAnchorAssemblyAttribute(), 
-                                                   new FindInAssembliesInAppDomainBaseDirectoryAttribute() });
+                                                   new FindInAnchorAssemblyAttribute(), 
+                                                   new FindInDirectoryAttribute() });
 
         /// <summary>
         /// The default <see cref="IActivateAnythingChooseConstructorRule"/> is, in this order:

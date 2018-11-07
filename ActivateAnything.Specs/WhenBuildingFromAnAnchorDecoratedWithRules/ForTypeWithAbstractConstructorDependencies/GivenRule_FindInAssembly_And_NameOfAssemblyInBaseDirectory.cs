@@ -3,13 +3,13 @@ using TestBase;
 using TestCases;
 using TestCases.AReferencedAssembly;
 
-namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes.ForTypeWithAbstractConstructorDependencies
+namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
 	[FindInAssembly("TestCases.ANotReferencedAssembly")]
     public class GivenRule_FindInAssembly_And_NameOfAssemblyInBaseDirectory : TestBaseFor<ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
-        public void ThenI_FindConcreteTypeForInterfaceInNamedAssembly()
+        public void AAFindsConcreteTypeForInterfaceInNamedAssembly()
         {
             UnitUnderTest.ShouldNotBeNull();
 

@@ -7,9 +7,10 @@ using System.Reflection;
 namespace ActivateAnything
 {
     /// <summary>
-    /// Searches files with a .dll or .exe extension in the <see cref="AppDomain.BaseDirectory"/> directory and
-    /// finds Types in them.
-    /// In a typical edit/test from the IDE usage, the BaseDirectory will the the Test Projects bin\Debug directory.
+    /// Attempts to <see cref="Assembly.Load(string)"/> an <see cref="Assembly"/> with the given name and search it for the 
+    /// requested Type. Given a wildcard name, searches the files with a .dll or .exe extension in the 
+    /// <see cref="AppDomain.BaseDirectory"/> directory. 
+    /// When used from a Test project, the BaseDirectory will typically be the {TestProject}\bin\Debug directory.
     /// </summary>
     public class FindInAssemblyAttribute : ActivateAnythingFindConcreteTypeRuleAttribute
     {

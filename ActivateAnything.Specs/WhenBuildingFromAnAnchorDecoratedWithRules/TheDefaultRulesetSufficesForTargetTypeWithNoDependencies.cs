@@ -2,13 +2,13 @@
 using TestBase;
 using TestCases;
 
-namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes
+namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
 	[ActivateAnythingDefaultRules]
-    public class Given_DefaultRuleset__ForTestCaseWithNoDependencies : TestBaseFor<ClassWithDefaultConstructor>
+    public class TheDefaultRulesetSufficesForTargetTypeWithNoDependencies : TestBaseFor<ClassWithDefaultConstructor>
     {
         [Fact]
-        public void AndI_BuildRequestedType()
+        public void AndAABuildsRequestedType()
         {
             UnitUnderTest
                 .ShouldNotBeNull()

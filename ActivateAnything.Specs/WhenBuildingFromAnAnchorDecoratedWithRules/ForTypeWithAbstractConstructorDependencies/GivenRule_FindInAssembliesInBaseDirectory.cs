@@ -4,20 +4,20 @@ using TestCases;
 using TestCases.AReferencedAssembly;
 using Assert = TestBase.Assert;
 
-namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes.ForTypeWithAbstractConstructorDependencies
+namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-	[FindInAssembliesInAppDomainBaseDirectory]
+	[FindInDirectory]
     public class GivenRule_FindInAssembliesInBaseDirectory : TestBaseFor<ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
-        public void ThenI_FindConcreteTypeForInterfaceInAssembliesInBaseDirectory()
+        public void AAFindsConcreteTypeForInterfaceInAssembliesInBaseDirectory()
         {
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo<ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>();
         }
 
         [Fact]
-        public void ThenI_FindConcreteTypeEvenIfTheAssemblyIsntReferenced()
+        public void AAFindsConcreteTypeEvenIfTheAssemblyIsntReferenced()
         {
             Assert.That(UnitUnderTest.Param1.GetType().Assembly.FullName.Contains("TestCases.ANotReferencedAssembly"));
         }

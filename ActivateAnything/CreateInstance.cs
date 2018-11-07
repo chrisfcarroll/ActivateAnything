@@ -20,7 +20,7 @@ namespace ActivateAnything
         /// then the <see cref="DefaultRules"/> will be used.</description></item>
         /// <item><description>The <see cref="Type"/> and especially the <see cref="Type.Assembly"/> will be used as the 
         /// "searchAnchor". Some rules use the searchAnchor as a reference point—whether as a starting point or as a 
-        /// limit—to their search. For instance, the <see cref="FindOnlyInAnchorAssemblyAttribute"/> rule will only look for 
+        /// limit—to their search. For instance, the <see cref="FindInAnchorAssemblyAttribute"/> rule will only look for 
         /// concrete types in the anchor Assembly.
         /// </description></item>
         /// </list>
@@ -39,7 +39,7 @@ namespace ActivateAnything
         /// <summary>
         /// Creates an instance of something assignable to <typeparamref name="T"/> using the given <paramref name="rules"/>.
         /// Note that since this overload doesn't take an <c>anchor</c> parameter, rules such as 
-        /// <see cref="FindOnlyInAnchorAssemblyAttribute"/> which depend on an anchor will not run.
+        /// <see cref="FindInAnchorAssemblyAttribute"/> which depend on an anchor will not run.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="rules"><see cref="IActivateAnythingRule"/> rules are of three kinds:
@@ -76,7 +76,7 @@ namespace ActivateAnything
         /// </param>
         /// <param name="searchAnchor">The <see cref="Type"/> and especially the <see cref="Type.Assembly"/> of <c>searchAnchor</c> may
         /// be used by some rules as a reference point—whether as a starting point or as a limit—to their 
-        /// search. For instance, the <see cref="FindOnlyInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>
+        /// search. For instance, the <see cref="FindInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>
         /// <returns>An instance of type <typeparamref name="T"/></returns>
         public static T Of<T>(IEnumerable<IActivateAnythingRule> rules, object searchAnchor)
         {
@@ -105,7 +105,7 @@ namespace ActivateAnything
         /// </param>
         /// <param name="searchAnchor">The <see cref="Type"/> and especially the <see cref="Type.Assembly"/> of <c>searchAnchor</c> may
         /// be used by some rules as a reference point—whether as a starting point or as a limit—to their 
-        /// search. For instance, the <see cref="FindOnlyInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
+        /// search. For instance, the <see cref="FindInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
         public static object Of(Type type, IEnumerable<IActivateAnythingRule> rules=null, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
             rules = rules ?? DefaultRules;
@@ -161,7 +161,7 @@ namespace ActivateAnything
         /// </param>
         /// <param name="searchAnchor">The <see cref="Type"/> and especially the <see cref="Type.Assembly"/> of <c>searchAnchor</c> may
         /// be used by some rules as a reference point—whether as a starting point or as a limit—to their 
-        /// search. For instance, the <see cref="FindOnlyInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
+        /// search. For instance, the <see cref="FindInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
         /// <returns>An instance of <paramref name="type"/></returns>
         protected static object InstanceFromConstructorRules(Type type, IEnumerable<IActivateAnythingRule> rules, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {
@@ -196,7 +196,7 @@ namespace ActivateAnything
         /// </param>
         /// <param name="searchAnchor">The <see cref="Type"/> and especially the <see cref="Type.Assembly"/> of <c>searchAnchor</c> may
         /// be used by some rules as a reference point—whether as a starting point or as a limit—to their 
-        /// search. For instance, the <see cref="FindOnlyInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
+        /// search. For instance, the <see cref="FindInAnchorAssemblyAttribute"/> rule will only look for concrete types in the anchor Assembly.</param>        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
         /// <returns>An <see cref="ConstructorInfo"/> for type <paramref name="type"/></returns>
         protected internal static ConstructorInfo ChooseConstructor(Type type, IEnumerable<IActivateAnythingChooseConstructorRule> chooseConstructorRules, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {

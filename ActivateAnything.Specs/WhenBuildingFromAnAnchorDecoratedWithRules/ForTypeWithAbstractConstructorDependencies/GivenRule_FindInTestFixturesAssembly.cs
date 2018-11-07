@@ -2,13 +2,13 @@ using Xunit;
 using TestBase;
 using TestCases;
 
-namespace ActivateAnything.Specs.WhenTestBaseBuildsUsingRuleAttributes.ForTypeWithAbstractConstructorDependencies
+namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-	[FindOnlyInAnchorAssembly]
+	[FindInAnchorAssembly]
     public class GivenRule_FindInTestFixturesAssembly : TestBaseFor<ClassWith1ConstructorParam<INterface>>
     {
         [Fact]
-        public void ThenI_FindConcreteTypeForInterfaceInSameAssembly()
+        public void AAFindsConcreteTypeForInterfaceInSameAssembly()
         {
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo<ClassWith1ConstructorParam<INterface>>();
