@@ -37,7 +37,7 @@ namespace ActivateAnything
             this.mockConstructorArgs = mockConstructorArgs;
         }
 
-        public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType)
+        public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {
             if(!typesToMock.Contains(type)) { return null;}
             //

@@ -13,6 +13,6 @@ namespace ActivateAnything
     /// </summary>
     public abstract class ChooseConstructorRuleAttribute : Attribute, IActivateAnythingChooseConstructorRule
     {
-        public abstract ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType = null);
+        public abstract ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null);
     }
 }

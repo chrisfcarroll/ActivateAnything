@@ -11,13 +11,13 @@ namespace ActivateAnything
     /// <summary>An ActivateAnything rule which will create an instance of a concrete <c>Type</c>.</summary>
     public interface IActivateAnythingCreateInstanceRule : IActivateAnythingRule
     {
-        object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType);
+        object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor);
     }
 
     /// <summary>An ActivateAnything rule which will choose between constructors of a concrete <c>Type</c> to be instantiated.</summary>
     public interface IActivateAnythingChooseConstructorRule : IActivateAnythingRule
     {
-        ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType = null);
+        ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null);
     }
 
     /// <summary>An ActivateAnything rule which searches for (or dynamically creates) 

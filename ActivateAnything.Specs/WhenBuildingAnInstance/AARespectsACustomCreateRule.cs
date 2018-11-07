@@ -7,10 +7,10 @@ using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
-    public class GivenCustomCreateRuleForAType
+    public class AARespectsACustomCreateRule
     {
         [Fact]
-        public void ThenI_UseIt_WhenBuildingAClass()
+        public void ForAClass()
         {
             var customObject = new AClass();
             var result =
@@ -20,7 +20,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         }
 
         [Fact]
-        public void ThenI_UseIt_WhenBuildingAString()
+        public void ForAString()
         {
             var result =
                 CreateInstance.Of<string>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(new[] {new CustomCreateInstanceRuleFor<string>("ACustomString")}));
@@ -31,7 +31,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         class CustomCreateInstanceRuleFor<T> : IActivateAnythingCreateInstanceRule
         {
             public CustomCreateInstanceRuleFor(T value) { this.value = value; }
-            public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType = null) { return value; }
+            public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null) { return value; }
             readonly T value;
         }
 

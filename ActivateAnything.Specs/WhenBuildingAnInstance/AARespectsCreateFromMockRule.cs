@@ -7,7 +7,7 @@ using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
-    public class Given_BuildFromMockRule__And_Moqdll_IsFindable
+    public class AARespectsCreateFromMockRule
     {
         [TestTimeDependency("Moq.dll required in base directory")]
         public void ThereIsAMockingFrameworkInTheBaseDirectory()
@@ -18,7 +18,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         }
 
         [Fact(Skip = "WIP")]
-        public void ThenI_UseIt_WhenBuildingAClass()
+        public void ForAClass()
         {
             var result =
                 CreateInstance

@@ -4,10 +4,10 @@ using TestBase;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
-    public class GivenChooseConstructorRule
+    public class AARespectsChooseConstructorRules
     {
         [Fact]
-        public void ThenI_ChooseFewestParameters_GivenFewestParametersRule()
+        public void ChooseConstructorWithFewestParametersAttribute()
         {
             IEnumerable<IActivateAnythingRule> rules = new[] {new ChooseConstructorWithFewestParametersAttribute()};
             //
@@ -17,7 +17,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             result.param2.ShouldBeNull();
         }
         [Fact]
-        public void ThenI_ChooseMostestParameters_GivenMostParametersRule()
+        public void ChooseConstructorWithMostParametersAttribute()
         {
             IEnumerable<IActivateAnythingRule> rules = new[] { new ChooseConstructorWithMostParametersAttribute() };
             //

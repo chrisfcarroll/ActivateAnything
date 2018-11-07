@@ -5,64 +5,83 @@ using System.Reflection;
 
 namespace ActivateAnything
 {
-    public class CreateFromFactoryAttribute : Attribute, IActivateAnythingCreateInstanceRule
+    /// <summary>
+    /// A rule which provides a factory method capable of creating an instance of a Type.
+    /// </summary>
+    public class CreateFromFactoryMethodAttribute : Attribute, IActivateAnythingCreateInstanceRule
     {
-        readonly Type targetTypeToBuild;
+        readonly Type targetType;
         readonly Type factoryClass;
         readonly string factoryMethodName;
         readonly object[] args;
 
         /// <summary>
-        /// Specifies a specific factory method to call 
+        /// Specifies a factory method which can create an instance of the <paramref name="targetType"/>
         /// </summary>
-        /// <param name="targetTypeToBuild">The type, the creating of an instance of which should be done by a factory method.</param>
+        /// <param name="targetType">The type, the creating of an instance of which should be done by a factory method.</param>
         /// <param name="factoryClass">The class where the factory method can be found. 
         /// If <paramref name="factoryMethodName"/> is not static then it must be possible to create an instance (for instance, 
         /// by calling a constructor with no parameters, or with parameters we can recursively create)</param>
-        /// <param name="factoryMethodName">The factory method to call each time we try to create a <paramref name="targetTypeToBuild"/></param>
+        /// <param name="factoryMethodName">The factory method to call each time we try to create a <paramref name="targetType"/></param>
         /// <param name="args">any arguments needed for the factory method</param>
-        public CreateFromFactoryAttribute(Type targetTypeToBuild, Type factoryClass, string factoryMethodName, params object[] args)
+        public CreateFromFactoryMethodAttribute(Type targetType, Type factoryClass, string factoryMethodName, params object[] args)
         {
-            this.targetTypeToBuild = targetTypeToBuild;
+            this.targetType = targetType;
             this.factoryClass = factoryClass;
             this.factoryMethodName = factoryMethodName;
             this.args = args;
             if(factoryClass != null){ EnsureFactoryMethodElseThrow(factoryClass,null); }
         }
         /// <summary>
-        /// Specifies a factory method to call. The method should exist on the anchorAssemblyType object passed to <see cref="Construct.InstanceOf"/> when building.
-        /// In typical usage, the anchorAssemblyType object will be the TestFixture decorated with this instance of <see cref="BuildFromFactoryAttribute"/>
+        /// Specifies a factory method which can create an instance of the <paramref name="targetType"/>.
+        /// The method must exist on the <c>searchAnchor</c> object passed to <see cref="CreateInstance.Of"/> when building.
+        /// For example, the <see cref="CreateFromFactoryMethodAttribute"/> may decorate a TestFixture class which provides
+        /// itself as the <c>searchAnchor</c>.
         /// </summary>
-        /// <param name="targetTypeToBuild">The type, the creating of an instance of which should be done by factory method</param>
-        /// <param name="factoryMethodName">The factory method to call each time we try to create a <paramref name="targetTypeToBuild"/></param>
+        /// <param name="targetType">The type, the creating of an instance of which should be done by factory method</param>
+        /// <param name="factoryMethodName">The factory method to call each time we try to create a <paramref name="targetType"/></param>
         /// <param name="args">any arguments needed for the factory method</param>
-        public CreateFromFactoryAttribute(Type targetTypeToBuild, string factoryMethodName, params object[] args)
+        public CreateFromFactoryMethodAttribute(Type targetType, string factoryMethodName, params object[] args)
         {
-            this.targetTypeToBuild = targetTypeToBuild;
+            this.targetType = targetType;
             this.factoryMethodName = factoryMethodName;
             this.args = args;
             if (factoryClass != null) { EnsureFactoryMethodElseThrow(factoryClass, null); }
         }
 
-        public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType)
+        /// <summary>
+        /// Called from <see cref="CreateInstance.Of(Type, IEnumerable{IActivateAnythingRule}, IEnumerable{Type}, object)"/>
+        /// to construct an instance of Type <paramref name="type"/>
+        /// </summary>
+        /// <param name="type">the Type to be instantiated</param>
+        /// <param name="typesWaitingToBeBuilt">The 'stack' of types we are trying to build grows as instantiating a type 
+        /// recursively requires the instantion of its constructor dependencies.
+        /// This parameter is for the benefit of recursive rules whose strategy may vary depending on what we're trying to build.
+        /// </param>
+        /// <param name="searchAnchor">If no <see cref="factoryClass"/> was specified in the constructor, then the <c>searchAnchor</c>
+        /// must declare a method named <see cref="factoryMethodName"/>.</param>
+        /// <returns>An instance of type <paramref name="type"/> if possible, null if unable to construct one.</returns>
+        public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {
-            if(type != targetTypeToBuild) {return null;}
+            if(type != targetType) {return null;}
             //
-            if(factoryClass == null && anchorAssemblyType == null)
+            if(factoryClass == null && searchAnchor == null)
             {
-                throw new InvalidOperationException("You called ActivateFromFactoryAttributeAttribute.CreateInstance() with giving a System.Type for the Factory. Either specify a Type in the BuildFromFactory constructor, or ensure that a RequestedBy object is given in the call to CreateInstance.");
+                throw new InvalidOperationException("You called CreateFromFactoryMethod.CreateInstance() without " +
+                    "specifying a Type for the Factory. Either specify a Type in the CreateFromFactoryMethod constructor, " +
+                    "or use an overload of CreateInstance.Of() which specifies a searchAnchor which declares a factoryMethod.");
             }
             //
-            object factory = anchorAssemblyType ?? ActivateAnything.CreateInstance.Of(factoryClass, ActivateAnythingDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence.Union((IEnumerable<IActivateAnythingRule>)(new[] {new ChooseConstructorWithFewestParametersAttribute()}))); //nb if the factory method is static, then it's okay for factory to be null.
+            object factory = searchAnchor ?? ActivateAnything.CreateInstance.Of(factoryClass, ActivateAnythingDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence.Union((IEnumerable<IActivateAnythingRule>)(new[] {new ChooseConstructorWithFewestParametersAttribute()}))); //nb if the factory method is static, then it's okay for factory to be null.
 
             Type factoryClassToUse =   factory==null ? factoryClass : factory.GetType();
 
-            var m = EnsureFactoryMethodElseThrow(factoryClassToUse, anchorAssemblyType);
+            var m = EnsureFactoryMethodElseThrow(factoryClassToUse, searchAnchor);
             //
             return m.Invoke(factory,args);
         }
 
-        MethodInfo EnsureFactoryMethodElseThrow(Type factoryClassToUse, object anchorAssemblyType)
+        MethodInfo EnsureFactoryMethodElseThrow(Type factoryClassToUse, object searchAnchor)
         {
             var m = factoryClassToUse.GetMethod(factoryMethodName);
             //
@@ -70,17 +89,17 @@ namespace ActivateAnything
             {
                 throw new InvalidOperationException(
                     string.Format(MethodNotFoundFormat,
-                                  targetTypeToBuild,
+                                  targetType,
                                   factoryClass,
                                   factoryMethodName,
-                                  anchorAssemblyType,
+                                  searchAnchor,
                                   factoryClassToUse));
             }
-            if(!m.ReturnType.IsAssignableFrom(targetTypeToBuild))
+            if(!m.ReturnType.IsAssignableFrom(targetType))
             {
-                throw new ArgumentOutOfRangeException(targetTypeToBuild.FullName,
+                throw new ArgumentOutOfRangeException(targetType.FullName,
                                                       string.Format(ReturnTypeNotAssignableToTargetFormat,
-                                                                    targetTypeToBuild,
+                                                                    targetType,
                                                                     factoryClassToUse,
                                                                     factoryMethodName,
                                                                     m.ReturnType));
@@ -89,6 +108,6 @@ namespace ActivateAnything
         }
 
         const string ReturnTypeNotAssignableToTargetFormat="BuildFromMethod({0},{1},{2}) doesn't work because {0} is not assignable to the return type {3} of {1}.{2}";
-        const string MethodNotFoundFormat = "You asked for BuildFromFactory({0},{1},{2},...).CreateInstance(anchorAssemblyType:{3}) but there is no method {4}.{2}";
+        const string MethodNotFoundFormat = "You asked for BuildFromFactory({0},{1},{2},...).CreateInstance(searchAnchor:{3}) but there is no method {4}.{2}";
     }
 }

@@ -21,15 +21,15 @@ namespace ActivateAnything
         /// <param name="typesWaitingToBeBuilt">The type which we were ultimately trying to build, and the types
         ///     we need to build it, which has recursively led us to need an instance of <paramref name="type"/>.
         /// </param>
-        /// <param name="anchorAssemblyType"></param>
+        /// <param name="searchAnchor"></param>
         /// <returns>
         /// <list type="table">
         /// <item>A concrete <see cref="Type"/> which is assignable to <see cref="type"/>.</item>
         /// <item>Returns null if the rule can identify no suitable <see cref="Type"/>.</item>
         /// </list>
         /// </returns>
-        public abstract Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null);
+        public abstract Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null);
 
-        public abstract Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null);
+        public abstract Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null);
     }
 }

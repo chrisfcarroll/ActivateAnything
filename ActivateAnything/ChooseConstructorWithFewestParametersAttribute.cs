@@ -10,7 +10,7 @@ namespace ActivateAnything
 
         public bool PreferPublic { get; set; }
 
-        public override ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType=null)
+        public override ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor=null)
         {
             return type.GetConstructors()
                 .OrderByDescending(c => PreferPublic && c.IsPublic)

@@ -5,8 +5,8 @@ using System.Linq;
 namespace ActivateAnything
 {
     /// <summary>
-    /// This strategy will look only in the Assembly containing the <c>anchorAssemblyType</c>.
-    /// If no <c>anchorAssemblyType</c> was specified, search only in the Assembly containing the <c>Type</c> to be instantiated.
+    /// This strategy will look only in the Assembly containing the <c>searchAnchor</c>.
+    /// If no <c>searchAnchor</c> was specified, search only in the Assembly containing the <c>Type</c> to be instantiated.
     /// 
     /// TODO: Split this into FindOnlyInAnchorAssembly and FindOnlyInSameAssembly
     /// 
@@ -18,9 +18,9 @@ namespace ActivateAnything
             return FindTypeAssignableTo(testFixtureType, t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
-        public override Type FindTypeAssignableTo(string typeNameRightPart, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null)
+        public override Type FindTypeAssignableTo(string typeNameRightPart, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
-            return FindTypeAssignableTo(anchorAssemblyType, t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeNameRightPart));
+            return FindTypeAssignableTo(searchAnchor, t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeNameRightPart));
         }
 
         static Type FindTypeAssignableTo(object testFixtureType, Func<Type, bool> filterBy)

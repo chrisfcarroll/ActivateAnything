@@ -6,35 +6,35 @@ using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
-    public class GivenBuildFromMethodRuleForAType
+    public class AARespectsCreateFromFactoryMethodRule
     {
         [Fact]
-        public void ThenI_UseIt_WhenBuilding()
+        public void ForAClass()
         {
             const string aCustomString = "ACustomString";
             var result =
                 CreateInstance.Of<AClass>(
                     ActivateAnythingDefaultRulesAttribute.AllDefaultRules
                         .Union(
-                                new[] { new CreateFromFactoryAttribute(typeof(AClass),typeof(AFactory),"BuildMethod", aCustomString) }
+                                new[] { new CreateFromFactoryMethodAttribute(typeof(AClass),typeof(AFactory),"BuildMethod", aCustomString) }
                         ));
             //
-            Assert.That(aCustomString, x=>x==result.Aparameter);
+            result.Aparameter.ShouldBe(aCustomString);
         }
 
         [Fact]
-        public void Then_BuildFromFactoryAttribute_ThrowsFromConstructor_GivenFactoryClassAndMissingMethod()
+        public void ButIfFactoryMethodIsMissing_ThenCreateFromFactoryMethodAttributeConstructorThrows()
         {
             Assert.Throws<InvalidOperationException>(() =>
                                                      {
-                                                         new CreateFromFactoryAttribute(typeof(AClass), typeof(AFactory), "BuildMethodNameWhichDoesntExist");
+                                                         new CreateFromFactoryMethodAttribute(typeof(AClass), typeof(AFactory), "BuildMethodNameWhichDoesntExist");
                                                      });
         }
 
         [Fact]
-        public void ThenI_Throw_GivenRequestorObjectAndMissingMethod()
+        public void ButIfFactoryMethodIsMissing_ThenAAThrows_WithOrWithoutAnAnchor()
         {
-            var rules = new[] {new CreateFromFactoryAttribute(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
+            var rules = new[] {new CreateFromFactoryMethodAttribute(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
                 () => CreateInstance.Of<AClass>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules))

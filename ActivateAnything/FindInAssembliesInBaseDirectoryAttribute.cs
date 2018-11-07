@@ -21,10 +21,10 @@ namespace ActivateAnything
         /// </summary>
         public string[] IgnoreAssembliesWhereNameStartsWith { get; set; } = DefaultAssembliesToIgnore.ByName;
 
-        public override Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null) {
+        public override Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null) {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
-        public override Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null)
+        public override Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName));
         }

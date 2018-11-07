@@ -15,14 +15,14 @@ namespace ActivateAnything
     /// </summary>
     public class ActivateAnythingDefaultRulesAttribute : Attribute, IActivateAnythingFindConcreteTypeRule, IActivateAnythingChooseConstructorRule
     {
-        public Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null)
+        public Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
-            return TypeFinder.FindConcreteTypeAssignableTo(type, AllDefaultRules, typesWaitingToBeBuilt, anchorAssemblyType);
+            return TypeFinder.FindConcreteTypeAssignableTo(type, AllDefaultRules, typesWaitingToBeBuilt, searchAnchor);
         }
 
-        public ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object anchorAssemblyType = null)
+        public ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)
         {
-            return CreateInstance.ChooseConstructor(type, DefaultChooseConstructorRuleSequence, typesWaitingToBeBuilt, anchorAssemblyType);
+            return CreateInstance.ChooseConstructor(type, DefaultChooseConstructorRuleSequence, typesWaitingToBeBuilt, searchAnchor);
         }
 
         /// <summary>

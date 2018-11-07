@@ -27,7 +27,7 @@ namespace ActivateAnything
                 .FirstOrDefault(filterBy);
         }
 
-        public override Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object anchorAssemblyType = null)
+        public override Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
             throw new InvalidOperationException(this.GetType() + " cannot find a a Type by name because 'AssemblyUnderTest' is taken to mean the assembly in which the target type is found.");
         }
