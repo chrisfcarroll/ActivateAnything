@@ -1,12 +1,34 @@
 using System;
 using System.IO;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ActivateAnything
 {
     public class MoqMocker : IMockingLibraryAdapter, IMockingLibraryAdapterWithInspections
     {
+        class FindMoqMock : FindInAssemblyAttribute
+        {
+            public FindMoqMock() : base("Moq", t=> !t.ContainsGenericParameters){}
+        }
+
+        public static MoqMocker Instance = new MoqMocker();
+        readonly object mockerTypeLocker = new object();
+        readonly Func<Type,Type> MoqMakeMock;
+        readonly MethodInfo MoqMockGetMethod;
+
+        protected MoqMocker()
+        {
+            if(MoqMakeMock== null)lock(mockerTypeLocker)
+            {
+                var finder1 = new FindInAssemblyAttribute("Moq");
+                MoqMakeMock = t => finder1.FindTypeAssignableTo("Moq.Mock`1").MakeGenericType(t);
+                var finder2 = new FindMoqMock();
+                var moqMockType  = finder2.FindTypeAssignableTo("Moq.Mock");
+                MoqMockGetMethod = moqMockType.GetMethod("Get", BindingFlags.Public | BindingFlags.Static);
+            }
+            EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
+        }
+
         public object CreateMockElseNull(Type type, params object[] mockConstructorArgs)
         {
             try { return CreateMockElseThrow(type, mockConstructorArgs); }catch{ return null; }
@@ -16,16 +38,16 @@ namespace ActivateAnything
         {
             try
             {
-                mockType = MockerType
-                    .MakeGenericType(type)
+                var mockedType = 
+                    MoqMakeMock(type)
                     .Ensure(t => t != null, "Failed to make the Moq<T> GenericType needed to mock T. Just got null.");
                 var mock = Activator
-                    .CreateInstance(mockType, mockConstructorArgs)
+                    .CreateInstance(mockedType, mockConstructorArgs)
                     .EnsureNotNull(string.Format("Activator.CreateInstance({0},{1}) failed, just got null",
-                                                 mockType.Name,
+                                                 mockedType.Name,
                                                  mockConstructorArgs));
 
-                var mockedObjectProperty = mockType
+                var mockedObjectProperty = mockedType
                     .GetProperty("Object", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
                     .EnsureNotNull(string.Format("Reflected call to Moq<{0}>.GetProperty(\"Object\") failed, just got null.", type.FullName));
 
@@ -50,19 +72,14 @@ namespace ActivateAnything
             CreateMockElseThrow(typeof(ICloneable /*an arbitrary example type that, if all is well, we will successfully mock.*/ ));
         }
 
-        public bool IsMockingAssemblyFound() { return MockerType != null; }
+        public bool IsMockingAssemblyFound() { return MoqMockGetMethod != null; }
 
-        public bool IsThisMyMockObject(object value) { return GetMock(value) != null; }
+        public bool IsThisMyMockObject(object value) => GetMock(value) != null;
 
         public object GetMock(object value)
         {
-            EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
-            return MockerType.GetMethod("Get",BindingFlags.Public|BindingFlags.Static).Invoke(null, new[] { value });
+            Func<object,object> moqMockGetMethod = obj => MoqMockGetMethod.Invoke(null, new[] { obj });
+            return moqMockGetMethod(value);
         }
-
-        public static Type MockerType { get { return mockerType = mockerType ?? new FindInAssemblyAttribute("Moq").FindTypeAssignableTo("Moq.Mock`1"); } }
-
-        static Type mockerType;
-        static Type mockType;
     }
 }

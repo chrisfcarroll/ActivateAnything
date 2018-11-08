@@ -14,19 +14,28 @@ namespace ActivateAnything
     /// </summary>
     public class FindInAssemblyAttribute : ActivateAnythingFindConcreteTypeRuleAttribute
     {
-        public FindInAssemblyAttribute(string assemblyName){ this.assemblyName = assemblyName; }
+        public FindInAssemblyAttribute(string assemblyName)
+        {
+            this.assemblyName = assemblyName;
+            this.filter = t => !t.IsAbstract && !t.IsInterface;
+        }
+        protected FindInAssemblyAttribute(string assemblyName, Func<Type, bool> filter)
+        {
+            this.assemblyName = assemblyName;
+            this.filter = filter;
+        }
 
-        static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-
+        readonly static DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
         readonly string assemblyName;
+        readonly Func<Type, bool> filter ;
 
         public override Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object testFixtureType = null)
         {
-            return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
+            return FindTypeAssignableTo(t => filter(t) && type.IsAssignableFrom(t));
         }
         public override Type FindTypeAssignableTo(string typeName, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
-            return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName));
+            return FindTypeAssignableTo(t => filter(t) && t.FullName.EndsWith(typeName));
         }
 
         Type FindTypeAssignableTo(Func<Type, bool> filterBy)

@@ -17,7 +17,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             Assert.That(moq, Is.NotNull, "Didn't find a known mock framework (i.e. Moq) in Base Directory, can't test mocking.");
         }
 
-        [Fact(Skip = "WIP")]
+        [Fact(Skip = WIP.Next)]
         public void ForAClass()
         {
             var result =
@@ -36,6 +36,6 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public static void ShouldBeAMock(object value) { knownIsMockTests.ShouldContain(m => m(value)); }
         public static bool IsAMock(object value) { return knownIsMockTests.Select(m => m(value)).Any(); }
 
-        static Func<object, bool>[] knownIsMockTests = { new MoqMocker().IsThisMyMockObject };
+        static Func<object, bool>[] knownIsMockTests = { MoqMocker.Instance.IsThisMyMockObject };
     }
 }

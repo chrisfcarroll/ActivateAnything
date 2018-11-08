@@ -46,7 +46,7 @@ namespace ActivateAnything
             return MockingLibraryAdapter.CreateMockElseNull(type, mockConstructorArgs);
         }
 
-        void EnsureMockingLibraryAdapter() { MockingLibraryAdapter = MockingLibraryAdapter ?? new MoqMocker(); }
+        void EnsureMockingLibraryAdapter() { MockingLibraryAdapter = MockingLibraryAdapter ?? MoqMocker.Instance; }
 
         readonly Type[] typesToMock;
         readonly object[] mockConstructorArgs;

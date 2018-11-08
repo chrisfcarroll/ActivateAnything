@@ -12,13 +12,24 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
     [FindInAnchorAssembly]
     [FindInDirectory]
     [CreateFromMock(typeof(ICloneable))]
-    public class AAAppliesAllRulesAsNeeded : TestBaseFor<ClassWith4ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly, ICloneable>>
+    public class AAAppliesAllRulesAsNeeded : 
+                    TestBaseFor
+                        <ClassWith4ConstructorParams
+                            <INterfaceWithClassInSameAssembly, 
+                            INterfaceWithFakeInTestAssembly, 
+                            INterfaceWithClassInNotReferencedAssembly, 
+                            ICloneable>>
     {
         [Fact]
         public void AndBuildsRequestedType()
         {
             UnitUnderTest.ShouldNotBeNull();
-            UnitUnderTest.ShouldBeAssignableTo<ClassWith4ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly, ICloneable>>();
+            UnitUnderTest.ShouldBeAssignableTo
+                            <ClassWith4ConstructorParams
+                                <INterfaceWithClassInSameAssembly, 
+                                INterfaceWithFakeInTestAssembly, 
+                                INterfaceWithClassInNotReferencedAssembly, 
+                                ICloneable>>();
         }
 
         [Fact]
