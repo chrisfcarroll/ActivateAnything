@@ -6,6 +6,14 @@ namespace ActivateAnything
 {
     public class CreateFromMockAttribute : Attribute, IActivateAnythingCreateInstanceRule
     {
+        public static List<IMockingLibraryAdapter> KnownMockingLibraryAdapters
+                    = new List<IMockingLibraryAdapter>() { MoqMocker.Instance };
+
+        public static bool IsAKnownMock(object value)
+                        => KnownMockingLibraryAdapters
+                            .OfType<IMockingLibraryAdapterWithInspections>()
+                            .Any(m => m.IsThisMyMockObject(value));
+
         /// <remarks>
         /// <list type="bullet">
         /// <item>The default mocking library is Moq, used via <see cref="MoqMocker"/>. </item>

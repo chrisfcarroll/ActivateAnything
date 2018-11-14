@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace ActivateAnything
 {
@@ -13,18 +14,15 @@ namespace ActivateAnything
 
         public static MoqMocker Instance = new MoqMocker();
         readonly object mockerTypeLocker = new object();
-        readonly Func<Type,Type> MoqMakeMock;
-        readonly MethodInfo MoqMockGetMethod;
+        readonly Func<Type,Type> MoqMakeMockType;
+        static Regex IsTypeMoqMockRegex = new Regex(@"^Moq\.\S*Proxy, Moq");
 
         protected MoqMocker()
         {
-            if(MoqMakeMock== null)lock(mockerTypeLocker)
+            if(MoqMakeMockType== null)lock(mockerTypeLocker)
             {
                 var finder1 = new FindInAssemblyAttribute("Moq");
-                MoqMakeMock = t => finder1.FindTypeAssignableTo("Moq.Mock`1").MakeGenericType(t);
-                var finder2 = new FindMoqMock();
-                var moqMockType  = finder2.FindTypeAssignableTo("Moq.Mock");
-                MoqMockGetMethod = moqMockType.GetMethod("Get", BindingFlags.Public | BindingFlags.Static);
+                MoqMakeMockType = t => finder1.FindTypeAssignableTo("Moq.Mock`1").MakeGenericType(t);
             }
             EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
         }
@@ -39,7 +37,7 @@ namespace ActivateAnything
             try
             {
                 var mockedType = 
-                    MoqMakeMock(type)
+                    MoqMakeMockType(type)
                     .Ensure(t => t != null, "Failed to make the Moq<T> GenericType needed to mock T. Just got null.");
                 var mock = Activator
                     .CreateInstance(mockedType, mockConstructorArgs)
@@ -72,14 +70,13 @@ namespace ActivateAnything
             CreateMockElseThrow(typeof(ICloneable /*an arbitrary example type that, if all is well, we will successfully mock.*/ ));
         }
 
-        public bool IsMockingAssemblyFound() { return MoqMockGetMethod != null; }
+        public bool IsMockingAssemblyFound() { return MoqMakeMockType != null; }
 
         public bool IsThisMyMockObject(object value) => GetMock(value) != null;
 
         public object GetMock(object value)
         {
-            Func<object,object> moqMockGetMethod = obj => MoqMockGetMethod.Invoke(null, new[] { obj });
-            return moqMockGetMethod(value);
+            return IsTypeMoqMockRegex.IsMatch(value.GetType().BaseType.AssemblyQualifiedName);
         }
     }
 }

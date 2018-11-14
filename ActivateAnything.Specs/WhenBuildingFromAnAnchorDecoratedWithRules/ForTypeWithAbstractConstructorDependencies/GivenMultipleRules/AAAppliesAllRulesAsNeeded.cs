@@ -1,7 +1,6 @@
 ﻿using System;
 using Xunit;
 using TestBase;
-using ActivateAnything.Specs.WhenBuildingAnInstance;
 using TestCases;
 using TestCases.AReferencedAssembly;
 using Assert = TestBase.Assert;
@@ -52,11 +51,11 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
             Assert.That(UnitUnderTest.Param3.GetType().Assembly.FullName.Contains("TestCases.ANotReferencedAssembly"));
         }
 
-        [Fact(Skip = WIP.Next)]
+        [Fact]
         public void AndMocksAnInterface__AssumingThatAKnownMockingFrameworkAssemblyWasFindable()
         {
             UnitUnderTest.Param4.ShouldBeAssignableTo<ICloneable>();
-            Assert.That(MockHelper.IsAMock(UnitUnderTest.Param4));
+            Assert.That(CreateFromMockAttribute.IsAKnownMock(UnitUnderTest.Param4));
         }
 
     }

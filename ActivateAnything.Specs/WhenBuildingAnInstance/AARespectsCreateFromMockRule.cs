@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using TestBase;
 using TestCases;
 using Xunit;
@@ -17,7 +15,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             Assert.That(moq, Is.NotNull, "Didn't find a known mock framework (i.e. Moq) in Base Directory, can't test mocking.");
         }
 
-        [Fact(Skip = WIP.Next)]
+        [Fact]
         public void ForAClass()
         {
             var result =
@@ -26,16 +24,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
                         new[] { new CreateFromMockAttribute(typeof(INterface)) }
                         );
             //
-            Assert.That(result.Param1, x=>MockHelper.IsAMock(x));
+            Assert.That(result.Param1, x=> CreateFromMockAttribute.IsAKnownMock(x));
         }
-    }
-
-
-    static class MockHelper
-    {
-        public static void ShouldBeAMock(object value) { knownIsMockTests.ShouldContain(m => m(value)); }
-        public static bool IsAMock(object value) { return knownIsMockTests.Select(m => m(value)).Any(); }
-
-        static Func<object, bool>[] knownIsMockTests = { MoqMocker.Instance.IsThisMyMockObject };
     }
 }
