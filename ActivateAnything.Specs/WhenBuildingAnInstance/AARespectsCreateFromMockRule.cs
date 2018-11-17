@@ -19,10 +19,8 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public void ForAClass()
         {
             var result =
-                CreateInstance
-                    .Of<ClassWith1ConstructorParam<INterface>>(
-                        new[] { new CreateFromMockAttribute(typeof(INterface)) }
-                        );
+                new AnythingActivator(new CreateFromMockAttribute(typeof(INterface)))
+                    .Of<ClassWith1ConstructorParam<INterface>>();
             //
             Assert.That(result.Param1, x=> CreateFromMockAttribute.IsAKnownMock(x));
         }

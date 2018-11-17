@@ -5,9 +5,7 @@ using System.Reflection;
 
 namespace ActivateAnything
 {
-    /// <summary>
-    /// A rule which provides a factory method capable of creating an instance of a Type.
-    /// </summary>
+    /// <summary>A rule which provides a factory method capable of creating an instance of a Type.</summary>
     public class CreateFromFactoryMethodAttribute : Attribute, IActivateAnythingCreateInstanceRule
     {
         readonly Type targetType;
@@ -69,12 +67,22 @@ namespace ActivateAnything
             {
                 throw new InvalidOperationException("You called CreateFromFactoryMethod.CreateInstance() without " +
                     "specifying a Type for the Factory. Either specify a Type in the CreateFromFactoryMethod constructor, " +
-                    "or use an overload of CreateInstance.Of() which specifies a searchAnchor which declares a factoryMethod.");
+                    "or use an AnythingActivator with a searchAnchor which declares a factoryMethod.");
             }
             //
-            object factory = searchAnchor ?? ActivateAnything.CreateInstance.Of(factoryClass, ActivateAnythingDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence.Union((IEnumerable<IActivateAnythingRule>)(new[] {new ChooseConstructorWithFewestParametersAttribute()}))); //nb if the factory method is static, then it's okay for factory to be null.
+            object factory = searchAnchor 
+                             ?? new AnythingActivator(
+                                        ActivateAnythingDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence
+                                            .Union(
+                                                (IEnumerable<IActivateAnythingRule>)
+                                                    new[]
+                                                    {
+                                                        new ChooseConstructorWithFewestParametersAttribute()
+                                                    }
+                                                )).Of(factoryClass); 
+                             //nb if the factory method is static, then it's okay for factory to be null.
 
-            Type factoryClassToUse =   factory==null ? factoryClass : factory.GetType();
+            Type factoryClassToUse = factory==null ? factoryClass : factory.GetType();
 
             var m = EnsureFactoryMethodElseThrow(factoryClassToUse, searchAnchor);
             //

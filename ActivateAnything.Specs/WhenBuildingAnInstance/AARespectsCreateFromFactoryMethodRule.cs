@@ -13,11 +13,18 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             const string aCustomString = "ACustomString";
             var result =
-                CreateInstance.Of<AClass>(
+                new AnythingActivator(
                     ActivateAnythingDefaultRulesAttribute.AllDefaultRules
                         .Union(
-                                new[] { new CreateFromFactoryMethodAttribute(typeof(AClass),typeof(AFactory),"BuildMethod", aCustomString) }
-                        ));
+                                new[]
+                                {
+                                    new CreateFromFactoryMethodAttribute(
+                                        typeof(AClass),
+                                        typeof(AFactory),
+                                        "BuildMethod", 
+                                        aCustomString)
+                                }
+                        )).Of<AClass>();
             //
             result.Aparameter.ShouldBe(aCustomString);
         }
@@ -27,7 +34,9 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             Assert.Throws<InvalidOperationException>(() =>
                                                      {
-                                                         new CreateFromFactoryMethodAttribute(typeof(AClass), typeof(AFactory), "BuildMethodNameWhichDoesntExist");
+                                                         new CreateFromFactoryMethodAttribute(typeof(AClass),
+                                                             typeof(AFactory),
+                                                             "BuildMethodNameWhichDoesntExist");
                                                      });
         }
 
@@ -37,10 +46,10 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var rules = new[] {new CreateFromFactoryMethodAttribute(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
-                () => CreateInstance.Of<AClass>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules))
+                () => new AnythingActivator(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules)).Of<AClass>()
                 );
             Assert.Throws<InvalidOperationException>(
-                () => CreateInstance.Of<AClass>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules),this)
+                () => new AnythingActivator(this,ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules)).Of<AClass>()
                 );
         }
 

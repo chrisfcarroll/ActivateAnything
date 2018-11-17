@@ -12,7 +12,7 @@
 
         protected TestBaseFor()
         {
-            UnitUnderTest = CreateInstance.Of<T>(this);
+            UnitUnderTest = new AnythingActivator(this).Of<T>();
         }
     }
 }

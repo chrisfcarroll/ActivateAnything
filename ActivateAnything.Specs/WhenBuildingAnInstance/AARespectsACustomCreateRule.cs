@@ -14,7 +14,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var customObject = new AClass();
             var result =
-                CreateInstance.Of<AClass>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(new[] {new CustomCreateInstanceRuleFor<AClass>(customObject)}));
+                new AnythingActivator(
+                        ActivateAnythingDefaultRulesAttribute.AllDefaultRules
+                            .Union(
+                                new[] {new CustomCreateInstanceRuleFor<AClass>(customObject)}))
+                    .Of<AClass>();
             //
             Assert.That(customObject==result);
         }
@@ -23,7 +27,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public void ForAString()
         {
             var result =
-                CreateInstance.Of<string>(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(new[] {new CustomCreateInstanceRuleFor<string>("ACustomString")}));
+                new AnythingActivator(
+                    ActivateAnythingDefaultRulesAttribute.AllDefaultRules
+                        .Union(
+                            new[] {new CustomCreateInstanceRuleFor<string>("ACustomString")}))
+                    .Of<string>();
             //
             result.ShouldBe("ACustomString");
         }

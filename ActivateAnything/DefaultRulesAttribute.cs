@@ -22,7 +22,7 @@ namespace ActivateAnything
 
         public ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)
         {
-            return CreateInstance.ChooseConstructor(type, DefaultChooseConstructorRuleSequence, typesWaitingToBeBuilt, searchAnchor);
+            return AnythingActivator.Instance.ChooseConstructor(type, DefaultChooseConstructorRuleSequence, typesWaitingToBeBuilt, searchAnchor);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace ActivateAnything
         /// <summary>
         /// The default ActivateAnything ruleset is the union of <see cref="DefaultFindConcreteTypeRuleSequence"/> and <see cref="DefaultChooseConstructorRuleSequence"/>
         /// </summary>
-        public static readonly IEnumerable<IActivateAnythingRule> 
+        public static readonly IReadOnlyCollection<IActivateAnythingRule> 
                                     AllDefaultRules = 
                                         new ReadOnlyCollection<IActivateAnythingRule>(
                                                 (DefaultFindConcreteTypeRuleSequence.
