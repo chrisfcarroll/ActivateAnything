@@ -1,6 +1,10 @@
 ﻿namespace TestCases
 {
-    public interface INterface { }
+    public interface INterface
+    {
+    }
 
-    class Nterface : INterface {}
+    class Nterface : INterface
+    {
+    }
 }

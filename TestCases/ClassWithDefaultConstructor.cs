@@ -1,4 +1,6 @@
 ﻿namespace TestCases
 {
-    public class ClassWithDefaultConstructor { }
+    public class ClassWithDefaultConstructor
+    {
+    }
 }

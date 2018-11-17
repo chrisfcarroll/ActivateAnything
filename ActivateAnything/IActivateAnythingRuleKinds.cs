@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-
 namespace ActivateAnything
 {
-    /// <summary>A marker interface for any kind of ActivateAnything rule understood by <see cref="Construct"/></summary>
-    public interface IActivateAnythingRule { }
+    /// <summary>A marker interface for any kind of ActivateAnything rule understood by <see cref="Construct" /></summary>
+    public interface IActivateAnythingRule
+    {
+    }
 
     /// <summary>An ActivateAnything rule which will create an instance of a concrete <c>Type</c>.</summary>
     public interface IActivateAnythingCreateInstanceRule : IActivateAnythingRule
@@ -20,17 +21,24 @@ namespace ActivateAnything
         ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null);
     }
 
-    /// <summary>An ActivateAnything rule which searches for (or dynamically creates) 
-    /// a concrete <c>Type</c> assignable to a requested <c>Type</c>.</summary>
+    /// <summary>
+    ///     An ActivateAnything rule which searches for (or dynamically creates)
+    ///     a concrete <c>Type</c> assignable to a requested <c>Type</c>.
+    /// </summary>
     public interface IActivateAnythingFindConcreteTypeRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object getType = null);
     }
 
-    /// <summary>An ActivateAnything rule which searches for (or dynamically creates) 
-    /// a concrete <c>Type</c> whose name ends with a given string.</summary>
+    /// <summary>
+    ///     An ActivateAnything rule which searches for (or dynamically creates)
+    ///     a concrete <c>Type</c> whose name ends with a given string.
+    /// </summary>
     public interface IActivateAnythingFindConcreteTypeByNameRule : IActivateAnythingRule
     {
-        Type FindTypeAssignableTo(string typeNameEndingWith, IEnumerable<Type> typesWaitingToBeBuilt = null, object getType = null);
+        Type FindTypeAssignableTo(
+            string typeNameEndingWith,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object getType = null);
     }
 }

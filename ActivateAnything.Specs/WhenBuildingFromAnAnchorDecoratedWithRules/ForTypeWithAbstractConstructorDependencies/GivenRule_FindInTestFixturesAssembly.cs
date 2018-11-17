@@ -1,10 +1,10 @@
-using Xunit;
 using TestBase;
 using TestCases;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-	[FindInAnchorAssembly]
+    [FindInAnchorAssembly]
     public class GivenRule_FindInTestFixturesAssembly : TestBaseFor<ClassWith1ConstructorParam<INterface>>
     {
         [Fact]
@@ -12,9 +12,11 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
         {
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo<ClassWith1ConstructorParam<INterface>>();
-            typeof(NterfaceImplementedInTestAssembly).ShouldBe( UnitUnderTest.Param1.GetType() );
+            typeof(NterfaceImplementedInTestAssembly).ShouldBe(UnitUnderTest.Param1.GetType());
         }
     }
 
-    class NterfaceImplementedInTestAssembly : INterface {}
+    class NterfaceImplementedInTestAssembly : INterface
+    {
+    }
 }

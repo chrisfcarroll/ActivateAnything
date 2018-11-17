@@ -1,5 +1,6 @@
 namespace TestCases
 {
-
-    public interface INterfaceWithFakeInTestAssembly{}
+    public interface INterfaceWithFakeInTestAssembly
+    {
+    }
 }

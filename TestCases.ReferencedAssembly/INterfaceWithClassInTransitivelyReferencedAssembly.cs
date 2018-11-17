@@ -1,4 +1,6 @@
 ﻿namespace TestCases.AReferencedAssembly
 {
-    public interface INterfaceWithClassInTransitivelyReferencedAssembly { }
+    public interface INterfaceWithClassInTransitivelyReferencedAssembly
+    {
+    }
 }

@@ -2,5 +2,7 @@
 
 namespace TestCases.ANotReferencedAssembly
 {
-    public class NterfaceWithClassInNotReferencedAssembly : INterfaceWithClassInNotReferencedAssembly { }
+    public class NterfaceWithClassInNotReferencedAssembly : INterfaceWithClassInNotReferencedAssembly
+    {
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Xunit;
 using TestBase;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
@@ -16,10 +16,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             result.param1.ShouldBeNull();
             result.param2.ShouldBeNull();
         }
+
         [Fact]
         public void ChooseConstructorWithMostParametersAttribute()
         {
-            IEnumerable<IActivateAnythingRule> rules = new[] { new ChooseConstructorWithMostParametersAttribute() };
+            IEnumerable<IActivateAnythingRule> rules = new[] {new ChooseConstructorWithMostParametersAttribute()};
             //
             var result = new AnythingActivator(rules).Of<ClassWithMultipleConstructors>();
             //
@@ -37,9 +38,6 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
 
         public ClassWithMultipleConstructors(string param1) { this.param1 = param1; }
 
-        public ClassWithMultipleConstructors(string param1, string param2) : this(param1)
-        {
-            this.param2 = param2;
-        }
+        public ClassWithMultipleConstructors(string param1, string param2) : this(param1) { this.param2 = param2; }
     }
 }

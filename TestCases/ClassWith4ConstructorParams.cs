@@ -17,9 +17,6 @@ namespace TestCases
             Param4 = param4;
         }
 
-        public Tuple<T1, T2, T3> GetConstructorParams()
-        {
-            return new Tuple<T1, T2, T3>(Param1, Param2, Param3);
-        }
+        public Tuple<T1, T2, T3> GetConstructorParams() { return new Tuple<T1, T2, T3>(Param1, Param2, Param3); }
     }
 }

@@ -1,10 +1,10 @@
-using Xunit;
 using TestBase;
 using TestCases;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-	[FindInAnyAssemblyReferencedByAssemblyContainingType]
+    [FindInAnyAssemblyReferencedByAssemblyContainingType]
     public class GivenRule_FindInAssemblyUnderTest : TestBaseFor<ClassWith1ConstructorParam<INterfaceWithClassInSameAssembly>>
     {
         [Fact]

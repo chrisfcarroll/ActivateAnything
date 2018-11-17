@@ -1,12 +1,13 @@
-﻿using Xunit;
-using TestBase;
+﻿using TestBase;
 using TestCases;
 using TestCases.AReferencedAssembly;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-	[FindInAssembliesReferencedByAnchorAssembly]
-    public class GivenRule_FindInAssembliesReferencedByAssemblyUnderTest : TestBaseFor<ClassWith1ConstructorParam<INterfaceWithClassInReferencedAssembly>>
+    [FindInAssembliesReferencedByAnchorAssembly]
+    public class GivenRule_FindInAssembliesReferencedByAssemblyUnderTest : TestBaseFor<
+        ClassWith1ConstructorParam<INterfaceWithClassInReferencedAssembly>>
     {
         [Fact]
         public void AAFindsConcreteTypeForInterfaceInReferencedAssemblies()

@@ -1,8 +1,10 @@
 ﻿namespace TestCases
 {
-    public interface INterfaceWithClassInSameAssembly { }
+    public interface INterfaceWithClassInSameAssembly
+    {
+    }
 
-    class NterfaceWithClassInSameAssembly : INterfaceWithClassInSameAssembly {}
-
-
+    class NterfaceWithClassInSameAssembly : INterfaceWithClassInSameAssembly
+    {
+    }
 }

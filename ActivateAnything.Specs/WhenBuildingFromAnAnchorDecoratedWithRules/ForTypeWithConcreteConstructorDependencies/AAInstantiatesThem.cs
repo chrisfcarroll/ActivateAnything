@@ -1,6 +1,6 @@
-﻿using Xunit;
-using TestBase;
+﻿using TestBase;
 using TestCases;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithConcreteConstructorDependencies
 {
@@ -24,7 +24,8 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
         }
     }
 
-    public class GivenTargetTypeWithDependencyOnTypeWithItself1ConstructorDependency : TestBaseFor<ClassWith1ConstructorParam<ClassWith1ConstructorParam<string>>>
+    public class GivenTargetTypeWithDependencyOnTypeWithItself1ConstructorDependency : TestBaseFor<
+        ClassWith1ConstructorParam<ClassWith1ConstructorParam<string>>>
     {
         [Fact]
         public void AAInstantiatesIt()

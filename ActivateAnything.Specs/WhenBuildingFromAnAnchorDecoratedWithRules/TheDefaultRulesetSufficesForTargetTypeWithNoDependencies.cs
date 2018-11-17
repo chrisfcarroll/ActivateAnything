@@ -1,10 +1,10 @@
-﻿using Xunit;
-using TestBase;
+﻿using TestBase;
 using TestCases;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
-	[ActivateAnythingDefaultRules]
+    [ActivateAnythingDefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithNoDependencies : TestBaseFor<ClassWithDefaultConstructor>
     {
         [Fact]

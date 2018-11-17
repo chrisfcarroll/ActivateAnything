@@ -2,5 +2,7 @@
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies
 {
-    class NterfaceWithFakeInTestAssembly : INterfaceWithFakeInTestAssembly {}
+    class NterfaceWithFakeInTestAssembly : INterfaceWithFakeInTestAssembly
+    {
+    }
 }

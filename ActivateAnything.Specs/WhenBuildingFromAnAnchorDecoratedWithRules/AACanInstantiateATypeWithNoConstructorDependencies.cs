@@ -1,6 +1,6 @@
-﻿using Xunit;
-using TestBase;
+﻿using TestBase;
 using TestCases;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
@@ -12,6 +12,5 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo<ClassWithDefaultConstructor>();
         }
-
     }
 }

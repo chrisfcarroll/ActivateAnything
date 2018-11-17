@@ -1,20 +1,22 @@
 ﻿using System;
-using Xunit;
 using TestBase;
 using TestCases;
 using TestCases.AReferencedAssembly;
+using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
     public class TheDefaultRulesetSufficesToBuild
     {
         [Theory]
-        [InlineData(typeof (ClassWithDefaultConstructor))]
+        [InlineData(typeof(ClassWithDefaultConstructor))]
         [InlineData(typeof(ClassWith1ConstructorParam<ClassWithDefaultConstructor>))]
-        [InlineData(typeof(ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>))]
+        [InlineData(
+            typeof(ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
+                INterfaceWithClassInNotReferencedAssembly>))]
         public void AType(Type type)
         {
-            var result= AnythingActivator.Instance.Of(type);
+            var result = AnythingActivator.Instance.Of(type);
             //
             type.ShouldBe(result.GetType());
         }
@@ -22,11 +24,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         [Fact]
         public void AndToGetConstructorDependenciesRight()
         {
-            ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly> 
+            var
                 result = AnythingActivator.Instance.Of<ClassWith3ConstructorParams
-                                                <INterfaceWithClassInSameAssembly, 
-                                                 INterfaceWithFakeInTestAssembly,
-                                                 INterfaceWithClassInNotReferencedAssembly>>();
+                    <INterfaceWithClassInSameAssembly,
+                        INterfaceWithFakeInTestAssembly,
+                        INterfaceWithClassInNotReferencedAssembly>>();
 
             result.ShouldNotBeNull();
             result.Param1.ShouldNotBeNull();

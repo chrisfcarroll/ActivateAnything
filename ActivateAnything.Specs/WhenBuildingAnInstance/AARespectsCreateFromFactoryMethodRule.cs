@@ -8,36 +8,15 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
     public class AARespectsCreateFromFactoryMethodRule
     {
-        [Fact]
-        public void ForAClass()
+        class AClass
         {
-            const string aCustomString = "ACustomString";
-            var result =
-                new AnythingActivator(
-                    ActivateAnythingDefaultRulesAttribute.AllDefaultRules
-                        .Union(
-                                new[]
-                                {
-                                    new CreateFromFactoryMethodAttribute(
-                                        typeof(AClass),
-                                        typeof(AFactory),
-                                        "BuildMethod", 
-                                        aCustomString)
-                                }
-                        )).Of<AClass>();
-            //
-            result.Aparameter.ShouldBe(aCustomString);
+            public readonly string Aparameter;
+            public AClass(string aparameter) { Aparameter = aparameter; }
         }
 
-        [Fact]
-        public void ButIfFactoryMethodIsMissing_ThenCreateFromFactoryMethodAttributeConstructorThrows()
+        class AFactory
         {
-            Assert.Throws<InvalidOperationException>(() =>
-                                                     {
-                                                         new CreateFromFactoryMethodAttribute(typeof(AClass),
-                                                             typeof(AFactory),
-                                                             "BuildMethodNameWhichDoesntExist");
-                                                     });
+            public AClass BuildMethod(string aparameter) { return new AClass(aparameter); }
         }
 
         [Fact]
@@ -47,21 +26,43 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             //
             Assert.Throws<InvalidOperationException>(
                 () => new AnythingActivator(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules)).Of<AClass>()
-                );
+            );
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(this,ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules)).Of<AClass>()
-                );
+                () => new AnythingActivator(this, ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules))
+                    .Of<AClass>()
+            );
         }
 
-
-        class AClass {
-            public readonly string Aparameter;
-            public AClass(string aparameter) { Aparameter = aparameter; }
-        }
-
-        class AFactory
+        [Fact]
+        public void ButIfFactoryMethodIsMissing_ThenCreateFromFactoryMethodAttributeConstructorThrows()
         {
-            public AClass BuildMethod(string aparameter) { return new AClass(aparameter); }
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                new CreateFromFactoryMethodAttribute(typeof(AClass),
+                    typeof(AFactory),
+                    "BuildMethodNameWhichDoesntExist");
+            });
+        }
+
+        [Fact]
+        public void ForAClass()
+        {
+            const string aCustomString = "ACustomString";
+            var result =
+                new AnythingActivator(
+                    ActivateAnythingDefaultRulesAttribute.AllDefaultRules
+                        .Union(
+                            new[]
+                            {
+                                new CreateFromFactoryMethodAttribute(
+                                    typeof(AClass),
+                                    typeof(AFactory),
+                                    "BuildMethod",
+                                    aCustomString)
+                            }
+                        )).Of<AClass>();
+            //
+            result.Aparameter.ShouldBe(aCustomString);
         }
     }
 }

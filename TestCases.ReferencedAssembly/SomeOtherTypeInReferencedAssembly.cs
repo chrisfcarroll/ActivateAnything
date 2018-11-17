@@ -1,4 +1,6 @@
 namespace TestCases.AReferencedAssembly
 {
-    public struct SomeOtherTypeInReferencedAssembly{}
+    public struct SomeOtherTypeInReferencedAssembly
+    {
+    }
 }
