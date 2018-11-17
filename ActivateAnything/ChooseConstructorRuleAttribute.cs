@@ -12,7 +12,7 @@ namespace ActivateAnything
     ///     Rules inheriting from <see cref="ChooseConstructorRuleAttribute" /> are concerned with
     ///     which constructor to choose (if there is more than one) when building a concrete type
     /// </summary>
-    public abstract class ChooseConstructorRuleAttribute : Attribute, IActivateAnythingChooseConstructorRule
+    public abstract class ChooseConstructorRuleAttribute : Attribute, IChooseConstructorRule
     {
         public abstract ConstructorInfo ChooseConstructor(
             Type type,

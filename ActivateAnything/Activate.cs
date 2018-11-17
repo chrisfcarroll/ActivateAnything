@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ActivateAnything
 {
@@ -15,36 +16,75 @@ namespace ActivateAnything
     ///     type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
     /// </item>
     /// <item>
-    ///     <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
+    ///     <see cref="IFindTypeRule" /> provides rules for where to look for candidate
     ///     concrete subTypes of an abstract type.
     /// </item>
     /// <item>
-    ///     <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-    ///     the <see cref="IActivateConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
+    ///     <see cref="IChooseConstructorRule" /> rules for how to choose between constructors when
+    ///     the <see cref="IFindTypeRule" />s have found a concrete <c>Type</c> to instantiate.
     /// </item>
     /// </list>
     ///
     /// <seealso cref="AnythingActivator"/>
     /// <seealso cref="IActivateAnythingRule"/>
-    /// <seealso cref="IActivateConcreteTypeRule"/>
-    /// <seealso cref="IActivateAnythingChooseConstructorRule"/>
+    /// <seealso cref="IFindTypeRule"/>
+    /// <seealso cref="IChooseConstructorRule"/>
     /// <seealso cref="IActivateInstanceRule"/>
     /// 
     /// </summary>
     public static class Activate
     {
-        public static T FromDefaultRules<T>() => AnythingActivator.Instance.New<T>();
+        /// <summary>
+        ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="AnythingActivator.DefaultRules" />
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>        
+        public static T New<T>() => AnythingActivator.Instance.New<T>();
 
-        public static T FromDefaultRules<T>(object searchAnchor)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchAnchor">
+        ///     An object used by some <see cref="AnythingActivator.Rules" />, especially, <see cref="IFindTypeRule" />
+        ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
+        ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
+        ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
+        ///     look in each <see cref="Assembly" /> referenced by <c>SearchAnchor.GetType().Assembly</c>.
+        /// </param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T New<T>(object searchAnchor)
         {
             return AnythingActivator.FromDefaultRules(searchAnchor).New<T>();
         }
 
+        /// <summary>
+        ///     Creates an instance of something assignable to <typeparamref name="T" /> using rules found
+        ///     on <paramref name="searchAnchor"/>, then <paramref name="moreRules"/>, then
+        ///     <see cref="AnythingActivator.DefaultRules" />
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="searchAnchor">
+        ///     An object used by some <see cref="AnythingActivator.Rules" />, especially, <see cref="IFindTypeRule" />
+        ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
+        ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
+        ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
+        ///     look in each <see cref="Assembly" /> referenced by <c>SearchAnchor.GetType().Assembly</c>.
+        /// </param>
+        /// <param name="moreRules">Rules to override the default <see cref="AnythingActivator.Rules"/></param>
+        /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>        
         public static T FromDefaultRulesAnd<T>(object searchAnchor, params IActivateAnythingRule[] moreRules)
         {
-            return AnythingActivator.FromDefaultRulesAnd(searchAnchor, moreRules).New<T>();
+            return AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(searchAnchor, moreRules).New<T>();
         }
 
+        /// <summary>
+        ///     Creates an instance of something assignable to <typeparamref name="T" /> using
+        ///     <paramref name="moreRules"/> then <see cref="AnythingActivator.DefaultRules" />
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="moreRules">Rules to override the default <see cref="AnythingActivator.Rules"/></param>
+        /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>        
         public static T FromDefaultRulesAnd<T>(params IActivateAnythingRule[] moreRules)
         {
             return AnythingActivator.FromDefaultRulesAnd(moreRules).New<T>();

@@ -8,13 +8,13 @@ namespace ActivateAnything
     ///         Attributes inheriting from this class will be used as rules by <see cref="Construct" />/>
     ///         when constructing a concrete instance
     ///     </para>
-    ///     Rules inheriting from <see cref="IActivateConcreteTypeRule" /> are concerned
+    ///     Rules inheriting from <see cref="IFindTypeRule" /> are concerned
     ///     with where to look (e.g. which assemblies or namespaces) for a concrete type
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public abstract class ActivateConcreteTypeRuleAttribute : Attribute,
-        IActivateConcreteTypeRule,
-        IActivateConcreteTypeByNameRule
+    public abstract class FindTypeRuleAttribute : Attribute,
+        IFindTypeRule,
+        IFindTypeByNameRule
     {
         public abstract Type FindTypeAssignableTo(
             string typeName,

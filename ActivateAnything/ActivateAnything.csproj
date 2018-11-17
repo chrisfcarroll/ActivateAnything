@@ -2,6 +2,37 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <AssemblyFileVersion>0.1.0.0</AssemblyFileVersion>
+    <PackageVersion>0.1.0.0</PackageVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Title><![CDATA[ActivateAnything — abstract types, concrete types, constructor dependencies — ActivateAnything 
+    just resolves it all and gives you a result.]]></Title>
+    <PackageDescription><![CDATA[An `AnythingActivator` will make an extreme effort to find and instantiate a concrete class
+which is assignable to a `Type`, whether or not the Type is concrete, whether or not the Type has constructor 
+dependencies, whether or not a suitable concrete subtype is found in any currently loaded `Assembly`.
+
+The attempt to find and instantiate suitable Types is rule-driven. 
+
+There are three kinds of `IActivateAnythingRule`.
+- `IFindTypeRule` provides rules for where to look for candidate concrete subtypes of an abstract type
+- `IActivateInstanceRule` simply returns an instance of a concrete type.
+- `IChooseConstructorRule` rules for how to choose between constructors when a concrete `Type` has been chosen.
+
+The <em>extremity</em> of the effort lies in its recursive attempt to find and construct the <em>dependencies</em>.
+]]></PackageDescription>
+    <PackageReleaseNotes>ChangeLog
+      ---------
+      0.1.0.0 ActivateAnything first release.
+    </PackageReleaseNotes>
+    <Copyright>(c) Chris F. Carroll, 2018</Copyright>
+    <Authors>Chris F Carroll</Authors>
+    <Owners>Chris F Carroll</Owners>
+    <PackageProjectUrl>https://github.com/chrisfcarroll/ActivateAnything</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/chrisfcarroll/ActivateAnything</RepositoryUrl>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PackageTags>activate;create;test;unittest;tdd;mock;fake</PackageTags>
   </PropertyGroup>
 
 </Project>

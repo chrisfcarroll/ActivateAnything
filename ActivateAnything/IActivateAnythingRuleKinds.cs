@@ -10,11 +10,11 @@ namespace ActivateAnything
     /// <summary>An ActivateAnything rule which will create an instance of a concrete <c>Type</c>.</summary>
     public interface IActivateInstanceRule : IActivateAnythingRule
     {
-        object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor);
+        object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null);
     }
 
     /// <summary>An ActivateAnything rule which will choose between constructors of a concrete <c>Type</c> to be instantiated.</summary>
-    public interface IActivateAnythingChooseConstructorRule : IActivateAnythingRule
+    public interface IChooseConstructorRule : IActivateAnythingRule
     {
         ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null);
     }
@@ -23,20 +23,20 @@ namespace ActivateAnything
     ///     An ActivateAnything rule which searches for (or dynamically creates)
     ///     a concrete <c>Type</c> assignable to a requested <c>Type</c>.
     /// </summary>
-    public interface IActivateConcreteTypeRule : IActivateAnythingRule
+    public interface IFindTypeRule : IActivateAnythingRule
     {
-        Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object getType = null);
+        Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null);
     }
 
     /// <summary>
     ///     An ActivateAnything rule which searches for (or dynamically creates)
     ///     a concrete <c>Type</c> whose name ends with a given string.
     /// </summary>
-    public interface IActivateConcreteTypeByNameRule : IActivateAnythingRule
+    public interface IFindTypeByNameRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(
             string typeNameEndingWith,
             IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object getType = null);
+            object searchAnchor = null);
     }
 }

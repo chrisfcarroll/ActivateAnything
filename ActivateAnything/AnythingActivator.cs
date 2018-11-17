@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 #if NET45
 #elif NET40
 #endif
@@ -22,12 +23,12 @@ namespace ActivateAnything
     ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
     ///         </item>
     ///         <item>
-    ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
+    ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
     ///             concrete subTypes of an abstract type.
     ///         </item>
     ///         <item>
-    ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-    ///             the <see cref="IActivateConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
+    ///             <see cref="IChooseConstructorRule" /> rules for how to choose between constructors when
+    ///             the <see cref="IFindTypeRule" />s have found a concrete <c>Type</c> to instantiate.
     ///         </item>
     ///     </list>
     /// </summary>
@@ -98,12 +99,12 @@ namespace ActivateAnything
         ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
+        ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
         ///             concrete subTypes of an abstract type.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-        ///             the <see cref="IActivateConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
+        ///             <see cref="IChooseConstructorRule" /> rules for how to choose between constructors when
+        ///             the <see cref="IFindTypeRule" />s have found a concrete <c>Type</c> to instantiate.
         ///         </item>
         ///     </list>
         /// </summary>
@@ -111,7 +112,7 @@ namespace ActivateAnything
 
 
         /// <summary>
-        ///     An object used by some <see cref="Rules" />, especially, <see cref="IActivateConcreteTypeRule" />
+        ///     An object used by some <see cref="Rules" />, especially, <see cref="IFindTypeRule" />
         ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
         ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
         ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
@@ -182,7 +183,7 @@ namespace ActivateAnything
 
         /// <summary>
         ///     Use <see cref="Activator.CreateInstance(System.Type)" /> to activate an Instance of the concrete type
-        ///     <paramref name="type" />. Use the <see cref="IActivateAnythingChooseConstructorRule" /> to choose a constructor.
+        ///     <paramref name="type" />. Use the <see cref="IChooseConstructorRule" /> to choose a constructor.
         ///     If the chosen constructor has dependencies, then recursively use <see cref="New" /> to create them.
         /// </summary>
         /// <param name="type">This should be a concrete type, otherwise activation will fail.</param>
@@ -194,12 +195,12 @@ namespace ActivateAnything
         ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
+        ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
         ///             concrete subTypes of <typeparamref name="T" />.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-        ///             the <see cref="IActivateConcreteTypeRule" />s have found a <c>Type</c> to instantiate.
+        ///             <see cref="IChooseConstructorRule" /> rules for how to choose between constructors when
+        ///             the <see cref="IFindTypeRule" />s have found a <c>Type</c> to instantiate.
         ///         </item>
         ///     </list>
         ///     If<paramref name="rules" /> is null, the <see cref="DefaultRules" /> will be used.
@@ -225,7 +226,7 @@ namespace ActivateAnything
             object searchAnchor)
         {
             var constructor = ChooseConstructor(type,
-                rules.OfType<IActivateAnythingChooseConstructorRule>(),
+                rules.OfType<IChooseConstructorRule>(),
                 typesWaitingToBeBuilt,
                 searchAnchor);
 
@@ -269,7 +270,7 @@ namespace ActivateAnything
         /// <returns>An <see cref="ConstructorInfo" /> for type <paramref name="type" /></returns>
         protected internal ConstructorInfo ChooseConstructor(
             Type type,
-            IEnumerable<IActivateAnythingChooseConstructorRule> chooseConstructorRules,
+            IEnumerable<IChooseConstructorRule> chooseConstructorRules,
             IEnumerable<Type> typesWaitingToBeBuilt,
             object searchAnchor)
         {
