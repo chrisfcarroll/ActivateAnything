@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <AssemblyFileVersion>0.1.0.0</AssemblyFileVersion>
-    <PackageVersion>0.1.0.0</PackageVersion>
+    <AssemblyVersion>0.1.0.1</AssemblyVersion>
+    <AssemblyFileVersion>0.1.0.1</AssemblyFileVersion>
+    <PackageVersion>0.1.0.1</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[ActivateAnything — abstract types, concrete types, constructor dependencies — ActivateAnything 
     just resolves it all and gives you a result.]]></Title>
     <PackageDescription><![CDATA[An `AnythingActivator` will make an extreme effort to find and instantiate a concrete class
-which is assignable to a `Type`, whether or not the Type is concrete, whether or not the Type has constructor 
-dependencies, whether or not a suitable concrete subtype is found in any currently loaded `Assembly`.
+which is assignable to a `Type`, whether or not the Type is concrete, whether or not the 
+Type has constructor dependencies, whether or not a suitable concrete subtype is found 
+in any currently loaded `Assembly`.
 
 The attempt to find and instantiate suitable Types is rule-driven. 
 
