@@ -13,7 +13,7 @@ namespace ActivateAnything
     ///     <see cref="AppDomain.BaseDirectory" /> directory.
     ///     When used from a Test project, the BaseDirectory will typically be the {TestProject}\bin\Debug directory.
     /// </summary>
-    public class FindInAssemblyAttribute : ActivateAnythingFindConcreteTypeRuleAttribute
+    public class FindInAssemblyAttribute : ActivateConcreteTypeRuleAttribute
     {
         static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
         readonly string assemblyName;

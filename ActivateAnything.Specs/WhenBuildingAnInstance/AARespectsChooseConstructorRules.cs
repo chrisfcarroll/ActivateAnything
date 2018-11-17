@@ -11,7 +11,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             IEnumerable<IActivateAnythingRule> rules = new[] {new ChooseConstructorWithFewestParametersAttribute()};
             //
-            var result = new AnythingActivator(rules).Of<ClassWithMultipleConstructors>();
+            var result = new AnythingActivator(rules).New<ClassWithMultipleConstructors>();
             //
             result.param1.ShouldBeNull();
             result.param2.ShouldBeNull();
@@ -22,7 +22,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             IEnumerable<IActivateAnythingRule> rules = new[] {new ChooseConstructorWithMostParametersAttribute()};
             //
-            var result = new AnythingActivator(rules).Of<ClassWithMultipleConstructors>();
+            var result = new AnythingActivator(rules).New<ClassWithMultipleConstructors>();
             //
             result.param1.ShouldNotBeNull();
             result.param2.ShouldNotBeNull();

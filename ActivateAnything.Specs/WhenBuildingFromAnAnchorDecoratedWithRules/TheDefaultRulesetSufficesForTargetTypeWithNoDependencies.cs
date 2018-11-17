@@ -4,7 +4,7 @@ using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
-    [ActivateAnythingDefaultRules]
+    [ActivateDefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithNoDependencies : TestBaseFor<ClassWithDefaultConstructor>
     {
         [Fact]

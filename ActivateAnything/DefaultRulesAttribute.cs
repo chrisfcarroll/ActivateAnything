@@ -16,21 +16,21 @@ namespace ActivateAnything
     ///         <item>The rules in <see cref="DefaultChooseConstructorRuleSequence" /> when constructing a concrete type.</item>
     ///     </list>
     /// </summary>
-    public class ActivateAnythingDefaultRulesAttribute : Attribute,
-        IActivateAnythingFindConcreteTypeRule,
+    public class ActivateDefaultRulesAttribute : Attribute,
+        IActivateConcreteTypeRule,
         IActivateAnythingChooseConstructorRule
     {
         /// <summary>
-        ///     The default <see cref="IActivateAnythingFindConcreteTypeRule" /> sequence for finding a type to instantiate is, in
+        ///     The default <see cref="IActivateConcreteTypeRule" /> sequence for finding a type to instantiate is, in
         ///     this order:
         ///     <see cref="FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute" />,
         ///     <see cref="FindInAnchorAssemblyAttribute" />,
         ///     <see cref="FindInDirectoryAttribute" />
         /// </summary>
-        public static readonly IList<IActivateAnythingFindConcreteTypeRule>
+        public static readonly IList<IActivateConcreteTypeRule>
             DefaultFindConcreteTypeRuleSequence =
-                new ReadOnlyCollection<IActivateAnythingFindConcreteTypeRule>(
-                    new IActivateAnythingFindConcreteTypeRule[]
+                new ReadOnlyCollection<IActivateConcreteTypeRule>(
+                    new IActivateConcreteTypeRule[]
                     {
                         new FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute(),
                         new FindInAnchorAssemblyAttribute(),

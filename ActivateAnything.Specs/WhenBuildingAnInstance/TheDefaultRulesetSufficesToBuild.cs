@@ -16,7 +16,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
                 INterfaceWithClassInNotReferencedAssembly>))]
         public void AType(Type type)
         {
-            var result = AnythingActivator.Instance.Of(type);
+            var result = AnythingActivator.Instance.New(type);
             //
             type.ShouldBe(result.GetType());
         }
@@ -25,7 +25,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public void AndToGetConstructorDependenciesRight()
         {
             var
-                result = AnythingActivator.Instance.Of<ClassWith3ConstructorParams
+                result = AnythingActivator.Instance.New<ClassWith3ConstructorParams
                     <INterfaceWithClassInSameAssembly,
                         INterfaceWithFakeInTestAssembly,
                         INterfaceWithClassInNotReferencedAssembly>>();

@@ -4,13 +4,11 @@ using System.Reflection;
 
 namespace ActivateAnything
 {
-    /// <summary>A marker interface for any kind of ActivateAnything rule understood by <see cref="Construct" /></summary>
-    public interface IActivateAnythingRule
-    {
-    }
+    /// <summary>A marker interface for any kind of ActivateAnything rule understood by <see cref="AnythingActivator" /></summary>
+    public interface IActivateAnythingRule{}
 
     /// <summary>An ActivateAnything rule which will create an instance of a concrete <c>Type</c>.</summary>
-    public interface IActivateAnythingCreateInstanceRule : IActivateAnythingRule
+    public interface IActivateInstanceRule : IActivateAnythingRule
     {
         object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor);
     }
@@ -25,7 +23,7 @@ namespace ActivateAnything
     ///     An ActivateAnything rule which searches for (or dynamically creates)
     ///     a concrete <c>Type</c> assignable to a requested <c>Type</c>.
     /// </summary>
-    public interface IActivateAnythingFindConcreteTypeRule : IActivateAnythingRule
+    public interface IActivateConcreteTypeRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object getType = null);
     }
@@ -34,7 +32,7 @@ namespace ActivateAnything
     ///     An ActivateAnything rule which searches for (or dynamically creates)
     ///     a concrete <c>Type</c> whose name ends with a given string.
     /// </summary>
-    public interface IActivateAnythingFindConcreteTypeByNameRule : IActivateAnythingRule
+    public interface IActivateConcreteTypeByNameRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(
             string typeNameEndingWith,

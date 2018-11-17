@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ActivateAnything
 {
-    public class CreateFromMockAttribute : Attribute, IActivateAnythingCreateInstanceRule
+    public class CreateFromMockAttribute : Attribute, IActivateInstanceRule
     {
         public static List<IMockingLibraryAdapter> KnownMockingLibraryAdapters
             = new List<IMockingLibraryAdapter> {MoqMocker.Instance};
@@ -47,7 +47,8 @@ namespace ActivateAnything
         ///     </list>
         /// </remarks>
         public IMockingLibraryAdapter MockingLibraryAdapter { get; set; }
-
+        
+        /// <inheritdoc />
         public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {
             if (!typesToMock.Contains(type)) return null;

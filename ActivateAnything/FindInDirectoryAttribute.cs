@@ -12,7 +12,7 @@ namespace ActivateAnything
     ///     When used by a test project, the BaseDirectory will usually be the msbuild output
     ///     directory, e.g. the {TestProject}\bin\Debug\ directory.
     /// </summary>
-    public class FindInDirectoryAttribute : ActivateAnythingFindConcreteTypeRuleAttribute
+    public class FindInDirectoryAttribute : ActivateConcreteTypeRuleAttribute
     {
         static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 

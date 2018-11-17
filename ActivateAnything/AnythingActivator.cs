@@ -14,27 +14,21 @@ namespace ActivateAnything
     ///     There are three kinds of <see cref="IActivateAnythingRule" /> Rule.
     ///     <list type="bullet">
     ///         <item>
-    ///             <see cref="IActivateAnythingCreateInstanceRule" /> provides an immediate source of a concrete
+    ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
     ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
     ///         </item>
     ///         <item>
-    ///             <see cref="IActivateAnythingFindConcreteTypeRule" /> provides rules for where to look for candidate
+    ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
     ///             concrete subTypes of an abstract type.
     ///         </item>
     ///         <item>
     ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-    ///             the <see cref="IActivateAnythingFindConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
+    ///             the <see cref="IActivateConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
     ///         </item>
     ///     </list>
     /// </summary>
-    public class AnythingActivator
+    public partial class AnythingActivator
     {
-        /// <summary>
-        ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" />
-        ///     and has no searchAnchor.
-        /// </summary>
-        public static AnythingActivator Instance = new AnythingActivator(DefaultRules);
-
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and no
         ///     <see cref="SearchAnchor" />.
@@ -74,8 +68,9 @@ namespace ActivateAnything
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> using <paramref name="searchAnchorAndRuleProvider" /> as
         ///     the <see cref="SearchAnchor" /> and also as the source <see cref="IActivateAnythingRule" />s.
-        ///     Rules are obtained from the <see cref="Type.CustomAttributes" /> of <paramref name="searchAnchorAndRuleProvider" />
-        ///     .
+        ///     Rules are obtained from the <see cref="Type.CustomAttributes" /> of
+        ///     <paramref name="searchAnchorAndRuleProvider" />.
+        /// 
         ///     <seealso cref="TypeExtensions.GetActivateAnythingRuleAttributes" />
         /// </summary>
         /// <param name="searchAnchorAndRuleProvider">
@@ -89,26 +84,22 @@ namespace ActivateAnything
                 searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes();
         }
 
-        /// <summary>Identical to <see cref="ActivateAnythingDefaultRulesAttribute.AllDefaultRules" /> </summary>
-        public static IReadOnlyCollection<IActivateAnythingRule>
-            DefaultRules => ActivateAnythingDefaultRulesAttribute.AllDefaultRules;
-
         /// <summary>
         ///     Each <see cref="IActivateAnythingRule" /> guides the choices needed to activate an instance of a type,
         ///     and, transitively, the dependencies, if any, of the type.
         ///     There are three kinds of <see cref="IActivateAnythingRule" /> Rule.
         ///     <list type="bullet">
         ///         <item>
-        ///             <see cref="IActivateAnythingCreateInstanceRule" /> provides an immediate source of a concrete
+        ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
         ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateAnythingFindConcreteTypeRule" /> provides rules for where to look for candidate
+        ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
         ///             concrete subTypes of an abstract type.
         ///         </item>
         ///         <item>
         ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-        ///             the <see cref="IActivateAnythingFindConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
+        ///             the <see cref="IActivateConcreteTypeRule" />s have found a concrete <c>Type</c> to instantiate.
         ///         </item>
         ///     </list>
         /// </summary>
@@ -116,7 +107,7 @@ namespace ActivateAnything
 
 
         /// <summary>
-        ///     An object used by some <see cref="Rules" />, especially, <see cref="IActivateAnythingFindConcreteTypeRule" />
+        ///     An object used by some <see cref="Rules" />, especially, <see cref="IActivateConcreteTypeRule" />
         ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
         ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
         ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
@@ -141,7 +132,7 @@ namespace ActivateAnything
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
-        public T Of<T>() { return (T) Of(typeof(T), null); }
+        public T New<T>() { return (T) New(typeof(T), null); }
 
         /// <summary>
         ///     Creates an instance of something assignable to <paramref name="type" /> using <see cref="Rules" />
@@ -149,7 +140,7 @@ namespace ActivateAnything
         /// </summary>
         /// <param name="type">type</param>
         /// <returns>An instance of type <typeparamref name="T" /></returns>
-        public object Of(Type type) { return Of(type, null); }
+        public object New(Type type) { return New(type, null); }
 
 
         /// <summary>
@@ -164,18 +155,18 @@ namespace ActivateAnything
         ///     to build.
         /// </param>
         /// <returns>An instance of type <paramref name="type" /> if possible, <c>default(T)</c> if unable to construct one.</returns>
-        object Of(Type type, IEnumerable<Type> typesWaitingToBeBuilt)
+        object New(Type type, IEnumerable<Type> typesWaitingToBeBuilt)
         {
             typesWaitingToBeBuilt = (typesWaitingToBeBuilt ?? new List<Type>()).Union(new[] {type});
 
-            var customRuleResult = Rules.OfType<IActivateAnythingCreateInstanceRule>()
+            var customRuleResult = Rules.OfType<IActivateInstanceRule>()
                 .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
                 .FirstOrDefault();
 
             if (customRuleResult != null)
                 return customRuleResult;
             else if (type.IsAbstract || type.IsInterface)
-                return Of(TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
+                return New(TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
                     typesWaitingToBeBuilt);
             else if (type == typeof(string))
                 return typeof(string).Name;
@@ -188,23 +179,23 @@ namespace ActivateAnything
         /// <summary>
         ///     Use <see cref="Activator.CreateInstance(System.Type)" /> to activate an Instance of the concrete type
         ///     <paramref name="type" />. Use the <see cref="IActivateAnythingChooseConstructorRule" /> to choose a constructor.
-        ///     If the chosen constructor has dependencies, then recursively use <see cref="Of" /> to create them.
+        ///     If the chosen constructor has dependencies, then recursively use <see cref="New" /> to create them.
         /// </summary>
         /// <param name="type">This should be a concrete type, otherwise activation will fail.</param>
         /// <param name="rules">
         ///     <see cref="IActivateAnythingRule" /> rules are of three kinds:
         ///     <list type="bullet">
         ///         <item>
-        ///             <see cref="IActivateAnythingCreateInstanceRule" /> provides an immediate source of a concrete
+        ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
         ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
         ///         </item>
         ///         <item>
-        ///             <see cref="IActivateAnythingFindConcreteTypeRule" /> provides rules for where to look for candidate
+        ///             <see cref="IActivateConcreteTypeRule" /> provides rules for where to look for candidate
         ///             concrete subTypes of <typeparamref name="T" />.
         ///         </item>
         ///         <item>
         ///             <see cref="IActivateAnythingChooseConstructorRule" /> rules for how to choose between constructors when
-        ///             the <see cref="IActivateAnythingFindConcreteTypeRule" />s have found a <c>Type</c> to instantiate.
+        ///             the <see cref="IActivateConcreteTypeRule" />s have found a <c>Type</c> to instantiate.
         ///         </item>
         ///     </list>
         ///     If<paramref name="rules" /> is null, the <see cref="DefaultRules" /> will be used.
@@ -241,7 +232,7 @@ namespace ActivateAnything
             else
             {
                 var pars = constructor.GetParameters()
-                    .Select(p => Of(p.ParameterType, typesWaitingToBeBuilt))
+                    .Select(p => New(p.ParameterType, typesWaitingToBeBuilt))
                     .ToArray();
                 return Activator.CreateInstance(type, pars);
             }

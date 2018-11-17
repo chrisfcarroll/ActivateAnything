@@ -20,7 +20,7 @@ namespace ActivateAnything
             object searchAnchor)
         {
             var result = rules
-                .OfType<IActivateAnythingFindConcreteTypeRule>()
+                .OfType<IActivateConcreteTypeRule>()
                 .Select(r => r.FindTypeAssignableTo(type, typesWaitingToBeBuilt, searchAnchor))
                 .FirstOrDefault(t => t != null);
             return result;

@@ -25,11 +25,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var rules = new[] {new CreateFromFactoryMethodAttribute(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules)).Of<AClass>()
+                () => new AnythingActivator(ActivateDefaultRulesAttribute.AllDefaultRules.Union(rules)).New<AClass>()
             );
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(this, ActivateAnythingDefaultRulesAttribute.AllDefaultRules.Union(rules))
-                    .Of<AClass>()
+                () => new AnythingActivator(this, ActivateDefaultRulesAttribute.AllDefaultRules.Union(rules))
+                    .New<AClass>()
             );
         }
 
@@ -50,7 +50,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             const string aCustomString = "ACustomString";
             var result =
                 new AnythingActivator(
-                    ActivateAnythingDefaultRulesAttribute.AllDefaultRules
+                    ActivateDefaultRulesAttribute.AllDefaultRules
                         .Union(
                             new[]
                             {
@@ -60,7 +60,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
                                     "BuildMethod",
                                     aCustomString)
                             }
-                        )).Of<AClass>();
+                        )).New<AClass>();
             //
             result.Aparameter.ShouldBe(aCustomString);
         }

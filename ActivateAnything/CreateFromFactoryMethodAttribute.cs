@@ -6,7 +6,7 @@ using System.Reflection;
 namespace ActivateAnything
 {
     /// <summary>A rule which provides a factory method capable of creating an instance of a Type.</summary>
-    public class CreateFromFactoryMethodAttribute : Attribute, IActivateAnythingCreateInstanceRule
+    public class CreateFromFactoryMethodAttribute : Attribute, IActivateInstanceRule
     {
         const string ReturnTypeNotAssignableToTargetFormat =
             "BuildFromMethod({0},{1},{2}) doesn't work because {0} is not assignable to the return type {3} of {1}.{2}";
@@ -92,14 +92,14 @@ namespace ActivateAnything
             //
             var factory = searchAnchor
                           ?? new AnythingActivator(
-                              ActivateAnythingDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence
+                              ActivateDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence
                                   .Union(
                                       (IEnumerable<IActivateAnythingRule>)
                                       new[]
                                       {
                                           new ChooseConstructorWithFewestParametersAttribute()
                                       }
-                                  )).Of(factoryClass);
+                                  )).New(factoryClass);
             //nb if the factory method is static, then it's okay for factory to be null.
 
             var factoryClassToUse = factory == null ? factoryClass : factory.GetType();

@@ -22,7 +22,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
                 new AnythingActivator(new CreateFromMockAttribute(typeof(INterface)))
-                    .Of<ClassWith1ConstructorParam<INterface>>();
+                    .New<ClassWith1ConstructorParam<INterface>>();
             //
             Assert.That(result.Param1, x => CreateFromMockAttribute.IsAKnownMock(x));
         }

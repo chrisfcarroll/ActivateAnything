@@ -6,7 +6,7 @@ using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
-    [ActivateAnythingDefaultRules]
+    [ActivateDefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithAbstractDependencies :
         TestBaseFor<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
             INterfaceWithClassInNotReferencedAssembly>>

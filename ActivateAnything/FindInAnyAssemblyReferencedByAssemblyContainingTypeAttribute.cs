@@ -14,7 +14,7 @@ namespace ActivateAnything
     ///         </item>
     ///     </list>
     /// </summary>
-    public class FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute : ActivateAnythingFindConcreteTypeRuleAttribute
+    public class FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute : ActivateConcreteTypeRuleAttribute
     {
         public override Type FindTypeAssignableTo(
             Type type,

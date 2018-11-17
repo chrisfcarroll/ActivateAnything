@@ -16,7 +16,5 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
         }
     }
 
-    class NterfaceImplementedInTestAssembly : INterface
-    {
-    }
+    class NterfaceImplementedInTestAssembly : INterface{}
 }

@@ -24,7 +24,7 @@ namespace ActivateAnything
     ///         </item>
     ///     </list>
     /// </summary>
-    public class FindInAssembliesReferencedByAnchorAssembly : ActivateAnythingFindConcreteTypeRuleAttribute
+    public class FindInAssembliesReferencedByAnchorAssembly : ActivateConcreteTypeRuleAttribute
     {
         /// <summary>
         ///     Assemblies will not be searched if the name begins with any of these.
