@@ -62,6 +62,11 @@ namespace ActivateAnything
                             DefaultChooseConstructorRuleSequence)
                         .ToList());
 
+        /// <summary>Use <see cref="DefaultChooseConstructorRuleSequence"/> to choose a constructor</summary>
+        /// <param name="type"></param>
+        /// <param name="typesWaitingToBeBuilt"></param>
+        /// <param name="searchAnchor"></param>
+        /// <returns>The <c>ConstructorInfo</c> is one is found, <c>null</c> if not</returns>
         public ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)
         {
             return AnythingActivator.Instance.ChooseConstructor(type,
@@ -70,6 +75,12 @@ namespace ActivateAnything
                 searchAnchor);
         }
 
+        /// <summary>Use <see cref="AllDefaultRules"/> to find a <c>Type</c> which is assignable to <paramref name="type"/> 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="typesWaitingToBeBuilt"></param>
+        /// <param name="searchAnchor"></param>
+        /// <returns>The <c>Type</c> if one is found, <c>null</c> if not.</returns>
         public Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt = null, object searchAnchor = null)
         {
             return TypeFinder.FindConcreteTypeAssignableTo(type, AllDefaultRules, typesWaitingToBeBuilt, searchAnchor);

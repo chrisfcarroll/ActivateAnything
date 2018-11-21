@@ -14,6 +14,12 @@ namespace ActivateAnything
     /// </summary>
     public abstract class ChooseConstructorRuleAttribute : Attribute, IChooseConstructorRule
     {
+        /// <summary>Choose a <see cref="ConstructorInfo"/> for <paramref name="type"/>
+        /// or return null if this rule cannot provide one.</summary>
+        /// <param name="type"></param>
+        /// <param name="typesWaitingToBeBuilt"></param>
+        /// <param name="searchAnchor"></param>
+        /// <returns></returns>
         public abstract ConstructorInfo ChooseConstructor(
             Type type,
             IEnumerable<Type> typesWaitingToBeBuilt,

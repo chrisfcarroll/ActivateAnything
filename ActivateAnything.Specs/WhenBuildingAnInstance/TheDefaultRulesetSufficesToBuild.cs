@@ -9,6 +9,8 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
     public class TheDefaultRulesetSufficesToBuild
     {
         [Theory]
+        [InlineData(typeof(ClassWithPrivateConstructor))]
+        [InlineData(typeof(ClassWithInternalConstructor))]
         [InlineData(typeof(ClassWithDefaultConstructor))]
         [InlineData(typeof(ClassWith1ConstructorParam<ClassWithDefaultConstructor>))]
         [InlineData(

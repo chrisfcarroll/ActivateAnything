@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -230,16 +231,27 @@ namespace ActivateAnything
                 typesWaitingToBeBuilt,
                 searchAnchor);
 
-            if (constructor == null || constructor.GetParameters().Length == 0)
+            if (constructor == null)
             {
                 return Activator.CreateInstance(type);
             }
+            else if (constructor.GetParameters().Length == 0 && constructor.IsPublic)
+            {
+                return Activator.CreateInstance(type);
+            }
+            else if (constructor.GetParameters().Length == 0 && !constructor.IsPublic)
+            {
+                return Activator.CreateInstance(type,true);
+            }
             else
             {
+                var bindingFlags = constructor.IsPublic ? BindingFlags.Public : BindingFlags.NonPublic;
+                bindingFlags |= BindingFlags.Instance;
+
                 var pars = constructor.GetParameters()
                     .Select(p => New(p.ParameterType, typesWaitingToBeBuilt))
                     .ToArray();
-                return Activator.CreateInstance(type, pars);
+                return Activator.CreateInstance(type, bindingFlags, null, pars, null);
             }
         }
 

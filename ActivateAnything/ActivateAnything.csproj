@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyVersion>0.1.0.1</AssemblyVersion>
-    <AssemblyFileVersion>0.1.0.1</AssemblyFileVersion>
-    <PackageVersion>0.1.0.1</PackageVersion>
+    <AssemblyVersion>0.1.0.2</AssemblyVersion>
+    <AssemblyFileVersion>0.1.0.2</AssemblyFileVersion>
+    <PackageVersion>0.1.0.2</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[ActivateAnything — abstract types, concrete types, constructor dependencies — ActivateAnything 
     just resolves it all and gives you a result.]]></Title>
@@ -24,7 +24,8 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
 ]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
-      0.1.0.0 ActivateAnything first release.
+      0.1.0.2 fix non-public constructors. ChooseConstructorWith(Most|Fewest)ParametersAttribute.PreferPublic defaults to true.
+      0.1.0.1 ActivateAnything first release.
     </PackageReleaseNotes>
     <Copyright>(c) Chris F. Carroll, 2018</Copyright>
     <Authors>Chris F Carroll</Authors>
