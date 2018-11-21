@@ -18,6 +18,16 @@ namespace ActivateAnything
         public static AnythingActivator FromDefaultRules() => new AnythingActivator(DefaultRules);
 
         /// <summary>
+        ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" /> for its
+        ///     <see cref="Rules" /> and uses <paramref name="searchAnchor" /> for its <see cref="SearchAnchor" />
+        /// </summary>
+        /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use.</param>
+        public static AnythingActivator FromAnchor(object searchAnchor)
+        {
+            return new AnythingActivator(searchAnchor,DefaultRules);
+        }
+
+        /// <summary>
         ///     Returns a new instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules"/> then
         ///     <see cref="DefaultRules" />, and has no <see cref="SearchAnchor"/>.
         /// </summary>
@@ -30,7 +40,7 @@ namespace ActivateAnything
         ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" />
         ///     and uses <paramref name="searchAnchor"/> as its <see cref="SearchAnchor"/>
         /// </summary>
-        public static AnythingActivator FromDefaultRules(object searchAnchor) => new AnythingActivator(searchAnchor);
+        public static AnythingActivator FromDefaultRules(object searchAnchor) => new AnythingActivator(searchAnchor,DefaultRules);
 
         /// <summary>
         ///     An instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules"/> and

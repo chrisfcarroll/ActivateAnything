@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ActivateAnything
@@ -19,5 +20,17 @@ namespace ActivateAnything
                 .GetCustomAttributes(typeof(IActivateAnythingRule), true)
                 .Cast<IActivateAnythingRule>();
         }
+
+        /// <summary>Returns <c>default(T)</c> where typeof(T) is <paramref name="type"/></summary>
+        /// <param name="type"></param>
+        /// <returns>For Reference Types, returns <c>null</c>. For Value types, the default instance.</returns>
+        public static object DefaultValue(this Type type)
+        {
+            return
+                type.IsValueType
+                    ? Expression.Lambda<Func<object>>(Expression.Default(type)).Compile()()
+                    : null;
+        }
+
     }
 }

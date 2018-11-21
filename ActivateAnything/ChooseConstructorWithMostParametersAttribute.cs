@@ -6,7 +6,12 @@ using System.Reflection;
 namespace ActivateAnything
 {
     /// <inheritdoc />
-    /// <summary>Choose the constructor with the most parameters, after respecting the <see cref="PreferPublic"/> setting if it is true.</summary>
+    /// <summary>Choose the constructor with the most parameters, after respecting
+    /// <list type="number">
+    ///     <item>the <see cref="PreferPublic"/> setting if it is true.</item>
+    ///     <item>the <see cref="ChooseConstructorRuleAttribute.NoCircularDependencyRule"/></item>
+    /// </list>
+    /// </summary>
     public class ChooseConstructorWithMostParametersAttribute : ChooseConstructorRuleAttribute
     {
         /// <summary>If true then any public constructor will be chosen in preference to any non-public constructor.
@@ -19,7 +24,10 @@ namespace ActivateAnything
             IEnumerable<Type> typesWaitingToBeBuilt,
             object searchAnchor = null)
         {
+            Func<ConstructorInfo, bool> noCircularDependency = c=>NoCircularDependencyRule(typesWaitingToBeBuilt,c);
+
             return type.GetConstructors(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance)
+                .Where(noCircularDependency)
                 .OrderByDescending(c => PreferPublic && c.IsPublic)
                 .ThenByDescending(c => c.GetParameters().Length)
                 .FirstOrDefault();
