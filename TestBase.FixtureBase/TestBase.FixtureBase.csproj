@@ -70,7 +70,6 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ActivateAnything\ActivateAnything\ActivateAnything.csproj" />
     <ProjectReference Include="..\ActivateAnything\ActivateAnything.csproj" />
   </ItemGroup>
 
