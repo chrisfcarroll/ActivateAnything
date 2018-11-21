@@ -7,20 +7,25 @@
     <PackageVersion>0.2.0.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[TestBase.FixtureBase. Autofaking Test Fixtures for dependencies on Ado.Net and HttpClient.]]></Title>
-    <PackageDescription><![CDATA[An `AnythingActivator` will make an extreme effort to find and instantiate a concrete class
-which is assignable to a `Type`, whether or not the Type is concrete, whether or not the 
-Type has constructor dependencies, whether or not a suitable concrete subtype is found 
-in any currently loaded `Assembly`.
+    <PackageDescription><![CDATA[There are only two external dependencies in a typical line of business application:
+An IDbConnection, and an HttpClient. TestFixtureBase autofakes them, and constructs your UnitUnderTest, even if
+the dependency on the IDbConnection or HttpClient was several layers of constructor dependency deep.
 
-The attempt to find and instantiate suitable Types is rule-driven. 
+Construction is done by 
+ - [ActivateAnything](https://www.nuget.org/packages/ActivateAnything)
+ 
+Faking is done by
+ - [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
+ - [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
 
-There are three kinds of `IActivateAnythingRule`.
-- `IFindTypeRule` provides rules for where to look for candidate concrete subtypes of an abstract type
-- `IActivateInstanceRule` simply returns an instance of a concrete type.
-- `IChooseConstructorRule` rules for how to choose between constructors when a concrete `Type` has been chosen.
-
-The <em>extremity</em> of the effort lies in its recursive attempt to find and construct the <em>dependencies</em>.
-]]></PackageDescription>
+See Also: 
+ - [TestBase](https://www.nuget.org/packages/TestBase)
+ - [TestBase.AspNetCore.Mvc](https://www.nuget.org/packages/TestBase.AspNetCore.Mvc)
+ - [TestBase-Mvc](https://www.nuget.org/packages/TestBase-Mvc)
+ - [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
+ - [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
+ - [Serilog.Sinks.ListOfString](https://www.nuget.org/packages/Serilog.Sinks.Listofstring)
+ - [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
       0.2.0.0 ActivateAnything exposes LastActivationTree and LastErrorList after a call to New()
