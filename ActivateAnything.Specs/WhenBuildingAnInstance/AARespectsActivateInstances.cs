@@ -1,13 +1,14 @@
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 using TestBase;
 using Xunit;
 using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
-    public class AARespectsActivateUsing
+    public class AARespectsActivateInstances
     {
-
         class AClass{}
 
         [Fact]
@@ -15,7 +16,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var myObject = new AClass();
             var result =
-                new AnythingActivator(AnythingActivator.DefaultRules.And(new ActivateForType<AClass>(myObject)))
+                new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject)))
                     .New<AClass>();
             //
             Assert.That(myObject == result);
@@ -28,11 +29,22 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var result =
                 new AnythingActivator(
                         ActivateDefaultRulesAttribute.AllDefaultRules
-                            .Union(
-                                new[] {new ActivateForType<string>("ACustomString")}))
+                            .After(
+                                new[] {new ActivateInstances("ACustomString"), }))
                     .New<string>();
             //
             result.ShouldBe("ACustomString");
+        }
+        
+        [Fact(Skip = "WIP Next")]
+        public void ForAFuncOf()
+        {
+            var myObject = new AClass();
+            var result =
+                new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject)))
+                   .New<Func<AClass>>();
+            //
+            Assert.That(myObject == result());
         }
     }
 }
