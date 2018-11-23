@@ -1,6 +1,16 @@
 ﻿using TestBase.AdoNet;
 using TestBase.HttpClient.Fake;
 
+// Example FixtureBases for a classes which depend on HttpClient and/or IDbConnection
+// 
+// The fixture base automatically creates a UnitUnderTest and replaces dependencies on IDbConnection with
+// a FakeDbConnection and dependencies on a System.Net.Http.HttpClient with a TestBase.HttpClient.Fake.FakeHttpClient.
+// 
+// Even if the dependency on the database or HttpClient is an indirect dependency, two or more levels deep,
+// they still get injected.
+// 
+// See https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs for how it's done.
+// 
 namespace FixtureBase
 {
     /// <inheritdoc cref="FixtureBaseFor{T}"/>
