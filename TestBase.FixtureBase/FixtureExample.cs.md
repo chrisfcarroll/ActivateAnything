@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿```
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -22,7 +23,9 @@ namespace TestBase.FixtureBase.Specs
     /// they still get injected.
     /// 
     /// To create a FixtureBase with your own preferred Fakes, see the code at 
-    /// https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs
+```
+    /// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
+```
     /// </summary>
     public class FixtureBaseExample : FixtureBaseWithDbAndHttpFor<AUseCase>
     {
@@ -158,3 +161,4 @@ namespace TestBase.FixtureBase.Specs
         public bool InsertDb(Datum newDatum){ return db.Execute("Insert into Data (Id,Name) Values (@Id,@Name)",newDatum)>0; }
     }
 }
+```

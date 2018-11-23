@@ -67,10 +67,20 @@ See Also:
     <!-- Add the Facades directory.  Not sure how else to do this. Necessary at least for .NET 4.5 -->
     <AssemblySearchPaths Condition="'$(BaseFrameworkPathOverrideForMono)' != ''">$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="FixtureExample.cs.md" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="FixtureExample.cs.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="TestBase.AdoNet" Version="4.1.4.3" />
+    <PackageReference Include="TestBase.AdoNet" Version="4.1.5" />
     <PackageReference Include="TestBase.HttpClient.Fake" Version="4.1.4.3" />
   </ItemGroup>
 

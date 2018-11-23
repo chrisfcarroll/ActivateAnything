@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using ActivateAnything;
-using TestBase.AdoNet;
-using TestBase.HttpClient.Fake;
 
 namespace TestBase.FixtureBase
 {
@@ -42,6 +40,9 @@ namespace TestBase.FixtureBase
         ///  <item><see cref="AnythingActivator.DefaultRules"/></item>
         /// </list>
         /// in that order.
+        ///
+        /// <seealso cref="AnythingActivator"/>
+        /// <seealso cref="IActivateAnythingRule"/>
         /// </summary>
         public AnythingActivator Activator
         {
@@ -60,6 +61,9 @@ namespace TestBase.FixtureBase
             }
         }
 
+        /// <summary>Create an instance of <see cref="FixtureBase"/> which will automatically create a 
+        /// new <see cref="Activator"/> whenever <see cref="Instances"/> or <see cref="Rules"/> change.
+        /// </summary>
         protected FixtureBase()
         {
             Instances.CollectionChanged += (sender, args) => activateIsStale = true;
@@ -67,7 +71,6 @@ namespace TestBase.FixtureBase
         }
     }
 
-    
     /// <summary>
     ///     An anchor class for <see cref="FixtureBase.Activator"/> suitable as a TestFixture base class
     ///     for testing a <see cref="UnitUnderTest"/> of Type <typeparam name="T"></typeparam>.
@@ -88,8 +91,8 @@ namespace TestBase.FixtureBase
         /// <summary>The unit under test, which will be auto-constructed by <see cref="FixtureBase.Activator"/>.
         /// Any constructor dependencies will be fulfilled by the Activator using:
         /// <list type="bullet">
-        ///  <item><see cref="Instances"/></item>
-        ///  <item><see cref="Rules"/></item>
+        ///  <item><see cref="FixtureBase.Instances"/></item>
+        ///  <item><see cref="FixtureBase.Rules"/></item>
         ///  <item>Any <see cref="IActivateAnythingRule"/>s decorating <c>this</c> as <c>Attributes</c></item>
         ///  <item><see cref="AnythingActivator.DefaultRules"/></item>
         /// </list>
@@ -112,55 +115,14 @@ namespace TestBase.FixtureBase
         }
 
         /// <inheritdoc />
+        /// <summary>Create an instance of <see cref="FixtureBase"/> which will automatically create a 
+        /// new <see cref="UnitUnderTest"/> whenever <see cref="FixtureBase.Instances"/> or <see cref="FixtureBase.Rules"/> change.
+        /// </summary>
         protected FixtureBaseFor()
         {
             Instances.CollectionChanged += (sender, args) => uutIsStale = true;
             Rules.CollectionChanged += (sender, args) => uutIsStale = true;
         }
     }
-    
-    /// <inheritdoc cref="FixtureBaseFor{T}"/>
-    public class FixtureBaseWithHttpFor<T> : FixtureBaseFor<T>
-    {
-        /// <summary>A <see cref="FakeHttpClient"/> which can be setup for expectations, return results, and be verified.
-        /// This is added to <see cref="FixtureBase.Instances"/> for use by <see cref="FixtureBase.Activator"/> in
-        /// constructing the <see cref="FixtureBaseFor{T}.UnitUnderTest"/>
-        /// </summary>
-        public readonly FakeHttpClient HttpClient = new FakeHttpClient();
 
-        /// <inheritdoc />
-        protected FixtureBaseWithHttpFor() {Instances.Add(HttpClient);}
-    }
-    
-    /// <inheritdoc cref="FixtureBaseFor{T}"/>
-    public class FixtureBaseWithDbFor<T> : FixtureBaseFor<T>
-    {
-        /// <summary>A <see cref="FakeDbConnection"/> which can be setup for expectations, return results, and be verified.
-        /// This is added to <see cref="FixtureBase.Instances"/> for use by <see cref="FixtureBase.Activator"/> in
-        /// constructing the <see cref="FixtureBaseFor{T}.UnitUnderTest"/>
-        /// </summary>
-        public readonly FakeDbConnection FakeDbConnection = new FakeDbConnection();
-
-        /// <inheritdoc />
-        protected FixtureBaseWithDbFor(){Instances.Add(FakeDbConnection);}
-    }
-    
-    /// <inheritdoc cref="FixtureBaseFor{T}"/>
-    public class FixtureBaseWithDbAndHttpFor<T> :FixtureBaseFor<T>
-    {
-        /// <summary>A <see cref="FakeDbConnection"/> which can be setup for expectations, return results, and be verified.
-        /// This is added to <see cref="FixtureBase.Instances"/> for use by <see cref="FixtureBase.Activator"/> in
-        /// constructing the <see cref="FixtureBaseFor{T}.UnitUnderTest"/>
-        /// </summary>
-        public readonly FakeDbConnection Db = new FakeDbConnection();
-        
-        /// <summary>A <see cref="FakeHttpClient"/> which can be setup for expectations, return results, and be verified.
-        /// This is added to <see cref="FixtureBase.Instances"/> for use by <see cref="FixtureBase.Activator"/> in
-        /// constructing the <see cref="FixtureBaseFor{T}.UnitUnderTest"/>
-        /// </summary>
-        public readonly FakeHttpClient HttpClient = new FakeHttpClient();
-
-        /// <inheritdoc />
-        protected FixtureBaseWithDbAndHttpFor(){Instances.Add(Db);Instances.Add(HttpClient);}
-    }
 }
