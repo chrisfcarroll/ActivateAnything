@@ -24,9 +24,7 @@ namespace FixtureBase.Specs
     /// they still get injected.
     /// 
     /// To create a FixtureBase with your own preferred Fakes, see the code at 
-```
     /// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
-```
     /// </summary>
     public class FixtureBaseExample : FixtureBaseWithDbAndHttpFor<AUseCase>
     {
