@@ -6,26 +6,92 @@
     <AssemblyFileVersion>0.2.1.0</AssemblyFileVersion>
     <PackageVersion>0.2.1.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Title><![CDATA[FixtureBase. Autofaking Test Fixtures for dependencies on Ado.Net and HttpClient.]]></Title>
-    <PackageDescription><![CDATA[There are only two external dependencies in a typical line of business application:
-An IDbConnection, and an HttpClient. TestFixtureBase autofakes them, and constructs your UnitUnderTest, even if
-the dependency on the IDbConnection or HttpClient was several layers of constructor dependency deep.
+    <Title><![CDATA[FixtureBase cuts the cost of unit testing. Intelligent, rule-driven, autofaking fixtures get you straight to your test with all 
+your dependencies setup and ready to go.]]></Title>
+    <PackageDescription><![CDATA[Don't spend hours writing code to mock a dozen dependencies, and more hours
+debugging it. Just write your test code, and let FixtureBase create the
+dependencies for you.
 
-Construction is done by 
- - [ActivateAnything](https://www.nuget.org/packages/ActivateAnything)
- 
+FixtureBase constructs your UnitUnderTest to test your codebase end-to-end, with
+external dependencies auto-faked and automatically injected in just the right
+place; even constructor dependencies that are several layers deep.
+
+
+```
+public class FixtureBaseExample : FixtureBaseWithDbAndHttpFor<AUseCase>
+{
+    [Fact]
+    public void UUTSendsDataToDb()
+    {
+        var newDatum = new Datum{Id=99, Name="New!" };
+
+        UnitUnderTest.InsertDb(newDatum);
+
+        Db.ShouldHaveInserted("Data",newDatum);
+    }
+
+    [Fact]
+    public void UUTreturnsDataFromDbQuerySingleColumn()
+    {
+        var dbData = new[] { "row1", "row2", "row3", "row4"};
+        Db.SetUpForQuerySingleColumn(dbData);
+
+        UnitUnderTest.FromDbStrings().ShouldEqualByValue(dbData);
+    }
+
+    [Fact]
+    public async Task UUTGetHttpReturnsDataFromService()
+    {
+        var contentFromService = "IGotThis!";
+        HttpClient
+            .Setup(m => true)
+            .Returns(new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(contentFromService)});
+
+        (await UnitUnderTest.GetHttp()).ShouldBe(contentFromService);
+
+        HttpClient.Verify(x=>x.Method==HttpMethod.Get);
+    }
+}
+```
+ 
+The included examples demonstrate FixtureBases for applications which depend on
+Ado.Net IDbConnections and on HttpClient network connections.
+
+-   To create your own FixtureBase with your own preferred Fakes, see the
+    examples at
+    <https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureExample.cs.md>
+
+-   For how it's done, see
+    <https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs>
+ 
+
+Construction is done by
+
+-   [ActivateAnything](https://www.nuget.org/packages/ActivateAnything)
+
+ 
 Faking is done by
- - [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
- - [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
 
-See Also: 
- - [TestBase](https://www.nuget.org/packages/TestBase)
- - [TestBase.AspNetCore.Mvc](https://www.nuget.org/packages/TestBase.AspNetCore.Mvc)
- - [TestBase-Mvc](https://www.nuget.org/packages/TestBase-Mvc)
- - [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
- - [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
- - [Serilog.Sinks.ListOfString](https://www.nuget.org/packages/Serilog.Sinks.Listofstring)
- - [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
+-   [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
+
+-   [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
+
+
+For more tools focussed on cutting the cost of unit testing, see also:
+
+-   [TestBase](https://www.nuget.org/packages/TestBase)
+
+-   [TestBase.AspNetCore.Mvc](https://www.nuget.org/packages/TestBase.AspNetCore.Mvc)
+
+-   [TestBase-Mvc](https://www.nuget.org/packages/TestBase-Mvc)
+
+-   [TestBase.AdoNet](https://www.nuget.org/packages/TestBase.AdoNet)
+
+-   [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
+
+-   [Serilog.Sinks.ListOfString](https://www.nuget.org/packages/Serilog.Sinks.Listofstring)
+
+-   [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
       0.2.1.0 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
@@ -70,10 +136,14 @@ See Also:
   
   <ItemGroup>
     <None Remove="FixtureExample.cs.md" />
+    <None Remove="README.md" />
   </ItemGroup>
   
   <ItemGroup>
     <Content Include="FixtureExample.cs.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

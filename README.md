@@ -19,3 +19,7 @@ The default ruleset will
 - Prefer constructors with more parameters over constructors with fewer.
 
 Customise or replace the default ruleset with the provided rules or custom rules.    
+
+
+See [FixtureBase](https://www.nuget.org/packages/FixtureBase) for example usage to reduce the cost of Unit Testing by automating setup
+and the injection of fakes.
