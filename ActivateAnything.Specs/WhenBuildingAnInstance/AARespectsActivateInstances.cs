@@ -3,12 +3,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using TestBase;
 using Xunit;
+using Xunit.Abstractions;
 using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingAnInstance
 {
     public class AARespectsActivateInstances
     {
+        readonly ITestOutputHelper xconsole;
+        public AARespectsActivateInstances(ITestOutputHelper xconsole) { this.xconsole = xconsole; }
+
         class AClass{}
 
         [Fact]
@@ -36,15 +40,24 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             result.ShouldBe("ACustomString");
         }
         
-        [Fact(Skip = "WIP Next")]
+        [Fact]
         public void ForAFuncOf()
         {
             var myObject = new AClass();
-            var result =
-                new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject)))
-                   .New<Func<AClass>>();
+            var myString = "String!";            
+            
             //
-            Assert.That(myObject == result());
+            var uut = new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject,myString)));            
+            var result1 =uut.New<Func<AClass>>();
+            var result2 = uut.New<Func<string>>();
+            
+            //Debug
+            xconsole.WriteLine(string.Join(Environment.NewLine, uut.LastErrorList));
+            xconsole.WriteLine(string.Join(Environment.NewLine, uut.LastActivationTree));
+            
+            //
+            Assert.That(result1, x=>x()==myObject);
+            Assert.That(result2, x=>x() ==myString);
         }
     }
 }

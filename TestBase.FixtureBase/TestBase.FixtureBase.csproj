@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <AssemblyFileVersion>0.2.0.0</AssemblyFileVersion>
-    <PackageVersion>0.2.0.0</PackageVersion>
+    <AssemblyVersion>0.2.1.0</AssemblyVersion>
+    <AssemblyFileVersion>0.2.1.0</AssemblyFileVersion>
+    <PackageVersion>0.2.1.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[TestBase.FixtureBase. Autofaking Test Fixtures for dependencies on Ado.Net and HttpClient.]]></Title>
     <PackageDescription><![CDATA[There are only two external dependencies in a typical line of business application:
@@ -28,6 +28,7 @@ See Also:
  - [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
+      0.2.1.0 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
       0.2.0.0 ActivateAnything exposes LastActivationTree and LastErrorList after a call to New()
       0.1.0.2 fix non-public constructors. ChooseConstructorWith(Most|Fewest)ParametersAttribute.PreferPublic defaults to true.
       0.1.0.1 ActivateAnything first release.
