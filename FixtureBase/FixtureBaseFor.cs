@@ -1,7 +1,7 @@
 ﻿using TestBase.AdoNet;
 using TestBase.HttpClient.Fake;
 
-namespace TestBase.FixtureBase
+namespace FixtureBase
 {
     /// <inheritdoc cref="FixtureBaseFor{T}"/>
     public class FixtureBaseWithHttpFor<T> : FixtureBaseFor<T>

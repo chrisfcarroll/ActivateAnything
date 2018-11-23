@@ -5,11 +5,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Dapper;
+using TestBase;
 using TestBase.AdoNet;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace TestBase.FixtureBase.Specs
+namespace FixtureBase.Specs
 {
     /// <summary>
     /// An example FixtureBase for a class which depends on a Database and an HttpClient.

@@ -1,10 +1,11 @@
 ﻿using System;
 using ActivateAnything;
+using TestBase;
 using TestBase.AdoNet;
 using TestBase.HttpClient.Fake;
 using Xunit;
 
-namespace TestBase.FixtureBase.Specs
+namespace FixtureBase.Specs
 
 {
     public class FixtureBaseSpecs : FixtureBaseWithDbAndHttpFor<AUseCase>

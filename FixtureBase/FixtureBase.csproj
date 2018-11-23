@@ -6,7 +6,7 @@
     <AssemblyFileVersion>0.2.1.0</AssemblyFileVersion>
     <PackageVersion>0.2.1.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Title><![CDATA[TestBase.FixtureBase. Autofaking Test Fixtures for dependencies on Ado.Net and HttpClient.]]></Title>
+    <Title><![CDATA[FixtureBase. Autofaking Test Fixtures for dependencies on Ado.Net and HttpClient.]]></Title>
     <PackageDescription><![CDATA[There are only two external dependencies in a typical line of business application:
 An IDbConnection, and an HttpClient. TestFixtureBase autofakes them, and constructs your UnitUnderTest, even if
 the dependency on the IDbConnection or HttpClient was several layers of constructor dependency deep.

@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ActivateAnything\ActivateAnything.csproj" />
-    <ProjectReference Include="..\TestBase.FixtureBase\TestBase.FixtureBase.csproj" />
+    <ProjectReference Include="..\FixtureBase\FixtureBase.csproj" />
   </ItemGroup>
 
 </Project>

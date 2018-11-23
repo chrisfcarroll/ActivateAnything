@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ActivateAnything;
 
-namespace TestBase.FixtureBase
+namespace FixtureBase
 {
     /// <summary>
     ///     An anchor class for <see cref="Activator"/> suitable as a testfixture, including <see cref="Rules"/> and
@@ -31,7 +31,7 @@ namespace TestBase.FixtureBase
         /// </summary>
         public ObservableCollection<IActivateAnythingRule> Rules { get; } = new ObservableCollection<IActivateAnythingRule>();
         
-        /// <summary>An <see cref="AnythingActivator"/> which uses <see cref="this"/> as a <see cref="AnythingActivator.SearchAnchor"/>
+        /// <summary>An <see cref="AnythingActivator"/> which uses <c>this</c> as a <see cref="AnythingActivator.SearchAnchor"/>
         /// and uses the union of
         /// <list type="bullet">
         ///  <item><see cref="Instances"/></item>
