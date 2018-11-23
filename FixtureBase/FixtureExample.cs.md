@@ -1,5 +1,4 @@
-/// To create a FixtureBase with your own preferred Fakes, see the examples at 
-/// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
+/// To create a FixtureBase with your own preferred Fakes, see the examples at [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
 /// For how it's done, see [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs)
 ```
 using System.Collections.Generic;
@@ -26,10 +25,10 @@ namespace FixtureBase.Specs
     /// Even if the dependency on the database or HttpClient is an indirect dependency, two or more levels deep,
     /// they still get injected.
     /// 
-		/// To create a FixtureBase with your own preferred Fakes, see the examples at 
-		/// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
-		/// For how it's done, see 
-		/// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs)
+    /// To create a FixtureBase with your own preferred Fakes, see the examples at 
+    /// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBaseFor.cs)
+    /// For how it's done, see 
+    /// [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs)
     /// </summary>
     public class FixtureBaseExample : FixtureBaseWithDbAndHttpFor<AUseCase>
     {
