@@ -5,25 +5,31 @@ using System.Text.RegularExpressions;
 
 namespace ActivateAnything
 {
-    public class MoqMocker : IMockingLibraryAdapter, IMockingLibraryAdapterWithInspections
+    /// <inheritdoc cref="IMockingAdapter"/>
+    /// <inheritdoc cref="IMockingAdapterInspections"/>
+    public class MoqMocker : IMockingAdapter, IMockingAdapterInspections
     {
+        /// <summary>A static instance.</summary>
         public static MoqMocker Instance = new MoqMocker();
+
         static readonly Regex IsTypeMoqMockRegex = new Regex(@"^Moq\.\S*Proxy, Moq");
         readonly object mockerTypeLocker = new object();
         readonly Func<Type, Type> MoqMakeMockType;
 
+        /// <inheritdoc />
         protected MoqMocker()
         {
             if (MoqMakeMockType == null)
                 lock (mockerTypeLocker)
                 {
-                    var finder1 = new FindInAssemblyAttribute("Moq");
+                    var finder1 = new FindInAssembly("Moq");
                     MoqMakeMockType = t => finder1.FindTypeAssignableTo("Moq.Mock`1").MakeGenericType(t);
                 }
 
             EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
         }
 
+        /// <inheritdoc />
         public object CreateMockElseNull(Type type, params object[] mockConstructorArgs)
         {
             try
@@ -35,6 +41,7 @@ namespace ActivateAnything
             }
         }
 
+        /// <inheritdoc />
         public object CreateMockElseThrow(Type type, params object[] mockConstructorArgs)
         {
             try
@@ -62,6 +69,7 @@ namespace ActivateAnything
         }
 
 
+        /// <inheritdoc />
         public void EnsureMockingAssemblyIsLoadedAndWorkingElseThrow()
         {
             if (!IsMockingAssemblyFound())
@@ -74,16 +82,20 @@ namespace ActivateAnything
             ));
         }
 
+        /// <inheritdoc />
         public bool IsMockingAssemblyFound() { return MoqMakeMockType != null; }
 
+        /// <inheritdoc />
         public bool IsThisMyMockObject(object value) { return GetMock(value) != null; }
 
+        /// <inheritdoc />
         public object GetMock(object value)
         {
-            return IsTypeMoqMockRegex.IsMatch(value.GetType().BaseType.AssemblyQualifiedName);
+            var baseType = value.GetType().BaseType;
+            return baseType != null && IsTypeMoqMockRegex.IsMatch(baseType.AssemblyQualifiedName??"");
         }
 
-        class FindMoqMock : FindInAssemblyAttribute
+        class FindMoqMock : FindInAssembly
         {
             public FindMoqMock() : base("Moq", t => !t.ContainsGenericParameters) { }
         }

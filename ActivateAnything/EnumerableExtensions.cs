@@ -27,5 +27,12 @@ namespace ActivateAnything
         /// <typeparam name="T"></typeparam>
         /// <returns><c>left.Union(right)</c></returns>
         public static IEnumerable<T> Union<T>(this IEnumerable<T> left, params T[] right) => Enumerable.Union(left,right);
+
+        /// <summary>Return <c>item.Union(more)</c></summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="more"></param>
+        /// <returns><c>item.Union(more)</c></returns>
+        public static IEnumerable<T> And<T>(this IEnumerable<T> items, params T[] more) => items.Union(more);
     }
 }

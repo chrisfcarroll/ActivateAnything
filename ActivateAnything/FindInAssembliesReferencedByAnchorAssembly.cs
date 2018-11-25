@@ -24,7 +24,7 @@ namespace ActivateAnything
     ///         </item>
     ///     </list>
     /// </summary>
-    public class FindInAssembliesReferencedByAnchorAssembly : FindTypeRuleAttribute
+    public class FindInAssembliesReferencedByAnchorAssembly : FindTypeRule
     {
         /// <summary>
         ///     Assemblies will not be searched if the name begins with any of these.
@@ -32,6 +32,7 @@ namespace ActivateAnything
         /// </summary>
         public string[] IgnoreAssembliesWhereNameStartsWith { get; set; } = DefaultAssembliesToIgnore.ByName;
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             Type type,
             IEnumerable<Type> typesWaitingToBeBuilt = null,
@@ -46,6 +47,7 @@ namespace ActivateAnything
                 );
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             string typeName,
             IEnumerable<Type> typesWaitingToBeBuilt = null,

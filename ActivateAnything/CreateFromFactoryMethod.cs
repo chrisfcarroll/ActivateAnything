@@ -6,7 +6,7 @@ using System.Reflection;
 namespace ActivateAnything
 {
     /// <summary>A rule which provides a factory method capable of creating an instance of a Type.</summary>
-    public class CreateFromFactoryMethodAttribute : Attribute, IActivateInstanceRule
+    public class CreateFromFactoryMethod : Attribute, IActivateInstanceRule
     {
         const string ReturnTypeNotAssignableToTargetFormat =
             "BuildFromMethod({0},{1},{2}) doesn't work because {0} is not assignable to the return type {3} of {1}.{2}";
@@ -33,7 +33,7 @@ namespace ActivateAnything
         ///     The factory method to call each time we try to create a <paramref name="targetType" />
         /// </param>
         /// <param name="args">any arguments needed for the factory method</param>
-        public CreateFromFactoryMethodAttribute(
+        public CreateFromFactoryMethod(
             Type targetType,
             Type factoryClass,
             string factoryMethodName,
@@ -49,7 +49,7 @@ namespace ActivateAnything
         /// <summary>
         ///     Specifies a factory method which can create an instance of the <paramref name="targetType" />.
         ///     The method must exist on the <c>searchAnchor</c> object passed to <see cref="CreateInstance.Of" /> when building.
-        ///     For example, the <see cref="CreateFromFactoryMethodAttribute" /> may decorate a TestFixture class which provides
+        ///     For example, the <see cref="CreateFromFactoryMethod" /> may decorate a TestFixture class which provides
         ///     itself as the <c>searchAnchor</c>.
         /// </summary>
         /// <param name="targetType">The type, the creating of an instance of which should be done by factory method</param>
@@ -57,7 +57,7 @@ namespace ActivateAnything
         ///     The factory method to call each time we try to create a <paramref name="targetType" />
         /// </param>
         /// <param name="args">any arguments needed for the factory method</param>
-        public CreateFromFactoryMethodAttribute(Type targetType, string factoryMethodName, params object[] args)
+        public CreateFromFactoryMethod(Type targetType, string factoryMethodName, params object[] args)
         {
             this.targetType = targetType;
             this.factoryMethodName = factoryMethodName;
@@ -92,12 +92,12 @@ namespace ActivateAnything
             //
             var factory = searchAnchor
                           ?? new AnythingActivator(
-                              ActivateDefaultRulesAttribute.DefaultFindConcreteTypeRuleSequence
+                              ActivateDefaultRules.DefaultFindConcreteTypeRuleSequence
                                   .Union(
                                       (IEnumerable<IActivateAnythingRule>)
                                       new[]
                                       {
-                                          new ChooseConstructorWithFewestParametersAttribute()
+                                          new ConstructorWithFewestParametersRule()
                                       }
                                   )).New(factoryClass);
             //nb if the factory method is static, then it's okay for factory to be null.

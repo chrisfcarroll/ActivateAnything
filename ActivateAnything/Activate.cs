@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 
 namespace ActivateAnything
@@ -14,7 +13,7 @@ namespace ActivateAnything
     /// <list type="bullet">
     /// <item>
     ///     <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
-    ///     type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
+    ///     type. For instance, the <see cref="CreateFromFactoryMethod" /> rule.
     /// </item>
     /// <item>
     ///     <see cref="IFindTypeRule" /> provides rules for where to look for candidate
@@ -48,7 +47,7 @@ namespace ActivateAnything
         /// <param name="searchAnchor">
         ///     An object used by some <see cref="AnythingActivator.Rules" />, especially, <see cref="IFindTypeRule" />
         ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
-        ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
+        ///     <see cref="FindInAnchorAssembly" /> rule will only look for concrete types in
         ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
         ///     look in each <see cref="Assembly" /> referenced by <c>SearchAnchor.GetType().Assembly</c>.
         /// </param>
@@ -68,7 +67,7 @@ namespace ActivateAnything
         /// <param name="searchAnchor">
         ///     An object used by some <see cref="AnythingActivator.Rules" />, especially, <see cref="IFindTypeRule" />
         ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
-        ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
+        ///     <see cref="FindInAnchorAssembly" /> rule will only look for concrete types in
         ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
         ///     look in each <see cref="Assembly" /> referenced by <c>SearchAnchor.GetType().Assembly</c>.
         /// </param>

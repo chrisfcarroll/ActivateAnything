@@ -56,7 +56,7 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
         public void AndMocksAnInterface__AssumingThatAKnownMockingFrameworkAssemblyWasFindable()
         {
             UnitUnderTest.Param4.ShouldBeAssignableTo<ICloneable>();
-            Assert.That(CreateFromMockAttribute.IsAKnownMock(UnitUnderTest.Param4));
+            Assert.That(CreateFromMock.IsAKnownMock(UnitUnderTest.Param4));
         }
     }
 }

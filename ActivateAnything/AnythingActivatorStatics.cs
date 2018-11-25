@@ -114,7 +114,7 @@ namespace ActivateAnything
                     .Union(DefaultRules));
         }
 
-        /// <summary>Identical to <see cref="ActivateDefaultRulesAttribute.AllDefaultRules" /> </summary>
-        public static IReadOnlyCollection<IActivateAnythingRule> DefaultRules =>ActivateDefaultRulesAttribute.AllDefaultRules;
+        /// <summary>Identical to <see cref="ActivateDefaultRules.AllDefaultRules" /> </summary>
+        public static IReadOnlyCollection<IActivateAnythingRule> DefaultRules =>ActivateDefaultRules.AllDefaultRules;
     }
 }

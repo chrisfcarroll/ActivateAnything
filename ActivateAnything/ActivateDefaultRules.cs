@@ -16,39 +16,37 @@ namespace ActivateAnything
     ///         <item>The rules in <see cref="DefaultChooseConstructorRuleSequence" /> when constructing a concrete type.</item>
     ///     </list>
     /// </summary>
-    public class ActivateDefaultRulesAttribute : Attribute,
-        IFindTypeRule,
-        IChooseConstructorRule
+    public class ActivateDefaultRules : Attribute, IFindTypeRule, IChooseConstructorRule
     {
         /// <summary>
         ///     The default <see cref="IFindTypeRule" /> sequence for finding a type to instantiate is, in
         ///     this order:
-        ///     <see cref="FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute" />,
-        ///     <see cref="FindInAnchorAssemblyAttribute" />,
-        ///     <see cref="FindInDirectoryAttribute" />
+        ///     <see cref="FindInAnyAssemblyReferencedByAssemblyContainingType" />,
+        ///     <see cref="FindInAnchorAssembly" />,
+        ///     <see cref="FindInDirectory" />
         /// </summary>
         public static readonly IList<IFindTypeRule>
             DefaultFindConcreteTypeRuleSequence =
                 new ReadOnlyCollection<IFindTypeRule>(
                     new IFindTypeRule[]
                     {
-                        new FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute(),
-                        new FindInAnchorAssemblyAttribute(),
-                        new FindInDirectoryAttribute()
+                        new FindInAnyAssemblyReferencedByAssemblyContainingType(),
+                        new FindInAnchorAssembly(),
+                        new FindInDirectory()
                     });
 
         /// <summary>
         ///     The default <see cref="IChooseConstructorRule" /> is, in this order:
-        ///     <see cref="ChooseConstructorWithMostParametersAttribute" />,
-        ///     <see cref="ChooseConstructorWithFewestParametersAttribute" />
+        ///     <see cref="ConstructorWithMostParametersRule" />,
+        ///     <see cref="ConstructorWithFewestParametersRule" />
         /// </summary>
         public static readonly IList<IChooseConstructorRule>
             DefaultChooseConstructorRuleSequence =
                 new ReadOnlyCollection<IChooseConstructorRule>(
                     new IChooseConstructorRule[]
                     {
-                        new ChooseConstructorWithMostParametersAttribute(),
-                        new ChooseConstructorWithFewestParametersAttribute()
+                        new ConstructorWithMostParametersRule(),
+                        new ConstructorWithFewestParametersRule()
                     });
 
         /// <summary>

@@ -9,8 +9,9 @@ namespace ActivateAnything
     ///     If no <c>searchAnchor</c> was specified, search only in the Assembly containing the <c>Type</c> to be instantiated.
     ///     TODO: Split this into FindInAnchorAssembly and FindInSameAssembly
     /// </summary>
-    public class FindInAnchorAssemblyAttribute : FindTypeRuleAttribute
+    public class FindInAnchorAssembly : FindTypeRule
     {
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             Type type,
             IEnumerable<Type> typesWaitingToBeBuilt = null,
@@ -19,6 +20,7 @@ namespace ActivateAnything
             return FindTypeAssignableTo(testFixtureType, t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             string typeNameRightPart,
             IEnumerable<Type> typesWaitingToBeBuilt = null,

@@ -10,16 +10,19 @@ namespace ActivateAnything
     ///         Attributes inheriting from this class will be used as rules by <see cref="AnythingActivator.New" />
     ///         when constructing a concrete instance.
     ///     </para>
-    ///     Rules inheriting from <see cref="ChooseConstructorRuleAttribute" /> are concerned with
-    ///     which constructor to choose (if there is more than one) when building a concrete type
+    ///     Rules inheriting from <see cref="ConstructorRule" /> are concerned with which constructor to
+    ///     choose (if there is more than one) when building a concrete type.
+    ///
+    ///     This abstract baseclass also provides <see cref="VetoCircularDependency"/> to avoid recursion
+    ///     leading to stack overflow.
     /// </summary>
-    public abstract class ChooseConstructorRuleAttribute : Attribute, IChooseConstructorRule
+    public abstract class ConstructorRule : Attribute, IChooseConstructorRule
     {
-        /// <summary>Rule to prevent infinite recursion. The default rule is,
+        /// <summary>A veto to prevent infinite recursion. The default rule for veto is,
         /// “Do not choose a <see cref="ConstructorInfo"/> which as one of its <see cref="MethodBase.GetParameters"/>
         /// requires a <c>Type</c> that is already in the stack of <c>Type</c> waiting to be built.”
         /// </summary>
-        protected bool NoCircularDependencyRule(IEnumerable<Type> typesWaitingToBeBuilt, ConstructorInfo constructor)
+        protected bool VetoCircularDependency(IEnumerable<Type> typesWaitingToBeBuilt, ConstructorInfo constructor)
         {
             return !constructor
                 .GetParameters()

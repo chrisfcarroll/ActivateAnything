@@ -13,36 +13,40 @@ namespace ActivateAnything
     ///     <see cref="AppDomain.BaseDirectory" /> directory.
     ///     When used from a Test project, the BaseDirectory will typically be the {TestProject}\bin\Debug directory.
     /// </summary>
-    public class FindInAssemblyAttribute : FindTypeRuleAttribute
+    public class FindInAssembly : FindTypeRule
     {
         static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
         readonly string assemblyName;
         readonly Func<Type, bool> filter;
 
-        public FindInAssemblyAttribute(string assemblyName)
+        /// <inheritdoc />
+        public FindInAssembly(string assemblyName)
         {
             this.assemblyName = assemblyName;
             filter = t => !t.IsAbstract && !t.IsInterface;
         }
 
-        protected FindInAssemblyAttribute(string assemblyName, Func<Type, bool> filter)
+        /// <inheritdoc />
+        protected FindInAssembly(string assemblyName, Func<Type, bool> filter)
         {
             this.assemblyName = assemblyName;
             this.filter = filter;
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            Type type,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object testFixtureType = null)
+                                    Type type,
+                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
+                                    object testFixtureType = null)
         {
             return FindTypeAssignableTo(t => filter(t) && type.IsAssignableFrom(t));
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            string typeName,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object searchAnchor = null)
+                                    string typeName,
+                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
+                                    object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => filter(t) && t.FullName.EndsWith(typeName));
         }

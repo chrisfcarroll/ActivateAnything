@@ -14,8 +14,9 @@ namespace ActivateAnything
     ///         </item>
     ///     </list>
     /// </summary>
-    public class FindInAnyAssemblyReferencedByAssemblyContainingTypeAttribute : FindTypeRuleAttribute
+    public class FindInAnyAssemblyReferencedByAssemblyContainingType : FindTypeRule
     {
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             Type type,
             IEnumerable<Type> typesWaitingToBeBuilt = null,
@@ -34,6 +35,7 @@ namespace ActivateAnything
                 .FirstOrDefault(filterBy);
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
             string typeName,
             IEnumerable<Type> typesWaitingToBeBuilt = null,

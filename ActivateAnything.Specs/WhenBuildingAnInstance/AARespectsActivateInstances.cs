@@ -32,7 +32,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
                 new AnythingActivator(
-                        ActivateDefaultRulesAttribute.AllDefaultRules
+                        ActivateDefaultRules.AllDefaultRules
                             .After(
                                 new[] {new ActivateInstances("ACustomString"), }))
                     .New<string>();

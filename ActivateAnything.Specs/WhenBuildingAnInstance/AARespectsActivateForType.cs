@@ -16,7 +16,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var myObject = new AClass();
             var result =
                 new AnythingActivator(
-                        ActivateDefaultRulesAttribute.AllDefaultRules
+                        ActivateDefaultRules.AllDefaultRules
                             .Union(
                                 new[] {new ActivateForType<AClass>(myObject)}))
                     .New<AClass>();
@@ -29,7 +29,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
                 new AnythingActivator(
-                        ActivateDefaultRulesAttribute.AllDefaultRules
+                        ActivateDefaultRules.AllDefaultRules
                             .Union(
                                 new[] {new ActivateForType<string>("ACustomString")}))
                     .New<string>();

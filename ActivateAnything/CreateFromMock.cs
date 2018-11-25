@@ -4,22 +4,28 @@ using System.Linq;
 
 namespace ActivateAnything
 {
-    public class CreateFromMockAttribute : Attribute, IActivateInstanceRule
+    /// <inheritdoc cref="IActivateAnythingRule" />
+    public class CreateFromMock : Attribute, IActivateInstanceRule
     {
-        public static List<IMockingLibraryAdapter> KnownMockingLibraryAdapters
-            = new List<IMockingLibraryAdapter> {MoqMocker.Instance};
+        /// <summary>The list of Mocking adapters known to this version of ActivateAything.
+        /// This version contains <c>{ <see cref="MoqMocker.Instance"/> }</c>
+        /// </summary>
+        public static List<IMockingAdapter> KnownMockingLibraryAdapters 
+                = new List<IMockingAdapter> {MoqMocker.Instance};
 
         readonly object[] mockConstructorArgs;
 
         readonly Type[] typesToMock;
 
-        public CreateFromMockAttribute(Type typeToMock, params object[] mockConstructorArgs)
+        /// <inheritdoc />
+        public CreateFromMock(Type typeToMock, params object[] mockConstructorArgs)
         {
             this.mockConstructorArgs = mockConstructorArgs;
             typesToMock = new[] {typeToMock};
         }
 
-        public CreateFromMockAttribute(params Type[] typesToMock)
+        /// <inheritdoc />
+        public CreateFromMock(params Type[] typesToMock)
         {
             this.typesToMock = typesToMock;
             mockConstructorArgs = new object[0];
@@ -31,7 +37,7 @@ namespace ActivateAnything
         /// </summary>
         /// <param name="typesToMock"></param>
         /// <param name="mockConstructorArgs"></param>
-        public CreateFromMockAttribute(Type[] typesToMock, params object[] mockConstructorArgs)
+        public CreateFromMock(Type[] typesToMock, params object[] mockConstructorArgs)
         {
             this.typesToMock = typesToMock;
             this.mockConstructorArgs = mockConstructorArgs;
@@ -46,7 +52,7 @@ namespace ActivateAnything
         ///         </item>
         ///     </list>
         /// </remarks>
-        public IMockingLibraryAdapter MockingLibraryAdapter { get; set; }
+        public IMockingAdapter MockingAdapter { get; set; }
         
         /// <inheritdoc />
         public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
@@ -54,17 +60,24 @@ namespace ActivateAnything
             if (!typesToMock.Contains(type)) return null;
             //
             EnsureMockingLibraryAdapter();
-            MockingLibraryAdapter.EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
-            return MockingLibraryAdapter.CreateMockElseNull(type, mockConstructorArgs);
+            MockingAdapter.EnsureMockingAssemblyIsLoadedAndWorkingElseThrow();
+            return MockingAdapter.CreateMockElseNull(type, mockConstructorArgs);
         }
 
+        /// <summary>Test whether any <see cref="KnownMockingLibraryAdapters"/> recognises
+        /// this object as a Mock object they created, using 
+        /// <see cref="IMockingAdapterInspections.IsThisMyMockObject"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <seealso cref="IMockingAdapterInspections.IsThisMyMockObject"/>
+        /// <returns></returns>
         public static bool IsAKnownMock(object value)
         {
             return KnownMockingLibraryAdapters
-                .OfType<IMockingLibraryAdapterWithInspections>()
+                .OfType<IMockingAdapterInspections>()
                 .Any(m => m.IsThisMyMockObject(value));
         }
 
-        void EnsureMockingLibraryAdapter() { MockingLibraryAdapter = MockingLibraryAdapter ?? MoqMocker.Instance; }
+        void EnsureMockingLibraryAdapter() { MockingAdapter = MockingAdapter ?? MoqMocker.Instance; }
     }
 }

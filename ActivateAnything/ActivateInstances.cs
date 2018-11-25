@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace ActivateAnything
 {
@@ -24,7 +23,7 @@ namespace ActivateAnything
         /// then that object will be returned.
         /// </summary>
         /// <param name="instances"></param>
-        public ActivateInstances(params object[] instances) { this.Instances = instances; }
+        public ActivateInstances(params object[] instances) { Instances = instances; }
         
         /// <inheritdoc />
         public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)

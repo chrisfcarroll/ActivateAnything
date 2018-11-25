@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using TestBase;
 using Xunit;
 using Assert = TestBase.Assert;
@@ -22,13 +21,13 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         [Fact]
         public void ButIfFactoryMethodIsMissing_ThenAAThrows_WithOrWithoutAnAnchor()
         {
-            var rules = new[] {new CreateFromFactoryMethodAttribute(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
+            var rules = new[] {new CreateFromFactoryMethod(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(ActivateDefaultRulesAttribute.AllDefaultRules.Union(rules)).New<AClass>()
+                () => new AnythingActivator(ActivateDefaultRules.AllDefaultRules.Union(rules)).New<AClass>()
             );
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(this, ActivateDefaultRulesAttribute.AllDefaultRules.Union(rules))
+                () => new AnythingActivator(this, ActivateDefaultRules.AllDefaultRules.Union(rules))
                     .New<AClass>()
             );
         }
@@ -38,7 +37,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new CreateFromFactoryMethodAttribute(typeof(AClass),
+                new CreateFromFactoryMethod(typeof(AClass),
                     typeof(AFactory),
                     "BuildMethodNameWhichDoesntExist");
             });
@@ -50,11 +49,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             const string aCustomString = "ACustomString";
             var result =
                 new AnythingActivator(
-                    ActivateDefaultRulesAttribute.AllDefaultRules
+                    ActivateDefaultRules.AllDefaultRules
                         .Union(
                             new[]
                             {
-                                new CreateFromFactoryMethodAttribute(
+                                new CreateFromFactoryMethod(
                                     typeof(AClass),
                                     typeof(AFactory),
                                     "BuildMethod",

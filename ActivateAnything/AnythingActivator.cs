@@ -21,7 +21,7 @@ namespace ActivateAnything
     ///     <list type="bullet">
     ///         <item>
     ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
-    ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
+    ///             type. For instance, the <see cref="CreateFromFactoryMethod" /> rule.
     ///         </item>
     ///         <item>
     ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
@@ -110,7 +110,7 @@ namespace ActivateAnything
         ///     <list type="bullet">
         ///         <item>
         ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
-        ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
+        ///             type. For instance, the <see cref="CreateFromFactoryMethod" /> rule.
         ///         </item>
         ///         <item>
         ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
@@ -128,7 +128,7 @@ namespace ActivateAnything
         /// <summary>
         ///     An object used by some <see cref="Rules" />, especially, <see cref="IFindTypeRule" />
         ///     rules, as a reference point—whether as a starting point or as a limit—to their search. For instance, the
-        ///     <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types in
+        ///     <see cref="FindInAnchorAssembly" /> rule will only look for concrete types in
         ///     <c>SearchAnchor.GetType().Assembly</c>, and <see cref="FindInAssembliesReferencedByAnchorAssembly" /> rule will
         ///     look in
         ///     each <see cref="Assembly" /> referenced by <c>SearchAnchor.GetType().Assembly</c>.
@@ -244,7 +244,7 @@ namespace ActivateAnything
         ///     <list type="bullet">
         ///         <item>
         ///             <see cref="IActivateInstanceRule" /> provides an immediate source of a concrete
-        ///             type. For instance, the <see cref="CreateFromFactoryMethodAttribute" /> rule.
+        ///             type. For instance, the <see cref="CreateFromFactoryMethod" /> rule.
         ///         </item>
         ///         <item>
         ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
@@ -266,7 +266,7 @@ namespace ActivateAnything
         /// <param name="searchAnchor">
         ///     The <see cref="Type" /> and especially the <see cref="Type.Assembly" /> of
         ///     <c>searchAnchor</c> may be used by some rules as a reference point—whether as a starting point or as a limit—to
-        ///     their search. For instance, the <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete
+        ///     their search. For instance, the <see cref="FindInAnchorAssembly" /> rule will only look for concrete
         ///     types in the anchor Assembly.
         /// </param>
         /// <returns>An instance of type <paramref name="type" /> if possible; default(Type) if unable to construct one.</returns>
@@ -322,9 +322,9 @@ namespace ActivateAnything
         /// <param name="type">The type for which a constructor is to be found</param>
         /// <param name="chooseConstructorRules">
         ///     The rules for choosing a constructor. For instance,
-        ///     the <see cref="ChooseConstructorWithMostParametersAttribute" /> will choose a constructor with the most
+        ///     the <see cref="ConstructorWithMostParametersRule" /> will choose a constructor with the most
         ///     parameters.
-        ///     The rule <see cref="ChooseConstructorWithFewestParametersAttribute" /> will always be added to the end of the
+        ///     The rule <see cref="ConstructorWithFewestParametersRule" /> will always be added to the end of the
         ///     <paramref name="chooseConstructorRules" /> as the last fallback rule.
         /// </param>
         /// <param name="typesWaitingToBeBuilt">
@@ -336,7 +336,7 @@ namespace ActivateAnything
         /// <param name="searchAnchor">
         ///     The <see cref="Type" /> and especially the <see cref="Type.Assembly" /> of
         ///     <c>searchAnchor</c> may be used by some rules as a reference point—whether as a starting point or as a limit—to
-        ///     their search. For instance, the <see cref="FindInAnchorAssemblyAttribute" /> rule will only look for concrete types
+        ///     their search. For instance, the <see cref="FindInAnchorAssembly" /> rule will only look for concrete types
         ///     in the anchor Assembly.
         /// </param>
         /// <returns>An instance of type <paramref name="type" /> if possible, default(Type) if unable to construct one.</returns>
@@ -348,7 +348,7 @@ namespace ActivateAnything
             object searchAnchor)
         {
             var possibleConstructors = chooseConstructorRules
-                .Union(new[] {new ChooseConstructorWithFewestParametersAttribute{PreferPublic = false}})
+                .Union(new[] {new ConstructorWithFewestParametersRule{PreferPublic = false}})
                 .Select(r => r.ChooseConstructor(type, typesWaitingToBeBuilt, searchAnchor));
             var chosenConstructor = possibleConstructors.FirstOrDefault(r=>r!=null);
             return chosenConstructor;

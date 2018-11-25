@@ -10,7 +10,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         [TestTimeDependency("Moq.dll required in base directory")]
         public void ThereIsAMockingFrameworkInTheBaseDirectory()
         {
-            var moq = new FindInAssemblyAttribute("Moq").FindTypeAssignableTo("Mock`1");
+            var moq = new FindInAssembly("Moq").FindTypeAssignableTo("Mock`1");
             //
             Assert.That(moq,
                 Is.NotNull,
@@ -21,10 +21,10 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public void ForAClass()
         {
             var result =
-                new AnythingActivator(new CreateFromMockAttribute(typeof(INterface)))
+                new AnythingActivator(new CreateFromMock(typeof(INterface)))
                     .New<ClassWith1ConstructorParam<INterface>>();
             //
-            Assert.That(result.Param1, x => CreateFromMockAttribute.IsAKnownMock(x));
+            Assert.That(result.Param1, x => CreateFromMock.IsAKnownMock(x));
         }
     }
 }

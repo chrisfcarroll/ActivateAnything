@@ -12,7 +12,7 @@ namespace ActivateAnything
     ///     When used by a test project, the BaseDirectory will usually be the msbuild output
     ///     directory, e.g. the {TestProject}\bin\Debug\ directory.
     /// </summary>
-    public class FindInDirectoryAttribute : FindTypeRuleAttribute
+    public class FindInDirectory : FindTypeRule
     {
         static readonly DirectoryInfo BaseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -21,18 +21,20 @@ namespace ActivateAnything
         /// </summary>
         public string[] IgnoreAssembliesWhereNameStartsWith { get; set; } = DefaultAssembliesToIgnore.ByName;
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            Type type,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object searchAnchor = null)
+                                    Type type,
+                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
+                                    object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
+        /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            string typeName,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object searchAnchor = null)
+                                    string typeName,
+                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
+                                    object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName));
         }

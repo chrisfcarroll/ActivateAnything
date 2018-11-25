@@ -3,9 +3,9 @@ using System;
 namespace ActivateAnything
 {
     /// <summary>
-    ///     Optionally implement this together with your <see cref="IMockingLibraryAdapter" />
+    ///     Optionally implement this together with your <see cref="IMockingAdapter" />
     /// </summary>
-    public interface IMockingLibraryAdapterWithInspections
+    public interface IMockingAdapterInspections
     {
         /// <summary>
         ///     Given an object, which is a mocked object, returns the Mock which owns that object (if the mocking library used
@@ -26,10 +26,10 @@ namespace ActivateAnything
 
         /// <param name="value"></param>
         /// <returns>
-        ///     <see cref="bool.True" /> if <paramref name="value" /> is a Mocked object created by this library.
-        ///     <see cref="bool.False" /> otherwise.
+        ///     <c>true</c> if <paramref name="value" /> is a Mocked object created by this library.
+        ///     <c>false</c> otherwise.
         /// </returns>
-        /// <remarks>A mocking library which cannot implement this method should return <see cref="bool.False" /></remarks>
+        /// <remarks>A mocking library which cannot implement this method should return <c>false</c></remarks>
         bool IsThisMyMockObject(object value);
     }
 }
