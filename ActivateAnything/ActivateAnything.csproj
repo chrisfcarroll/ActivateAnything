@@ -22,8 +22,7 @@ There are three kinds of `IActivateAnythingRule`.
 
 The <em>extremity</em> of the effort lies in its recursive attempt to find and construct the <em>dependencies</em>.
 ]]></PackageDescription>
-    <PackageReleaseNotes>
-      ChangeLog
+    <PackageReleaseNotes>ChangeLog
       ---------
       0.2.1.0 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
       0.2.0.0 Expose LastActivationTree and LastErrorList after a call to New()
@@ -45,18 +44,9 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
     <!-- have to teach MSBuild where the Mono copy of the reference asssemblies is -->
     <TargetIsMono Condition="$(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix'">true</TargetIsMono>
     <!-- Look in the standard install locations -->
-    <BaseFrameworkPathOverrideForMono
-      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/Library/Frameworks/Mono.framework/Versions/Current/lib/mono')">
-      /Library/Frameworks/Mono.framework/Versions/Current/lib/mono
-    </BaseFrameworkPathOverrideForMono>
-    <BaseFrameworkPathOverrideForMono
-      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/lib/mono')">
-      /usr/lib/mono
-    </BaseFrameworkPathOverrideForMono>
-    <BaseFrameworkPathOverrideForMono
-      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/local/lib/mono')">
-      /usr/local/lib/mono
-    </BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/Library/Frameworks/Mono.framework/Versions/Current/lib/mono')">/Library/Frameworks/Mono.framework/Versions/Current/lib/mono</BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/lib/mono')">/usr/lib/mono</BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/local/lib/mono')">/usr/local/lib/mono</BaseFrameworkPathOverrideForMono>
 
     <!-- If we found Mono reference assemblies, then use them -->
     <FrameworkPathOverride Condition="'$(BaseFrameworkPathOverrideForMono)' != '' AND '$(TargetFramework)' == 'net45'">$(BaseFrameworkPathOverrideForMono)/4.5-api</FrameworkPathOverride>
@@ -72,5 +62,5 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
     <!-- Add the Facades directory.  Not sure how else to do this. Necessary at least for .NET 4.5 -->
     <AssemblySearchPaths Condition="'$(BaseFrameworkPathOverrideForMono)' != ''">$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
-
+  
 </Project>
