@@ -4,8 +4,12 @@ using System.Reflection;
 
 namespace ActivateAnything
 {
-    /// <summary>A marker interface for any kind of ActivateAnything rule understood by <see cref="AnythingActivator" /></summary>
-    public interface IActivateAnythingRule{}
+    /// <summary>
+    ///     A marker interface for any kind of ActivateAnything rule understood by <see cref="AnythingActivator" />
+    /// </summary>
+    public interface IActivateAnythingRule
+    {
+    }
 
     /// <summary>An ActivateAnything rule which will create an instance of a concrete <c>Type</c>.</summary>
     public interface IActivateInstanceRule : IActivateAnythingRule
@@ -35,8 +39,8 @@ namespace ActivateAnything
     public interface IFindTypeByNameRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(
-            string typeNameEndingWith,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object searchAnchor = null);
+        string typeNameEndingWith,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object searchAnchor = null);
     }
 }

@@ -35,18 +35,18 @@ namespace ActivateAnything
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-                                    Type type,
-                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
-                                    object testFixtureType = null)
+        Type type,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object testFixtureType = null)
         {
             return FindTypeAssignableTo(t => filter(t) && type.IsAssignableFrom(t));
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-                                    string typeName,
-                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
-                                    object searchAnchor = null)
+        string typeName,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => filter(t) && t.FullName.EndsWith(typeName));
         }
@@ -56,15 +56,9 @@ namespace ActivateAnything
             if (assemblyName.Contains('*') || assemblyName.Contains('?'))
                 return FindBestMatchFromAssembliesInBaseDirectory(filterBy);
             else
-                try
+                try { return Assembly.Load(assemblyName).GetTypes().First(filterBy); } catch (Exception)
                 {
-                    return Assembly.Load(assemblyName).GetTypes().First(filterBy);
-                } catch (Exception)
-                {
-                    try
-                    {
-                        return Assembly.LoadFrom(assemblyName).GetTypes().First(filterBy);
-                    } catch (Exception)
+                    try { return Assembly.LoadFrom(assemblyName).GetTypes().First(filterBy); } catch (Exception)
                     {
                         return FindBestMatchFromAssembliesInBaseDirectory(filterBy);
                     }
@@ -74,21 +68,15 @@ namespace ActivateAnything
         Type FindBestMatchFromAssembliesInBaseDirectory(Func<Type, bool> filterBy)
         {
             var possibleAssembliesInApplicationBase = BaseDirectory.EnumerateFiles(assemblyName + ".dll")
-                .Union(BaseDirectory.EnumerateFiles(assemblyName + ".exe"))
-                .OrderByDescending(a => a.FullName.Length);
+            .Union(BaseDirectory.EnumerateFiles(assemblyName + ".exe"))
+            .OrderByDescending(a => a.FullName.Length);
             //Assembly name can contain wildcards 
             var allTypesInBaseDirectory = possibleAssembliesInApplicationBase.Select(a =>
-                {
-                    try
-                    {
-                        return Assembly.Load(Path.GetFileNameWithoutExtension(a.Name));
-                    } catch
-                    {
-                        return null;
-                    }
-                })
-                .Where(a => a != null)
-                .SelectMany(a => a.GetTypes());
+            {
+                try { return Assembly.Load(Path.GetFileNameWithoutExtension(a.Name)); } catch { return null; }
+            })
+            .Where(a => a != null)
+            .SelectMany(a => a.GetTypes());
             var relevantTypes = allTypesInBaseDirectory.Where(filterBy);
             return relevantTypes.FirstOrDefault();
         }

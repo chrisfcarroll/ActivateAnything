@@ -6,19 +6,19 @@ using Xunit;
 using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForTypeWithAbstractConstructorDependencies.
-    GivenMultipleRules
+GivenMultipleRules
 {
     [FindInAnyAssemblyReferencedByAssemblyContainingType]
     [FindInAnchorAssembly]
     [FindInDirectory]
     [CreateFromMock(typeof(ICloneable))]
     public class AAAppliesAllRulesAsNeeded :
-        TestBaseFor
-        <ClassWith4ConstructorParams
-            <INterfaceWithClassInSameAssembly,
-                INterfaceWithFakeInTestAssembly,
-                INterfaceWithClassInNotReferencedAssembly,
-                ICloneable>>
+    TestBaseFor
+    <ClassWith4ConstructorParams
+    <INterfaceWithClassInSameAssembly,
+    INterfaceWithFakeInTestAssembly,
+    INterfaceWithClassInNotReferencedAssembly,
+    ICloneable>>
     {
         [Fact]
         public void AndBuildsRequestedType()
@@ -26,10 +26,10 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo
             <ClassWith4ConstructorParams
-                <INterfaceWithClassInSameAssembly,
-                    INterfaceWithFakeInTestAssembly,
-                    INterfaceWithClassInNotReferencedAssembly,
-                    ICloneable>>();
+            <INterfaceWithClassInSameAssembly,
+            INterfaceWithFakeInTestAssembly,
+            INterfaceWithClassInNotReferencedAssembly,
+            ICloneable>>();
         }
 
         [Fact]

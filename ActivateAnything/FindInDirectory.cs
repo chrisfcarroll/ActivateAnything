@@ -23,18 +23,18 @@ namespace ActivateAnything
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-                                    Type type,
-                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
-                                    object searchAnchor = null)
+        Type type,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-                                    string typeName,
-                                    IEnumerable<Type> typesWaitingToBeBuilt = null,
-                                    object searchAnchor = null)
+        string typeName,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object searchAnchor = null)
         {
             return FindTypeAssignableTo(t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName));
         }
@@ -43,26 +43,20 @@ namespace ActivateAnything
         Type FindTypeAssignableTo(Func<Type, bool> filterBy)
         {
             var possibleAssembliesInApplicationBase =
-                BaseDirectory.EnumerateFiles("*.dll")
-                    .Union(BaseDirectory.EnumerateFiles("*.exe"));
+            BaseDirectory.EnumerateFiles("*.dll")
+            .Union(BaseDirectory.EnumerateFiles("*.exe"));
 
             var assembliesToIgnore = IgnoreAssembliesWhereNameStartsWith ?? DefaultAssembliesToIgnore.ByName;
 
             var allTypesInBaseDirectory =
-                possibleAssembliesInApplicationBase
-                    .Where(a => !assembliesToIgnore.Any(ia => a.Name.StartsWith(ia)))
-                    .Select(a =>
-                    {
-                        try
-                        {
-                            return Assembly.Load(Path.GetFileNameWithoutExtension(a.Name));
-                        } catch
-                        {
-                            return null;
-                        }
-                    })
-                    .Where(a => a != null)
-                    .SelectMany(a => a.GetTypes());
+            possibleAssembliesInApplicationBase
+            .Where(a => !assembliesToIgnore.Any(ia => a.Name.StartsWith(ia)))
+            .Select(a =>
+            {
+                try { return Assembly.Load(Path.GetFileNameWithoutExtension(a.Name)); } catch { return null; }
+            })
+            .Where(a => a != null)
+            .SelectMany(a => a.GetTypes());
 
             return allTypesInBaseDirectory.Where(filterBy).FirstOrDefault();
         }

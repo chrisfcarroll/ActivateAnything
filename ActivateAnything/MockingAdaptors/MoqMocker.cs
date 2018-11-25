@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 
 namespace ActivateAnything
 {
-    /// <inheritdoc cref="IMockingAdapter"/>
-    /// <inheritdoc cref="IMockingAdapterInspections"/>
+    /// <inheritdoc cref="IMockingAdapter" />
+    /// <inheritdoc cref="IMockingAdapterInspections" />
     public class MoqMocker : IMockingAdapter, IMockingAdapterInspections
     {
         /// <summary>A static instance.</summary>
@@ -32,13 +32,7 @@ namespace ActivateAnything
         /// <inheritdoc />
         public object CreateMockElseNull(Type type, params object[] mockConstructorArgs)
         {
-            try
-            {
-                return CreateMockElseThrow(type, mockConstructorArgs);
-            } catch
-            {
-                return null;
-            }
+            try { return CreateMockElseThrow(type, mockConstructorArgs); } catch { return null; }
         }
 
         /// <inheritdoc />
@@ -47,21 +41,21 @@ namespace ActivateAnything
             try
             {
                 var mockedType =
-                    MoqMakeMockType(type)
-                        .Ensure(t => t != null, "Failed to make the Moq<T> GenericType needed to mock T. Just got null.");
+                MoqMakeMockType(type)
+                .Ensure(t => t != null, "Failed to make the Moq<T> GenericType needed to mock T. Just got null.");
                 var mock = Activator
-                    .CreateInstance(mockedType, mockConstructorArgs)
-                    .EnsureNotNull(string.Format("Activator.CreateInstance({0},{1}) failed, just got null",
-                        mockedType.Name,
-                        mockConstructorArgs));
+                .CreateInstance(mockedType, mockConstructorArgs)
+                .EnsureNotNull(string.Format("Activator.CreateInstance({0},{1}) failed, just got null",
+                mockedType.Name,
+                mockConstructorArgs));
 
                 var mockedObjectProperty = mockedType
-                    .GetProperty("Object", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-                    .EnsureNotNull(string.Format("Reflected call to Moq<{0}>.GetProperty(\"Object\") failed, just got null.",
-                        type.FullName));
+                .GetProperty("Object", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+                .EnsureNotNull(string.Format("Reflected call to Moq<{0}>.GetProperty(\"Object\") failed, just got null.",
+                type.FullName));
 
                 return mockedObjectProperty.GetValue(mock, null)
-                    .EnsureNotNull("Reflected call to Moq<{0}>.Object failed, just got null.");
+                .EnsureNotNull("Reflected call to Moq<{0}>.Object failed, just got null.");
             } catch (Exception e)
             {
                 throw new Exception($"{typeof(MoqMocker).FullName} failed to create a Moq<{type.FullName}>", e);
@@ -74,10 +68,10 @@ namespace ActivateAnything
         {
             if (!IsMockingAssemblyFound())
                 throw new FileNotFoundException(
-                    string.Format("Unable to find a Moq.dll with a Moq.Mock`1 Type in BaseDirectory {0}. ",
-                        AppDomain.CurrentDomain.BaseDirectory)
-                    + "Moq is most easily added a NuGet dependency to it from your Test project. ",
-                    "Moq.dll");
+                string.Format("Unable to find a Moq.dll with a Moq.Mock`1 Type in BaseDirectory {0}. ",
+                AppDomain.CurrentDomain.BaseDirectory)
+                + "Moq is most easily added a NuGet dependency to it from your Test project. ",
+                "Moq.dll");
             CreateMockElseThrow(typeof(ICloneable /*an arbitrary example type that, if all is well, we will successfully mock.*/
             ));
         }
@@ -92,7 +86,7 @@ namespace ActivateAnything
         public object GetMock(object value)
         {
             var baseType = value.GetType().BaseType;
-            return baseType != null && IsTypeMoqMockRegex.IsMatch(baseType.AssemblyQualifiedName??"");
+            return baseType != null && IsTypeMoqMockRegex.IsMatch(baseType.AssemblyQualifiedName ?? "");
         }
 
         class FindMoqMock : FindInAssembly

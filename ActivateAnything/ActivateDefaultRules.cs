@@ -26,14 +26,14 @@ namespace ActivateAnything
         ///     <see cref="FindInDirectory" />
         /// </summary>
         public static readonly IList<IFindTypeRule>
-            DefaultFindConcreteTypeRuleSequence =
-                new ReadOnlyCollection<IFindTypeRule>(
-                    new IFindTypeRule[]
-                    {
-                        new FindInAnyAssemblyReferencedByAssemblyContainingType(),
-                        new FindInAnchorAssembly(),
-                        new FindInDirectory()
-                    });
+        DefaultFindConcreteTypeRuleSequence =
+        new ReadOnlyCollection<IFindTypeRule>(
+        new IFindTypeRule[]
+        {
+        new FindInAnyAssemblyReferencedByAssemblyContainingType(),
+        new FindInAnchorAssembly(),
+        new FindInDirectory()
+        });
 
         /// <summary>
         ///     The default <see cref="IChooseConstructorRule" /> is, in this order:
@@ -41,26 +41,26 @@ namespace ActivateAnything
         ///     <see cref="ConstructorWithFewestParametersRule" />
         /// </summary>
         public static readonly IList<IChooseConstructorRule>
-            DefaultChooseConstructorRuleSequence =
-                new ReadOnlyCollection<IChooseConstructorRule>(
-                    new IChooseConstructorRule[]
-                    {
-                        new ConstructorWithMostParametersRule(),
-                        new ConstructorWithFewestParametersRule()
-                    });
+        DefaultChooseConstructorRuleSequence =
+        new ReadOnlyCollection<IChooseConstructorRule>(
+        new IChooseConstructorRule[]
+        {
+        new ConstructorWithMostParametersRule(),
+        new ConstructorWithFewestParametersRule()
+        });
 
         /// <summary>
         ///     The default ActivateAnything ruleset is the union of <see cref="DefaultFindConcreteTypeRuleSequence" /> and
         ///     <see cref="DefaultChooseConstructorRuleSequence" />
         /// </summary>
         public static readonly IReadOnlyCollection<IActivateAnythingRule>
-            AllDefaultRules =
-                new ReadOnlyCollection<IActivateAnythingRule>(
-                    DefaultFindConcreteTypeRuleSequence.Union<IActivateAnythingRule>(
-                            DefaultChooseConstructorRuleSequence)
-                        .ToList());
+        AllDefaultRules =
+        new ReadOnlyCollection<IActivateAnythingRule>(
+        DefaultFindConcreteTypeRuleSequence.Union<IActivateAnythingRule>(
+        DefaultChooseConstructorRuleSequence)
+        .ToList());
 
-        /// <summary>Use <see cref="DefaultChooseConstructorRuleSequence"/> to choose a constructor</summary>
+        /// <summary>Use <see cref="DefaultChooseConstructorRuleSequence" /> to choose a constructor</summary>
         /// <param name="type"></param>
         /// <param name="typesWaitingToBeBuilt"></param>
         /// <param name="searchAnchor"></param>
@@ -68,12 +68,13 @@ namespace ActivateAnything
         public ConstructorInfo ChooseConstructor(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)
         {
             return AnythingActivator.Instance.ChooseConstructor(type,
-                DefaultChooseConstructorRuleSequence,
-                typesWaitingToBeBuilt,
-                searchAnchor);
+            DefaultChooseConstructorRuleSequence,
+            typesWaitingToBeBuilt,
+            searchAnchor);
         }
 
-        /// <summary>Use <see cref="AllDefaultRules"/> to find a <c>Type</c> which is assignable to <paramref name="type"/> 
+        /// <summary>
+        ///     Use <see cref="AllDefaultRules" /> to find a <c>Type</c> which is assignable to <paramref name="type" />
         /// </summary>
         /// <param name="type"></param>
         /// <param name="typesWaitingToBeBuilt"></param>

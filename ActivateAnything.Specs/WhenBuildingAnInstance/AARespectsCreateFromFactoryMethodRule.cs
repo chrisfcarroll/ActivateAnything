@@ -24,11 +24,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var rules = new[] {new CreateFromFactoryMethod(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(ActivateDefaultRules.AllDefaultRules.Union(rules)).New<AClass>()
+            () => new AnythingActivator(ActivateDefaultRules.AllDefaultRules.Union(rules)).New<AClass>()
             );
             Assert.Throws<InvalidOperationException>(
-                () => new AnythingActivator(this, ActivateDefaultRules.AllDefaultRules.Union(rules))
-                    .New<AClass>()
+            () => new AnythingActivator(this, ActivateDefaultRules.AllDefaultRules.Union(rules))
+            .New<AClass>()
             );
         }
 
@@ -38,8 +38,8 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             Assert.Throws<InvalidOperationException>(() =>
             {
                 new CreateFromFactoryMethod(typeof(AClass),
-                    typeof(AFactory),
-                    "BuildMethodNameWhichDoesntExist");
+                typeof(AFactory),
+                "BuildMethodNameWhichDoesntExist");
             });
         }
 
@@ -48,18 +48,13 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             const string aCustomString = "ACustomString";
             var result =
-                new AnythingActivator(
-                    ActivateDefaultRules.AllDefaultRules
-                        .Union(
-                            new[]
-                            {
-                                new CreateFromFactoryMethod(
-                                    typeof(AClass),
-                                    typeof(AFactory),
-                                    "BuildMethod",
-                                    aCustomString)
-                            }
-                        )).New<AClass>();
+            new AnythingActivator(
+            ActivateDefaultRules.AllDefaultRules
+            .Union(new CreateFromFactoryMethod(
+            typeof(AClass),
+            typeof(AFactory),
+            "BuildMethod",
+            aCustomString))).New<AClass>();
             //
             result.Aparameter.ShouldBe(aCustomString);
         }

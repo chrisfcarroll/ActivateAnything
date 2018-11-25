@@ -9,10 +9,10 @@ namespace ActivateAnything
     public class CreateFromFactoryMethod : Attribute, IActivateInstanceRule
     {
         const string ReturnTypeNotAssignableToTargetFormat =
-            "BuildFromMethod({0},{1},{2}) doesn't work because {0} is not assignable to the return type {3} of {1}.{2}";
+        "BuildFromMethod({0},{1},{2}) doesn't work because {0} is not assignable to the return type {3} of {1}.{2}";
 
         const string MethodNotFoundFormat =
-            "You asked for BuildFromFactory({0},{1},{2},...).CreateInstance(searchAnchor:{3}) but there is no method {4}.{2}";
+        "You asked for BuildFromFactory({0},{1},{2},...).CreateInstance(searchAnchor:{3}) but there is no method {4}.{2}";
 
         readonly object[] args;
         readonly Type factoryClass;
@@ -34,10 +34,10 @@ namespace ActivateAnything
         /// </param>
         /// <param name="args">any arguments needed for the factory method</param>
         public CreateFromFactoryMethod(
-            Type targetType,
-            Type factoryClass,
-            string factoryMethodName,
-            params object[] args)
+        Type targetType,
+        Type factoryClass,
+        string factoryMethodName,
+        params object[] args)
         {
             this.targetType = targetType;
             this.factoryClass = factoryClass;
@@ -92,14 +92,14 @@ namespace ActivateAnything
             //
             var factory = searchAnchor
                           ?? new AnythingActivator(
-                              ActivateDefaultRules.DefaultFindConcreteTypeRuleSequence
-                                  .Union(
-                                      (IEnumerable<IActivateAnythingRule>)
-                                      new[]
-                                      {
-                                          new ConstructorWithFewestParametersRule()
-                                      }
-                                  )).New(factoryClass);
+                          ActivateDefaultRules.DefaultFindConcreteTypeRuleSequence
+                          .Union(
+                          (IEnumerable<IActivateAnythingRule>)
+                          new[]
+                          {
+                          new ConstructorWithFewestParametersRule()
+                          }
+                          )).New(factoryClass);
             //nb if the factory method is static, then it's okay for factory to be null.
 
             var factoryClassToUse = factory == null ? factoryClass : factory.GetType();
@@ -115,19 +115,19 @@ namespace ActivateAnything
             //
             if (m == null)
                 throw new InvalidOperationException(
-                    string.Format(MethodNotFoundFormat,
-                        targetType,
-                        factoryClass,
-                        factoryMethodName,
-                        searchAnchor,
-                        factoryClassToUse));
+                string.Format(MethodNotFoundFormat,
+                targetType,
+                factoryClass,
+                factoryMethodName,
+                searchAnchor,
+                factoryClassToUse));
             if (!m.ReturnType.IsAssignableFrom(targetType))
                 throw new ArgumentOutOfRangeException(targetType.FullName,
-                    string.Format(ReturnTypeNotAssignableToTargetFormat,
-                        targetType,
-                        factoryClassToUse,
-                        factoryMethodName,
-                        m.ReturnType));
+                string.Format(ReturnTypeNotAssignableToTargetFormat,
+                targetType,
+                factoryClassToUse,
+                factoryMethodName,
+                m.ReturnType));
             return m;
         }
     }

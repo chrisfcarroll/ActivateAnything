@@ -5,7 +5,7 @@ namespace ActivateAnything
     /// <summary><c>Assert (condition) else throw</c>Extensions</summary>
     public static class EnsureElseThrowExtensions
     {
-        /// <summary>Throw <paramref name="failureException"/> if <paramref name="assertion"/> fails.</summary>
+        /// <summary>Throw <paramref name="failureException" /> if <paramref name="assertion" /> fails.</summary>
         /// <param name="this"></param>
         /// <param name="assertion"></param>
         /// <param name="failureException"></param>
@@ -18,8 +18,10 @@ namespace ActivateAnything
             return @this;
         }
 
-        /// <summary>Throw an <c>Exception</c> with <paramref name="failureMessage"/> if
-        /// <paramref name="assertion"/> fails.</summary>
+        /// <summary>
+        ///     Throw an <c>Exception</c> with <paramref name="failureMessage" /> if
+        ///     <paramref name="assertion" /> fails.
+        /// </summary>
         /// <param name="this"></param>
         /// <param name="assertion"></param>
         /// <param name="failureMessage"></param>
@@ -33,8 +35,10 @@ namespace ActivateAnything
         }
 
 
-        /// <summary>Throw an <c>Exception</c> with <paramref name="failureMessage"/> if
-        /// <paramref name="@this"/> is Null</summary>
+        /// <summary>
+        ///     Throw an <c>Exception</c> with <paramref name="failureMessage" /> if
+        ///     <paramref name="@this" /> is Null
+        /// </summary>
         /// <param name="this"></param>
         /// <param name="failureMessage"></param>
         /// <typeparam name="T"></typeparam>
@@ -46,7 +50,7 @@ namespace ActivateAnything
             return @this;
         }
 
-        /// <summary>Throw <paramref name="failureException"/> if<paramref name="@this"/> is Null</summary>
+        /// <summary>Throw <paramref name="failureException" /> if<paramref name="@this" /> is Null</summary>
         /// <param name="this"></param>
         /// <param name="failureException"></param>
         /// <typeparam name="T"></typeparam>

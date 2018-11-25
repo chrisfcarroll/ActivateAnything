@@ -2,7 +2,7 @@
 {
     public class ClassWithPrivateConstructor
     {
-        ClassWithPrivateConstructor(){}
-        internal static ClassWithPrivateConstructor New() => new ClassWithPrivateConstructor();
+        ClassWithPrivateConstructor() { }
+        internal static ClassWithPrivateConstructor New() { return new ClassWithPrivateConstructor(); }
     }
 }

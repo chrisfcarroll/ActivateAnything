@@ -1,7 +1,8 @@
 ﻿namespace ActivateAnything
 {
-    /// <summary>By default, these Assemblies will be ignored when a <see cref="IFindTypeRule"/>
-    /// searches for a Type.
+    /// <summary>
+    ///     By default, these Assemblies will be ignored when a <see cref="IFindTypeRule" />
+    ///     searches for a Type.
     /// </summary>
     public static class DefaultAssembliesToIgnore
     {

@@ -7,11 +7,12 @@ namespace ActivateAnything
     /// <inheritdoc cref="IActivateAnythingRule" />
     public class CreateFromMock : Attribute, IActivateInstanceRule
     {
-        /// <summary>The list of Mocking adapters known to this version of ActivateAything.
-        /// This version contains <c>{ <see cref="MoqMocker.Instance"/> }</c>
+        /// <summary>
+        ///     The list of Mocking adapters known to this version of ActivateAything.
+        ///     This version contains <c>{ <see cref="MoqMocker.Instance" /> }</c>
         /// </summary>
-        public static List<IMockingAdapter> KnownMockingLibraryAdapters 
-                = new List<IMockingAdapter> {MoqMocker.Instance};
+        public static List<IMockingAdapter> KnownMockingLibraryAdapters
+        = new List<IMockingAdapter> {MoqMocker.Instance};
 
         readonly object[] mockConstructorArgs;
 
@@ -53,7 +54,7 @@ namespace ActivateAnything
         ///     </list>
         /// </remarks>
         public IMockingAdapter MockingAdapter { get; set; }
-        
+
         /// <inheritdoc />
         public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor)
         {
@@ -64,18 +65,19 @@ namespace ActivateAnything
             return MockingAdapter.CreateMockElseNull(type, mockConstructorArgs);
         }
 
-        /// <summary>Test whether any <see cref="KnownMockingLibraryAdapters"/> recognises
-        /// this object as a Mock object they created, using 
-        /// <see cref="IMockingAdapterInspections.IsThisMyMockObject"/>
+        /// <summary>
+        ///     Test whether any <see cref="KnownMockingLibraryAdapters" /> recognises
+        ///     this object as a Mock object they created, using
+        ///     <see cref="IMockingAdapterInspections.IsThisMyMockObject" />
         /// </summary>
         /// <param name="value"></param>
-        /// <seealso cref="IMockingAdapterInspections.IsThisMyMockObject"/>
+        /// <seealso cref="IMockingAdapterInspections.IsThisMyMockObject" />
         /// <returns></returns>
         public static bool IsAKnownMock(object value)
         {
             return KnownMockingLibraryAdapters
-                .OfType<IMockingAdapterInspections>()
-                .Any(m => m.IsThisMyMockObject(value));
+            .OfType<IMockingAdapterInspections>()
+            .Any(m => m.IsThisMyMockObject(value));
         }
 
         void EnsureMockingLibraryAdapter() { MockingAdapter = MockingAdapter ?? MoqMocker.Instance; }

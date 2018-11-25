@@ -13,16 +13,18 @@ namespace ActivateAnything
     /// <remarks>Implement this interface to use your preferred Mocking Library instead of Moq</remarks>
     public interface IMockingAdapter
     {
-        /// <summary>Try to create a Mock for an object of type <paramref name="type"/>.
-        /// On failure, return Null.
+        /// <summary>
+        ///     Try to create a Mock for an object of type <paramref name="type" />.
+        ///     On failure, return Null.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="mockConstructorArgs"></param>
         /// <returns></returns>
         object CreateMockElseNull(Type type, params object[] mockConstructorArgs);
 
-        /// <summary>Try to create a Mock for an object of type <paramref name="type"/>.
-        /// On failure, throw an Exception.
+        /// <summary>
+        ///     Try to create a Mock for an object of type <paramref name="type" />.
+        ///     On failure, throw an Exception.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="mockConstructorArgs"></param>

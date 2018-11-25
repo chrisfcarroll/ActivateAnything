@@ -7,15 +7,18 @@ namespace ActivateAnything
     {
         /// <summary>
         ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" />
-        ///     and has no <see cref="SearchAnchor"/>.
+        ///     and has no <see cref="SearchAnchor" />.
         /// </summary>
         public static AnythingActivator Instance = FromDefaultRules();
 
+        /// <summary>Identical to <see cref="ActivateDefaultRules.AllDefaultRules" /> </summary>
+        public static IReadOnlyCollection<IActivateAnythingRule> DefaultRules => ActivateDefaultRules.AllDefaultRules;
+
         /// <summary>
         ///     Returns a new instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" />
-        ///     and has no <see cref="SearchAnchor"/>.
+        ///     and has no <see cref="SearchAnchor" />.
         /// </summary>
-        public static AnythingActivator FromDefaultRules() => new AnythingActivator(DefaultRules);
+        public static AnythingActivator FromDefaultRules() { return new AnythingActivator(DefaultRules); }
 
         /// <summary>
         ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" /> for its
@@ -24,12 +27,12 @@ namespace ActivateAnything
         /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use.</param>
         public static AnythingActivator FromAnchor(object searchAnchor)
         {
-            return new AnythingActivator(searchAnchor,DefaultRules);
+            return new AnythingActivator(searchAnchor, DefaultRules);
         }
 
         /// <summary>
-        ///     Returns a new instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules"/> then
-        ///     <see cref="DefaultRules" />, and has no <see cref="SearchAnchor"/>.
+        ///     Returns a new instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules" /> then
+        ///     <see cref="DefaultRules" />, and has no <see cref="SearchAnchor" />.
         /// </summary>
         public static AnythingActivator FromDefaultRulesAnd(params IActivateAnythingRule[] moreRules)
         {
@@ -38,13 +41,16 @@ namespace ActivateAnything
 
         /// <summary>
         ///     An instance of <see cref="AnythingActivator" /> which uses <see cref="DefaultRules" />
-        ///     and uses <paramref name="searchAnchor"/> as its <see cref="SearchAnchor"/>
+        ///     and uses <paramref name="searchAnchor" /> as its <see cref="SearchAnchor" />
         /// </summary>
-        public static AnythingActivator FromDefaultRules(object searchAnchor) => new AnythingActivator(searchAnchor,DefaultRules);
+        public static AnythingActivator FromDefaultRules(object searchAnchor)
+        {
+            return new AnythingActivator(searchAnchor, DefaultRules);
+        }
 
         /// <summary>
-        ///     An instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules"/> and
-        ///     <see cref="DefaultRules" />, and uses <paramref name="searchAnchor"/> as its <see cref="SearchAnchor"/>
+        ///     An instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules" /> and
+        ///     <see cref="DefaultRules" />, and uses <paramref name="searchAnchor" /> as its <see cref="SearchAnchor" />
         /// </summary>
         public static AnythingActivator FromDefaultRulesAnd(object searchAnchor, params IActivateAnythingRule[] moreRules)
         {
@@ -52,10 +58,10 @@ namespace ActivateAnything
         }
 
         /// <summary>
-        ///     An instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules"/> and then
-        ///     <see cref="DefaultRules" />, and uses <paramref name="searchAnchor"/> as its <see cref="SearchAnchor"/>
+        ///     An instance of <see cref="AnythingActivator" /> which uses <paramref name="moreRules" /> and then
+        ///     <see cref="DefaultRules" />, and uses <paramref name="searchAnchor" /> as its <see cref="SearchAnchor" />
         /// </summary>
-        public static AnythingActivator FromDefaultRulesAnd(object searchAnchor,IEnumerable<IActivateAnythingRule> moreRules)
+        public static AnythingActivator FromDefaultRulesAnd(object searchAnchor, IEnumerable<IActivateAnythingRule> moreRules)
         {
             return new AnythingActivator(searchAnchor, moreRules.Union(DefaultRules));
         }
@@ -74,13 +80,13 @@ namespace ActivateAnything
         public static AnythingActivator FromDefaultAndSearchAnchorRules(object searchAnchorAndRuleProvider)
         {
             return FromDefaultRulesAnd(
-                    searchAnchorAndRuleProvider,
-                    searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes());
+            searchAnchorAndRuleProvider,
+            searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes());
         }
 
         /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> using <paramref name="moreRules"/>, then using rules on
-        ///     <paramref name="searchAnchorAndRuleProvider" />, then using <see cref="DefaultRules"/>; and using 
+        ///     Create an <see cref="AnythingActivator" /> using <paramref name="moreRules" />, then using rules on
+        ///     <paramref name="searchAnchorAndRuleProvider" />, then using <see cref="DefaultRules" />; and using
         /// </summary>
         /// <param name="searchAnchorAndRuleProvider">
         ///     will be used as the <see cref="SearchAnchor" /> and as the sources of
@@ -88,33 +94,32 @@ namespace ActivateAnything
         /// </param>
         /// <param name="moreRules"></param>
         public static AnythingActivator FromDefaultAndSearchAnchorRulesAnd(
-                                            object searchAnchorAndRuleProvider, 
-                                            params IActivateAnythingRule[] moreRules)
+        object searchAnchorAndRuleProvider,
+        params IActivateAnythingRule[] moreRules)
         {
-            return new AnythingActivator(searchAnchorAndRuleProvider, 
-                            moreRules
-                                .Union(searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes())
-                                .Union(DefaultRules));
+            return new AnythingActivator(searchAnchorAndRuleProvider,
+            moreRules
+            .Union(searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes())
+            .Union(DefaultRules));
         }
 
         /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> using <paramref name="moreRules"/>, then using rules on
-        ///     <paramref name="searchAnchorAndRuleProvider" />, then using <see cref="DefaultRules"/>; and using 
+        ///     Create an <see cref="AnythingActivator" /> using <paramref name="moreRules" />, then using rules on
+        ///     <paramref name="searchAnchorAndRuleProvider" />, then using <see cref="DefaultRules" />; and using
         /// </summary>
         /// <param name="searchAnchorAndRuleProvider">
         ///     will be used as the <see cref="SearchAnchor" /> and as the sources of
         ///     <see cref="Rules" />
         /// </param>
         /// <param name="moreRules"></param>
-        public static AnythingActivator FromDefaultAndSearchAnchorRulesAnd(object searchAnchorAndRuleProvider,IEnumerable<IActivateAnythingRule> moreRules)
+        public static AnythingActivator FromDefaultAndSearchAnchorRulesAnd(
+        object searchAnchorAndRuleProvider,
+        IEnumerable<IActivateAnythingRule> moreRules)
         {
-            return new AnythingActivator(searchAnchorAndRuleProvider, 
-                moreRules
-                    .Union(searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes())
-                    .Union(DefaultRules));
+            return new AnythingActivator(searchAnchorAndRuleProvider,
+            moreRules
+            .Union(searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes())
+            .Union(DefaultRules));
         }
-
-        /// <summary>Identical to <see cref="ActivateDefaultRules.AllDefaultRules" /> </summary>
-        public static IReadOnlyCollection<IActivateAnythingRule> DefaultRules =>ActivateDefaultRules.AllDefaultRules;
     }
 }

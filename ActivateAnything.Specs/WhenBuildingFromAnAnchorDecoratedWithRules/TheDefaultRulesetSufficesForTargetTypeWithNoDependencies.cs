@@ -11,8 +11,8 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
         public void AndAABuildsRequestedType()
         {
             UnitUnderTest
-                .ShouldNotBeNull()
-                .ShouldBeAssignableTo<ClassWithDefaultConstructor>();
+            .ShouldNotBeNull()
+            .ShouldBeAssignableTo<ClassWithDefaultConstructor>();
         }
     }
 }

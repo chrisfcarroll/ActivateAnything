@@ -8,16 +8,16 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
     [ActivateDefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithAbstractDependencies :
-        TestBaseFor<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
-            INterfaceWithClassInNotReferencedAssembly>>
+    TestBaseFor<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
+    INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
         public void AACreatesAnInstance()
         {
             UnitUnderTest
-                .ShouldNotBeNull()
-                .ShouldBeAssignableTo<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly,
-                    INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>>();
+            .ShouldNotBeNull()
+            .ShouldBeAssignableTo<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly,
+            INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>>();
         }
 
         [Fact]

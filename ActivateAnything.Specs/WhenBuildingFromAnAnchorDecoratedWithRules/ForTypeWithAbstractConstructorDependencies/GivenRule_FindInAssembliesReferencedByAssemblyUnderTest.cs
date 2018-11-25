@@ -7,7 +7,7 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
 {
     [FindInAssembliesReferencedByAnchorAssembly]
     public class GivenRule_FindInAssembliesReferencedByAssemblyUnderTest : TestBaseFor<
-        ClassWith1ConstructorParam<INterfaceWithClassInReferencedAssembly>>
+    ClassWith1ConstructorParam<INterfaceWithClassInReferencedAssembly>>
     {
         [Fact]
         public void AAFindsConcreteTypeForInterfaceInReferencedAssemblies()

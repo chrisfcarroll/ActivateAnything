@@ -4,6 +4,5 @@ namespace ActivateAnything
 {
     public class Tree<T> : Dictionary<T, Tree<T>>
     {
-
     }
 }

@@ -7,7 +7,7 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
 {
     [FindInAssembly("TestCases.ANotReferencedAssembly")]
     public class GivenRule_FindInAssembly_And_NameOfAssemblyInBaseDirectory : TestBaseFor<
-        ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>
+    ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
         public void AAFindsConcreteTypeForInterfaceInNamedAssembly()
@@ -17,9 +17,9 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
             UnitUnderTest.ShouldBeAssignableTo<ClassWith1ConstructorParam<INterfaceWithClassInNotReferencedAssembly>>();
 
             UnitUnderTest
-                .Param1.GetType()
-                .Assembly.FullName
-                .ShouldStartWith("TestCases.ANotReferencedAssembly");
+            .Param1.GetType()
+            .Assembly.FullName
+            .ShouldStartWith("TestCases.ANotReferencedAssembly");
         }
     }
 }

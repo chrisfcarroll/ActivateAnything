@@ -7,8 +7,8 @@
     /// <typeparam name="T">The <see cref="System.Type" /> of the <see cref="UnitUnderTest" /></typeparam>
     public class TestBaseFor<T>
     {
-        protected internal T UnitUnderTest;
         protected readonly AnythingActivator Activator;
+        protected internal T UnitUnderTest;
 
         protected TestBaseFor()
         {
@@ -18,8 +18,8 @@
 
         protected TestBaseFor(params object[] useInstances)
         {
-            var instances= new ActivateInstances(useInstances);
-            Activator= AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(this, instances);
+            var instances = new ActivateInstances(useInstances);
+            Activator = AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(this, instances);
         }
     }
 }

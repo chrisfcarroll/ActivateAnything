@@ -18,28 +18,28 @@ namespace ActivateAnything
     {
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            Type type,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object getType = null)
+        Type type,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object getType = null)
         {
             return FindTypeAssignableTo(type,
-                typesWaitingToBeBuilt,
-                t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
+            typesWaitingToBeBuilt,
+            t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
         static Type FindTypeAssignableTo(Type type, IEnumerable<Type> typesWaitingToBeBuilt, Func<Type, bool> filterBy)
         {
             return type
-                .Assembly.GetTypes()
-                .Union((typesWaitingToBeBuilt ?? new Type[0]).SelectMany(t => t.Assembly.GetTypes()))
-                .FirstOrDefault(filterBy);
+            .Assembly.GetTypes()
+            .Union((typesWaitingToBeBuilt ?? new Type[0]).SelectMany(t => t.Assembly.GetTypes()))
+            .FirstOrDefault(filterBy);
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            string typeName,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object searchAnchor = null)
+        string typeName,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object searchAnchor = null)
         {
             throw new InvalidOperationException(GetType()
                                                 + " cannot find a a Type by name because 'AssemblyUnderTest' is taken to mean the assembly in which the target type is found.");

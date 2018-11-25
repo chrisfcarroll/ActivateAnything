@@ -72,7 +72,8 @@ For more tools focussed on cutting the cost of unit testing, see also:
 -   [TestBase.HttpClient.Fake](https://www.nuget.org/packages/TestBase.HttpClient.Fake)
 -   [Serilog.Sinks.ListOfString](https://www.nuget.org/packages/Serilog.Sinks.Listofstring)
 -   [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
-    <PackageReleaseNotes>ChangeLog
+    <PackageReleaseNotes>
+      ChangeLog
       ---------
       0.2.2 FixtureBase
       0.2.1 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
@@ -89,15 +90,24 @@ For more tools focussed on cutting the cost of unit testing, see also:
     <IncludeSymbols>true</IncludeSymbols>
     <PackageTags>activate;create;test;unittest;tdd;mock;fake;testbase;fixture;autofixture;automock;autofake</PackageTags>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <!-- When compiling .NET SDK 2.0 projects targeting .NET 4.x on Mono using 'dotnet build' you -->
     <!-- have to teach MSBuild where the Mono copy of the reference asssemblies is -->
     <TargetIsMono Condition="$(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix'">true</TargetIsMono>
     <!-- Look in the standard install locations -->
-    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/Library/Frameworks/Mono.framework/Versions/Current/lib/mono')">/Library/Frameworks/Mono.framework/Versions/Current/lib/mono</BaseFrameworkPathOverrideForMono>
-    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/lib/mono')">/usr/lib/mono</BaseFrameworkPathOverrideForMono>
-    <BaseFrameworkPathOverrideForMono Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/local/lib/mono')">/usr/local/lib/mono</BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono
+      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/Library/Frameworks/Mono.framework/Versions/Current/lib/mono')">
+      /Library/Frameworks/Mono.framework/Versions/Current/lib/mono
+    </BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono
+      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/lib/mono')">
+      /usr/lib/mono
+    </BaseFrameworkPathOverrideForMono>
+    <BaseFrameworkPathOverrideForMono
+      Condition="'$(BaseFrameworkPathOverrideForMono)' == '' AND '$(TargetIsMono)' == 'true' AND EXISTS('/usr/local/lib/mono')">
+      /usr/local/lib/mono
+    </BaseFrameworkPathOverrideForMono>
 
     <!-- If we found Mono reference assemblies, then use them -->
     <FrameworkPathOverride Condition="'$(BaseFrameworkPathOverrideForMono)' != '' AND '$(TargetFramework)' == 'net40'">$(BaseFrameworkPathOverrideForMono)/4.0-api</FrameworkPathOverride>
@@ -114,12 +124,12 @@ For more tools focussed on cutting the cost of unit testing, see also:
     <!-- Add the Facades directory.  Not sure how else to do this. Necessary at least for .NET 4.5 -->
     <AssemblySearchPaths Condition="'$(BaseFrameworkPathOverrideForMono)' != ''">$(FrameworkPathOverride)/Facades;$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Remove="FixtureExample.cs.md" />
     <None Remove="README.md" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Content Include="FixtureExample.cs.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

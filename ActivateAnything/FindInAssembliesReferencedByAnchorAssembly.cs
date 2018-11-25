@@ -34,51 +34,51 @@ namespace ActivateAnything
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            Type type,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object anchor = null)
+        Type type,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object anchor = null)
         {
             return anchor == null
-                ? null
-                : FindType(
-                    t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t),
-                    typesWaitingToBeBuilt,
-                    anchor.GetType()
-                );
+            ? null
+            : FindType(
+            t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t),
+            typesWaitingToBeBuilt,
+            anchor.GetType()
+            );
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-            string typeName,
-            IEnumerable<Type> typesWaitingToBeBuilt = null,
-            object anchor = null)
+        string typeName,
+        IEnumerable<Type> typesWaitingToBeBuilt = null,
+        object anchor = null)
         {
             return anchor == null
-                ? null
-                : FindType(
-                    t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName),
-                    typesWaitingToBeBuilt,
-                    anchor.GetType());
+            ? null
+            : FindType(
+            t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeName),
+            typesWaitingToBeBuilt,
+            anchor.GetType());
         }
 
         Type FindType(Func<Type, bool> filterBy, IEnumerable<Type> typesWaitingToBeBuilt, Type anchorType)
         {
             var typesFromWhichToSearch =
-                new[] {anchorType}
-                    .Union(typesWaitingToBeBuilt ?? new Type[0])
-                    .Where(x => x != null);
+            new[] {anchorType}
+            .Union(typesWaitingToBeBuilt ?? new Type[0])
+            .Where(x => x != null);
 
             var assembliesToIgnore = IgnoreAssembliesWhereNameStartsWith ?? DefaultAssembliesToIgnore.ByName;
 
             var assemblyNamesToSearch =
-                typesFromWhichToSearch
-                    .SelectMany(t => t.Assembly.GetReferencedAssemblies())
-                    .Where(a => !assembliesToIgnore.Any(n => a.FullName.StartsWith(n)));
+            typesFromWhichToSearch
+            .SelectMany(t => t.Assembly.GetReferencedAssemblies())
+            .Where(a => !assembliesToIgnore.Any(n => a.FullName.StartsWith(n)));
 
             var allTypesInReferencedAssemblies =
-                assemblyNamesToSearch
-                    .Select(name => Assembly.Load(name))
-                    .SelectMany(a => a.GetTypes());
+            assemblyNamesToSearch
+            .Select(name => Assembly.Load(name))
+            .SelectMany(a => a.GetTypes());
 
             return allTypesInReferencedAssemblies.Where(filterBy).FirstOrDefault();
         }

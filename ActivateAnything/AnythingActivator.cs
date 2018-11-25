@@ -35,18 +35,21 @@ namespace ActivateAnything
     /// </summary>
     public partial class AnythingActivator
     {
-        /// <summary>If the attempt to construct an instance recurses to this depth, recursion will stop
-        /// by returning (at the <see cref="RecursionLimit"/>th level) the result of evaluating
-        /// <see cref="RecursionLimitReturnFunc"/> 
+        /// <summary>
+        ///     If the attempt to construct an instance recurses to this depth, recursion will stop
+        ///     by returning (at the <see cref="RecursionLimit" />th level) the result of evaluating
+        ///     <see cref="RecursionLimitReturnFunc" />
         /// </summary>
         public int RecursionLimit { get; set; } = 99;
 
-        /// <summary>The function used to create an instance if the recursion depth of <see cref="New"/> reaches
-        /// <see cref="RecursionLimit"/>. Defaults to returning <c>default(T)</c> where typeof(T) is the
-        /// <see cref="Type"/> being constructed at the level of the recursion limit.
-        /// If you prefer that reaching the recursion limit should cause an Exception, then set this to throw.
+        /// <summary>
+        ///     The function used to create an instance if the recursion depth of <see cref="New" /> reaches
+        ///     <see cref="RecursionLimit" />. Defaults to returning <c>default(T)</c> where typeof(T) is the
+        ///     <see cref="Type" /> being constructed at the level of the recursion limit.
+        ///     If you prefer that reaching the recursion limit should cause an Exception, then set this to throw.
         /// </summary>
-        public Func<Type, IEnumerable<Type>, object, object> RecursionLimitReturnFunc = (type, types, anchor) => type.DefaultValue();
+        public Func<Type, IEnumerable<Type>, object, object> RecursionLimitReturnFunc =
+        (type, types, anchor) => type.DefaultValue();
 
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and no
@@ -89,7 +92,6 @@ namespace ActivateAnything
         ///     the <see cref="SearchAnchor" /> and also as the source <see cref="IActivateAnythingRule" />s.
         ///     Rules are obtained from the <see cref="Type.CustomAttributes" /> of
         ///     <paramref name="searchAnchorAndRuleProvider" />.
-        /// 
         ///     <seealso cref="TypeExtensions.GetActivateAnythingRuleAttributes" />
         /// </summary>
         /// <param name="searchAnchorAndRuleProvider">
@@ -100,7 +102,7 @@ namespace ActivateAnything
         {
             SearchAnchor = searchAnchorAndRuleProvider;
             Rules = (IReadOnlyCollection<IActivateAnythingRule>)
-                searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes();
+            searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes();
         }
 
         /// <summary>
@@ -135,15 +137,18 @@ namespace ActivateAnything
         /// </summary>
         public object SearchAnchor { get; }
 
-        /// <summary>After a call to <see cref="New"/>, this will contain a list of Exceptions, if any,
-        /// generated during the operation, keyed on the stack of <c>Type</c>s waiting to be built at
-        /// the point the <c>Exception</c> was raised.
+        /// <summary>
+        ///     After a call to <see cref="New" />, this will contain a list of Exceptions, if any,
+        ///     generated during the operation, keyed on the stack of <c>Type</c>s waiting to be built at
+        ///     the point the <c>Exception</c> was raised.
         /// </summary>
-        public List<KeyValuePair<ActivationInfo, Exception>> LastErrorList { get; private set; } = new List<KeyValuePair<ActivationInfo, Exception>>();
+        public List<KeyValuePair<ActivationInfo, Exception>> LastErrorList { get; private set; } =
+            new List<KeyValuePair<ActivationInfo, Exception>>();
 
-        /// <summary>After a call to <see cref="New"/>, this will contain a list of Exceptions, if any,
-        /// generated during the operation, keyed on the stack of <c>Type</c>s waiting to be built at
-        /// the point the <c>Exception</c> was raised.
+        /// <summary>
+        ///     After a call to <see cref="New" />, this will contain a list of Exceptions, if any,
+        ///     generated during the operation, keyed on the stack of <c>Type</c>s waiting to be built at
+        ///     the point the <c>Exception</c> was raised.
         /// </summary>
         public List<ActivationInfo> LastActivationTree { get; private set; } = new List<ActivationInfo>();
 
@@ -156,7 +161,7 @@ namespace ActivateAnything
         public T New<T>()
         {
             LastErrorList = new List<KeyValuePair<ActivationInfo, Exception>>();
-            LastActivationTree= new List<ActivationInfo>();
+            LastActivationTree = new List<ActivationInfo>();
             return (T) New(typeof(T), null);
         }
 
@@ -165,11 +170,11 @@ namespace ActivateAnything
         ///     and <see cref="SearchAnchor" />
         /// </summary>
         /// <param name="type">type</param>
-        /// <returns>An instance of type <paramref name="type"/></returns>
+        /// <returns>An instance of type <paramref name="type" /></returns>
         public object New(Type type)
         {
             LastErrorList = new List<KeyValuePair<ActivationInfo, Exception>>();
-            LastActivationTree= new List<ActivationInfo>();
+            LastActivationTree = new List<ActivationInfo>();
             return New(type, null);
         }
 
@@ -187,46 +192,44 @@ namespace ActivateAnything
         /// <returns>An instance of type <paramref name="type" /> if possible, <c>default(T)</c> if unable to construct one.</returns>
         object New(Type type, IEnumerable<Type> typesWaitingToBeBuilt)
         {
-            if (typesWaitingToBeBuilt?.Count() >= RecursionLimit){
-                return RecursionLimitReturnFunc(type, typesWaitingToBeBuilt,SearchAnchor);
-            }
+            if (typesWaitingToBeBuilt?.Count() >= RecursionLimit)
+                return RecursionLimitReturnFunc(type, typesWaitingToBeBuilt, SearchAnchor);
 
-            typesWaitingToBeBuilt = (typesWaitingToBeBuilt ?? new List<Type>()).Union(new[] {type});
+            typesWaitingToBeBuilt = (typesWaitingToBeBuilt ?? new List<Type>()).Union(type);
 
             var customRuleResult = Rules.OfType<IActivateInstanceRule>()
-                .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
-                .FirstOrDefault();
+            .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
+            .FirstOrDefault();
 
             var ainfo = new ActivationInfo {TypeStack = typesWaitingToBeBuilt};
             try
             {
                 if (customRuleResult != null)
                 {
-                    LastActivationTree.Add(ainfo=ActivationInfo.InstanceRule(typesWaitingToBeBuilt));
+                    LastActivationTree.Add(ainfo = ActivationInfo.InstanceRule(typesWaitingToBeBuilt));
                     return customRuleResult;
                 }
                 else if (type.IsAbstract || type.IsInterface)
                 {
                     ainfo = new ActivationInfo {How = "type.IsAbstract || type.IsInterface", TypeStack = typesWaitingToBeBuilt};
                     return New(
-                        TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
-                        typesWaitingToBeBuilt);
+                    TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
+                    typesWaitingToBeBuilt);
                 }
                 else if (type == typeof(string))
                 {
-                    LastActivationTree.Add(ainfo=ActivationInfo.ValueType(typesWaitingToBeBuilt));
-                    return "for"+typesWaitingToBeBuilt.Reverse().Skip(1).FirstOrDefault();
+                    LastActivationTree.Add(ainfo = ActivationInfo.ValueType(typesWaitingToBeBuilt));
+                    return "for" + typesWaitingToBeBuilt.Reverse().Skip(1).FirstOrDefault();
                 }
                 else if (type.IsValueType)
                 {
-                    LastActivationTree.Add(ainfo=ActivationInfo.ValueType(typesWaitingToBeBuilt));
+                    LastActivationTree.Add(ainfo = ActivationInfo.ValueType(typesWaitingToBeBuilt));
                     return Activator.CreateInstance(type);
                 }
-                else
-                    ainfo = new ActivationInfo {How = "InstanceFromConstructorRules", TypeStack = typesWaitingToBeBuilt};
-                    return InstanceFromConstructorRules(type, Rules, typesWaitingToBeBuilt, SearchAnchor);
-            } 
-            catch (Exception e)
+                else { ainfo = new ActivationInfo {How = "InstanceFromConstructorRules", TypeStack = typesWaitingToBeBuilt}; }
+
+                return InstanceFromConstructorRules(type, Rules, typesWaitingToBeBuilt, SearchAnchor);
+            } catch (Exception e)
             {
                 LastErrorList?.Add(new KeyValuePair<ActivationInfo, Exception>(ainfo, e));
                 return null;
@@ -248,7 +251,7 @@ namespace ActivateAnything
         ///         </item>
         ///         <item>
         ///             <see cref="IFindTypeRule" /> provides rules for where to look for candidate
-        ///             concrete subTypes of <paramref name="type"/>.
+        ///             concrete subTypes of <paramref name="type" />.
         ///         </item>
         ///         <item>
         ///             <see cref="IChooseConstructorRule" /> rules for how to choose between constructors when
@@ -271,15 +274,15 @@ namespace ActivateAnything
         /// </param>
         /// <returns>An instance of type <paramref name="type" /> if possible; default(Type) if unable to construct one.</returns>
         protected object InstanceFromConstructorRules(
-            Type type,
-            IEnumerable<IActivateAnythingRule> rules,
-            IEnumerable<Type> typesWaitingToBeBuilt,
-            object searchAnchor)
+        Type type,
+        IEnumerable<IActivateAnythingRule> rules,
+        IEnumerable<Type> typesWaitingToBeBuilt,
+        object searchAnchor)
         {
             var constructor = ChooseConstructor(type,
-                rules.OfType<IChooseConstructorRule>(),
-                typesWaitingToBeBuilt,
-                searchAnchor);
+            rules.OfType<IChooseConstructorRule>(),
+            typesWaitingToBeBuilt,
+            searchAnchor);
 
             if (constructor == null)
             {
@@ -290,13 +293,13 @@ namespace ActivateAnything
             else if (constructor.GetParameters().Length == 0 && constructor.IsPublic)
             {
                 var instance = Activator.CreateInstance(type);
-                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt,constructor));
+                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt, constructor));
                 return instance;
             }
             else if (constructor.GetParameters().Length == 0 && !constructor.IsPublic)
             {
-                var instance = Activator.CreateInstance(type,true);
-                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt,constructor));
+                var instance = Activator.CreateInstance(type, true);
+                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt, constructor));
                 return instance;
             }
             else
@@ -304,14 +307,14 @@ namespace ActivateAnything
                 var bindingFlags = constructor.IsPublic ? BindingFlags.Public : BindingFlags.NonPublic;
                 bindingFlags |= BindingFlags.Instance;
                 var pars = constructor.GetParameters()
-                    .Select(p => 
-                            typesWaitingToBeBuilt.Contains(p.ParameterType) && p.IsOptional
-                                ? p.ParameterType.DefaultValue()
-                                : New(p.ParameterType, typesWaitingToBeBuilt)
-                        )
-                    .ToArray();
+                .Select(p =>
+                typesWaitingToBeBuilt.Contains(p.ParameterType) && p.IsOptional
+                ? p.ParameterType.DefaultValue()
+                : New(p.ParameterType, typesWaitingToBeBuilt)
+                )
+                .ToArray();
                 var instance = constructor.Invoke(bindingFlags, null, pars, CultureInfo.CurrentCulture);
-                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt,constructor, pars));
+                LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt, constructor, pars));
                 return instance;
             }
         }
@@ -342,15 +345,15 @@ namespace ActivateAnything
         /// <returns>An instance of type <paramref name="type" /> if possible, default(Type) if unable to construct one.</returns>
         /// <returns>An <see cref="ConstructorInfo" /> for type <paramref name="type" /></returns>
         protected internal ConstructorInfo ChooseConstructor(
-            Type type,
-            IEnumerable<IChooseConstructorRule> chooseConstructorRules,
-            IEnumerable<Type> typesWaitingToBeBuilt,
-            object searchAnchor)
+        Type type,
+        IEnumerable<IChooseConstructorRule> chooseConstructorRules,
+        IEnumerable<Type> typesWaitingToBeBuilt,
+        object searchAnchor)
         {
             var possibleConstructors = chooseConstructorRules
-                .Union(new[] {new ConstructorWithFewestParametersRule{PreferPublic = false}})
-                .Select(r => r.ChooseConstructor(type, typesWaitingToBeBuilt, searchAnchor));
-            var chosenConstructor = possibleConstructors.FirstOrDefault(r=>r!=null);
+            .Union(new ConstructorWithFewestParametersRule {PreferPublic = false})
+            .Select(r => r.ChooseConstructor(type, typesWaitingToBeBuilt, searchAnchor));
+            var chosenConstructor = possibleConstructors.FirstOrDefault(r => r != null);
             return chosenConstructor;
         }
 #pragma warning restore 1591
