@@ -41,10 +41,10 @@ namespace ActivateAnything
         public static T New<T>() { return new AnythingActivator(DefaultRules.All).New<T>(); }
 
         /// <summary>
-        ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="DefaultRules.All" />
+        ///     Creates an instance of something assignable to <paramref name="type" /> using <see cref="DefaultRules.All" />
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
+        /// <param name="type"></param>
+        /// <returns>An instance of type <paramref name="type" /> if possible, <c>default(T)</c>,where typeof(T)=type, if unable to construct one</returns>
         public static object New(Type type) { return new AnythingActivator(DefaultRules.All).New(type); }
 
         /// <summary>

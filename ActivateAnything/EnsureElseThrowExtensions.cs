@@ -37,7 +37,7 @@ namespace ActivateAnything
 
         /// <summary>
         ///     Throw an <c>Exception</c> with <paramref name="failureMessage" /> if
-        ///     <paramref name="@this" /> is Null
+        ///     <paramref name="this" /> is Null
         /// </summary>
         /// <param name="this"></param>
         /// <param name="failureMessage"></param>
@@ -50,7 +50,7 @@ namespace ActivateAnything
             return @this;
         }
 
-        /// <summary>Throw <paramref name="failureException" /> if<paramref name="@this" /> is Null</summary>
+        /// <summary>Throw <paramref name="failureException" /> if<paramref name="this" /> is Null</summary>
         /// <param name="this"></param>
         /// <param name="failureException"></param>
         /// <typeparam name="T"></typeparam>

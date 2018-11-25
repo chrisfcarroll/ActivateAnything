@@ -121,18 +121,11 @@ namespace ActivateAnything
         /// </summary>
         /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
         /// <param name="rules">The <see cref="Rules" /></param>
-        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <param name="andUseDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
         /// <paramref name="rules"/></param>
         public AnythingActivator(IEnumerable<object> instances,
                                  IEnumerable<IActivateAnythingRule> rules, 
-                                 bool andDefaultRules = true)
-        {
-            Instances = (instances ?? new List<object>()).ToList();
-            rules.EnsureNotNull(new ArgumentNullException("rules"));
-            Rules = andDefaultRules
-                    ? rules.Union(DefaultRules.All).ToList()
-                    : rules.ToList();
-        }
+                                 bool andUseDefaultRules = true):this(null,instances,rules,andUseDefaultRules){}
 
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> with
@@ -144,17 +137,10 @@ namespace ActivateAnything
         ///     </list>
         /// </summary>
         /// <param name="rules">The <see cref="Rules" /></param>
-        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <param name="andUseDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
         /// <paramref name="rules"/></param>
         public AnythingActivator(IEnumerable<IActivateAnythingRule> rules, 
-                                 bool andDefaultRules = true)
-        {
-            Instances = new List<object>();
-            rules.EnsureNotNull(new ArgumentNullException("rules"));
-            Rules = andDefaultRules
-                    ? rules.Union(DefaultRules.All).ToList()
-                    : rules.ToList();
-        }
+                                 bool andUseDefaultRules = true):this(null, null,rules,andUseDefaultRules){}
 
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> with
@@ -167,11 +153,11 @@ namespace ActivateAnything
         /// </summary>
         /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
         /// <param name="rules">The <see cref="Rules" /></param>
-        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <param name="andUseDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
         /// <paramref name="rules"/></param>
         public AnythingActivator(IEnumerable<object> instances, 
-                                 bool andDefaultRules = true, 
-                                 params IActivateAnythingRule[] rules):this(instances,rules,andDefaultRules){}
+                                 bool andUseDefaultRules = true, 
+                                 params IActivateAnythingRule[] rules):this(null,instances,rules,andUseDefaultRules){}
 
         /// <summary>
         ///     Create an <see cref="AnythingActivator" /> with
@@ -187,21 +173,21 @@ namespace ActivateAnything
         /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use. Any <see cref="IActivateAnythingRule"/>s
         /// which decorate <paramref name="searchAnchor"/> will also be discovered and used</param>
         /// <param name="rules"><see cref="Rules" /> to use.</param>
-        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <param name="andUseDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
         /// <paramref name="rules"/></param>
         public AnythingActivator(object searchAnchor, 
                                  IEnumerable<object> instances = null, 
                                  IEnumerable<IActivateAnythingRule> rules = null, 
-                                 bool andDefaultRules = true)
+                                 bool andUseDefaultRules = true)
         {
-            Instances = (instances ?? new List<object>()).ToList();
             SearchAnchor = searchAnchor;
+            Instances = (instances ?? new List<object>()).ToList();
             var givenRules = rules??new IActivateAnythingRule[0];
             if (searchAnchor != null)
             {
                 givenRules = givenRules.Union(searchAnchor.GetType().GetActivateAnythingRuleAttributes());
             }
-            Rules = andDefaultRules
+            Rules = andUseDefaultRules
                     ? givenRules.Union(DefaultRules.All).ToList()
                     : givenRules.ToList();
         }
@@ -220,12 +206,12 @@ namespace ActivateAnything
         /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use. Any <see cref="IActivateAnythingRule"/>s
         /// which decorate <paramref name="searchAnchor"/> will also be discovered and used</param>
         /// <param name="rules"><see cref="Rules" /> to use.</param>
-        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <param name="andUseDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
         /// <paramref name="rules"/></param>
         public AnythingActivator(object searchAnchor, 
                                  IEnumerable<object> instances = null, 
-                                 bool andDefaultRules = true, 
-                                 params IActivateAnythingRule[] rules) : this(searchAnchor,instances,rules,andDefaultRules){}
+                                 bool andUseDefaultRules = true, 
+                                 params IActivateAnythingRule[] rules) : this(searchAnchor,instances,rules,andUseDefaultRules){}
         
         /// <summary>
         ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="Rules" />

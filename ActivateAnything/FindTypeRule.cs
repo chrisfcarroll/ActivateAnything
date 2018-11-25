@@ -5,7 +5,7 @@ namespace ActivateAnything
 {
     /// <summary>
     ///     <para>
-    ///         Attributes inheriting from this class will be used as rules by <see cref="Construct" />/>
+    ///         Attributes inheriting from this class will be used as rules by an <see cref="AnythingActivator" />
     ///         when constructing a concrete instance
     ///     </para>
     ///     Rules inheriting from <see cref="IFindTypeRule" /> are concerned
@@ -34,7 +34,7 @@ namespace ActivateAnything
         /// <param name="searchAnchor"></param>
         /// <returns>
         ///     <list type="table">
-        ///         <item>A concrete <see cref="Type" /> which is assignable to <see cref="type" />.</item>
+        ///         <item>A concrete <see cref="Type" /> which is assignable to <paramref name="type"/>.</item>
         ///         <item>Returns null if the rule can identify no suitable <see cref="Type" />.</item>
         ///     </list>
         /// </returns>

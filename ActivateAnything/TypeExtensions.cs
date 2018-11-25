@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace ActivateAnything
 {
+    /// <summary>Extensions for <see cref="Type"/></summary>
     public static class TypeExtensions
     {
         /// <summary>

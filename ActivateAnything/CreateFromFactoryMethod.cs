@@ -48,7 +48,7 @@ namespace ActivateAnything
 
         /// <summary>
         ///     Specifies a factory method which can create an instance of the <paramref name="targetType" />.
-        ///     The method must exist on the <c>searchAnchor</c> object passed to <see cref="CreateInstance.Of" /> when building.
+        ///     The method must exist on the <see cref="AnythingActivator.SearchAnchor"/> using this rule.
         ///     For example, the <see cref="CreateFromFactoryMethod" /> may decorate a TestFixture class which provides
         ///     itself as the <c>searchAnchor</c>.
         /// </summary>
@@ -66,8 +66,8 @@ namespace ActivateAnything
         }
 
         /// <summary>
-        ///     Called from <see cref="CreateInstance.Of(Type, IEnumerable{IActivateAnythingRule}, IEnumerable{Type}, object)" />
-        ///     to construct an instance of Type <paramref name="type" />
+        ///     Returns an instance assignable to <paramref name="type"/> if this <see cref="CreateFromFactoryMethod"/> has
+        ///     a factory method able to construct an instance of Type <paramref name="type" />
         /// </summary>
         /// <param name="type">the Type to be instantiated</param>
         /// <param name="typesWaitingToBeBuilt">

@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace ActivateAnything
 {
+    /// <summary>IEnumerable&lt;T&gt; Extensions</summary>
     public static class EnumerableExtensions
     {
         /// <summary>Returns <paramref name="right" />.<see cref="Enumerable.Union{TSource}" />(<paramref name="left" />)</summary>

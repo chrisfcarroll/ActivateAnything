@@ -32,8 +32,8 @@ namespace ActivateAnything
 
         /// <summary>
         ///     A veto to prevent infinite recursion. The default rule for veto is,
-        ///     “Do not choose a <see cref="ConstructorInfo" /> which as one of its <see cref="MethodBase.GetParameters" />
-        ///     requires a <c>Type</c> that is already in the stack of <c>Type</c> waiting to be built.”
+        ///     ï¿½Do not choose a <see cref="ConstructorInfo" /> which as one of its <see cref="MethodBase.GetParameters" />
+        ///     requires a <c>Type</c> that is already in the stack of <c>Type</c> waiting to be built.ï¿½
         /// </summary>
         protected bool VetoCircularDependency(IEnumerable<Type> typesWaitingToBeBuilt, ConstructorInfo constructor)
         {

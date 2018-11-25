@@ -24,10 +24,14 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var rules = new[] {new CreateFromFactoryMethod(typeof(AClass), "BuildMethodNameWhichDoesntExist")};
             //
             Assert.Throws<InvalidOperationException>(
-                                                     () => new AnythingActivator(rules).New<AClass>()
+                                                     () => new AnythingActivator(rules,andUseDefaultRules:false).New<AClass>()
                                                     );
             Assert.Throws<InvalidOperationException>(
-                                                     () => new AnythingActivator(this, rules)
+                                                     () => new AnythingActivator(
+                                                                                 this, 
+                                                                                 instances:null, 
+                                                                                 rules:rules, 
+                                                                                 andUseDefaultRules:false)
                                                     .New<AClass>()
                                                     );
         }

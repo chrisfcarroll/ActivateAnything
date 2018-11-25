@@ -4,6 +4,8 @@ using System.Linq;
 
 namespace ActivateAnything
 {
+    /// <summary>A static class which applies a sequence of <see cref="IActivateAnythingRule"/> to obtain an object
+    ///  assignable to a <see cref="Type"/></summary>
     public static class TypeFinder
     {
         /// <summary>
