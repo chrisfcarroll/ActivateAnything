@@ -13,8 +13,8 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var moq = new FindInAssembly("Moq").FindTypeAssignableTo("Mock`1");
             //
             Assert.That(moq,
-            Is.NotNull,
-            "Didn't find a known mock framework (i.e. Moq) in Base Directory, can't test mocking.");
+                        Is.NotNull,
+                        "Didn't find a known mock framework (i.e. Moq) in Base Directory, can't test mocking.");
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
             new AnythingActivator(new CreateFromMock(typeof(INterface)))
-            .New<ClassWith1ConstructorParam<INterface>>();
+           .New<ClassWith1ConstructorParam<INterface>>();
             //
             Assert.That(result.Param1, x => CreateFromMock.IsAKnownMock(x));
         }

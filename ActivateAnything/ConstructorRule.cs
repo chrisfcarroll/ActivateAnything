@@ -26,9 +26,9 @@ namespace ActivateAnything
         /// <param name="searchAnchor"></param>
         /// <returns></returns>
         public abstract ConstructorInfo ChooseConstructor(
-        Type type,
-        IEnumerable<Type> typesWaitingToBeBuilt,
-        object searchAnchor = null);
+            Type              type,
+            IEnumerable<Type> typesWaitingToBeBuilt,
+            object            searchAnchor = null);
 
         /// <summary>
         ///     A veto to prevent infinite recursion. The default rule for veto is,
@@ -38,8 +38,8 @@ namespace ActivateAnything
         protected bool VetoCircularDependency(IEnumerable<Type> typesWaitingToBeBuilt, ConstructorInfo constructor)
         {
             return !constructor
-            .GetParameters()
-            .Any(p => typesWaitingToBeBuilt.Contains(p.ParameterType) && !p.IsOptional);
+                   .GetParameters()
+                   .Any(p => typesWaitingToBeBuilt.Contains(p.ParameterType) && !p.IsOptional);
         }
     }
 }

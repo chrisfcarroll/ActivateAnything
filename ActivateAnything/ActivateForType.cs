@@ -22,8 +22,8 @@ namespace ActivateAnything
         public object CreateInstance(Type type, IEnumerable<Type> typesWaitingToBeBuilt, object searchAnchor = null)
         {
             return type.IsAssignableFrom(typeof(T))
-            ? (object) value
-            : null;
+                   ? (object) value
+                   : null;
         }
     }
 }

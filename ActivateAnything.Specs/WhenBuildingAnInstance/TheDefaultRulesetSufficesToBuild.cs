@@ -14,11 +14,11 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         [InlineData(typeof(ClassWithDefaultConstructor))]
         [InlineData(typeof(ClassWith1ConstructorParam<ClassWithDefaultConstructor>))]
         [InlineData(
-        typeof(ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
-        INterfaceWithClassInNotReferencedAssembly>))]
+            typeof(ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
+                INterfaceWithClassInNotReferencedAssembly>))]
         public void AType(Type type)
         {
-            var result = AnythingActivator.Instance.New(type);
+            var result = Activate.New(type);
             //
             type.ShouldBe(result.GetType());
         }
@@ -27,10 +27,10 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         public void AndToGetConstructorDependenciesRight()
         {
             var
-            result = AnythingActivator.Instance.New<ClassWith3ConstructorParams
-            <INterfaceWithClassInSameAssembly,
-            INterfaceWithFakeInTestAssembly,
-            INterfaceWithClassInNotReferencedAssembly>>();
+            result = Activate.New<ClassWith3ConstructorParams
+                <INterfaceWithClassInSameAssembly,
+                    INterfaceWithFakeInTestAssembly,
+                    INterfaceWithClassInNotReferencedAssembly>>();
 
             result.ShouldNotBeNull();
             result.Param1.ShouldNotBeNull();

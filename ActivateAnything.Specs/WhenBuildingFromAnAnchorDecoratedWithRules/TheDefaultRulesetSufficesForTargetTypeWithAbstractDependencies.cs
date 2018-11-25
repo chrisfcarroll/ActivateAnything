@@ -6,18 +6,18 @@ using Assert = TestBase.Assert;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
-    [ActivateDefaultRules]
+    [DefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithAbstractDependencies :
     TestBaseFor<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly, INterfaceWithFakeInTestAssembly,
-    INterfaceWithClassInNotReferencedAssembly>>
+        INterfaceWithClassInNotReferencedAssembly>>
     {
         [Fact]
         public void AACreatesAnInstance()
         {
             UnitUnderTest
-            .ShouldNotBeNull()
-            .ShouldBeAssignableTo<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly,
-            INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>>();
+           .ShouldNotBeNull()
+           .ShouldBeAssignableTo<ClassWith3ConstructorParams<INterfaceWithClassInSameAssembly,
+                INterfaceWithFakeInTestAssembly, INterfaceWithClassInNotReferencedAssembly>>();
         }
 
         [Fact]

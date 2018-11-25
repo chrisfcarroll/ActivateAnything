@@ -20,8 +20,8 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var myObject = new AClass();
             var result =
-            new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject)))
-            .New<AClass>();
+            new AnythingActivator(DefaultRules.All.After(new ActivateInstances(myObject)))
+           .New<AClass>();
             //
             Assert.That(myObject == result);
         }
@@ -33,7 +33,7 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var myString = "String!";
 
             //
-            var uut = new AnythingActivator(AnythingActivator.DefaultRules.After(new ActivateInstances(myObject, myString)));
+            var uut     = new AnythingActivator(DefaultRules.All.After(new ActivateInstances(myObject, myString)));
             var result1 = uut.New<Func<AClass>>();
             var result2 = uut.New<Func<string>>();
 
@@ -52,9 +52,9 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
             new AnythingActivator(
-            ActivateDefaultRules.AllDefaultRules
-            .After(new ActivateInstances("ACustomString")))
-            .New<string>();
+                                  DefaultRules.All
+                                              .After(new ActivateInstances("ACustomString")))
+           .New<string>();
             //
             result.ShouldBe("ACustomString");
         }

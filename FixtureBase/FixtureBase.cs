@@ -24,7 +24,7 @@ namespace FixtureBase
         protected FixtureBase()
         {
             Instances.CollectionChanged += (sender, args) => activateIsStale = true;
-            Rules.CollectionChanged += (sender, args) => activateIsStale = true;
+            Rules.CollectionChanged     += (sender, args) => activateIsStale = true;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace FixtureBase
         ///         </item>
         ///         <item>Any <see cref="IActivateAnythingRule" />s decorating <c>this</c> as <c>Attributes</c></item>
         ///         <item>
-        ///             <see cref="AnythingActivator.DefaultRules" />
+        ///             <see cref="DefaultRules.All" />
         ///         </item>
         ///     </list>
         ///     in that order.
@@ -74,9 +74,12 @@ namespace FixtureBase
                         {
                             var rules =
                             Rules
-                            .After(new ActivateInstances(Instances.ToArray()));
+                           .After(new ActivateInstances(Instances.ToArray()));
 
-                            activator = AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(this, rules);
+                            activator = new AnythingActivator(this,
+                                                              rules
+                                                             .Union(GetType().GetActivateAnythingRuleAttributes())
+                                                             .Union(DefaultRules.All));
                             activateIsStale = false;
                         }
                     }
@@ -112,7 +115,7 @@ namespace FixtureBase
         protected FixtureBaseFor()
         {
             Instances.CollectionChanged += (sender, args) => uutIsStale = true;
-            Rules.CollectionChanged += (sender, args) => uutIsStale = true;
+            Rules.CollectionChanged     += (sender, args) => uutIsStale = true;
         }
 
         /// <summary>
@@ -127,7 +130,7 @@ namespace FixtureBase
         ///         </item>
         ///         <item>Any <see cref="IActivateAnythingRule" />s decorating <c>this</c> as <c>Attributes</c></item>
         ///         <item>
-        ///             <see cref="AnythingActivator.DefaultRules" />
+        ///             <see cref="DefaultRules.All" />
         ///         </item>
         ///     </list>
         ///     in that order.
@@ -143,7 +146,7 @@ namespace FixtureBase
                     {
                         if (uutIsStale || uut == null)
                         {
-                            uut = Activator.New<T>();
+                            uut        = Activator.New<T>();
                             uutIsStale = false;
                         }
                     }

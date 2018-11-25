@@ -17,8 +17,8 @@ namespace ActivateAnything
         public static IEnumerable<IActivateAnythingRule> GetActivateAnythingRuleAttributes(this Type typeWithAttributes)
         {
             return typeWithAttributes
-            .GetCustomAttributes(typeof(IActivateAnythingRule), true)
-            .Cast<IActivateAnythingRule>();
+                  .GetCustomAttributes(typeof(IActivateAnythingRule), true)
+                  .Cast<IActivateAnythingRule>();
         }
 
         /// <summary>Returns <c>default(T)</c> where typeof(T) is <paramref name="type" /></summary>

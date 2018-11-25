@@ -16,9 +16,9 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
             var myObject = new AClass();
             var result =
             new AnythingActivator(
-            ActivateDefaultRules.AllDefaultRules
-            .Union(new ActivateForType<AClass>(myObject)))
-            .New<AClass>();
+                                  DefaultRules.All
+                                              .Union(new ActivateForType<AClass>(myObject)))
+           .New<AClass>();
             //
             Assert.That(myObject == result);
         }
@@ -28,9 +28,9 @@ namespace ActivateAnything.Specs.WhenBuildingAnInstance
         {
             var result =
             new AnythingActivator(
-            ActivateDefaultRules.AllDefaultRules
-            .Union(new ActivateForType<string>("ACustomString")))
-            .New<string>();
+                                  DefaultRules.All
+                                              .Union(new ActivateForType<string>("ACustomString")))
+           .New<string>();
             //
             result.ShouldBe("ACustomString");
         }

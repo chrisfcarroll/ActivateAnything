@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace ActivateAnything
 {
-#pragma warning disable 1591
+    #pragma warning disable 1591
     /// <summary>A struct recording information about an activation done by <see cref="AnythingActivator" /></summary>
     public struct ActivationInfo
     {
@@ -23,44 +23,44 @@ namespace ActivateAnything
         public static ActivationInfo InstanceRule(IEnumerable<Type> typeStack)
         {
             return new ActivationInfo
-            {
-            How = "ActivateInstanceRule",
-            TypeStack = typeStack,
-            ConstructorInfo = null,
-            Parameters = null
-            };
+                   {
+                   How             = "ActivateInstanceRule",
+                   TypeStack       = typeStack,
+                   ConstructorInfo = null,
+                   Parameters      = null
+                   };
         }
 
         public static ActivationInfo ValueType(IEnumerable<Type> typeStack)
         {
             return new ActivationInfo
-            {
-            How = "ValueType",
-            TypeStack = typeStack,
-            ConstructorInfo = null,
-            Parameters = null
-            };
+                   {
+                   How             = "ValueType",
+                   TypeStack       = typeStack,
+                   ConstructorInfo = null,
+                   Parameters      = null
+                   };
         }
 
         public static ActivationInfo Constructed(
-        IEnumerable<Type> typeStack,
-        ConstructorInfo constructorInfo,
-        params object[] parameters)
+            IEnumerable<Type> typeStack,
+            ConstructorInfo   constructorInfo,
+            params object[]   parameters)
         {
             return new ActivationInfo
-            {
-            How = "Constructed",
-            TypeStack = typeStack,
-            ConstructorInfo = constructorInfo,
-            Parameters = parameters?.Select(p => p?.ToString()).ToArray() ?? new string[0]
-            };
+                   {
+                   How             = "Constructed",
+                   TypeStack       = typeStack,
+                   ConstructorInfo = constructorInfo,
+                   Parameters      = parameters?.Select(p => p?.ToString()).ToArray() ?? new string[0]
+                   };
         }
 
         public string ToString(ActivationInfoFormat format)
         {
             switch (format)
             {
-                case 0: return ToString(abbreviateTypePrefixesBeginningWith: null);
+                case 0:                                 return ToString(abbreviateTypePrefixesBeginningWith: null);
                 case ActivationInfoFormat.TypeFullName: return ToString();
                 case ActivationInfoFormat.TypeAssemblyQualifiedName:
                 default:
@@ -71,7 +71,7 @@ namespace ActivateAnything
         public override string ToString()
         {
             var parameters = Parameters == null ? "()" : "( " + string.Join(",", Parameters) + " )";
-            var typeStack = TypeStack == null ? "[]" : "[" + string.Join("->", TypeStack) + " ]";
+            var typeStack  = TypeStack  == null ? "[]" : "[" + string.Join("->", TypeStack)  + " ]";
 
             return $"({How} {typeStack} {ConstructorInfo}{parameters})";
         }
@@ -87,8 +87,8 @@ namespace ActivateAnything
         {
             var parameters = Parameters == null ? "()" : "( " + string.Join(",", Parameters) + " )";
             var typeStack = TypeStack == null
-            ? "[]"
-            : "[" + string.Join("->", TypeStack.Select(formatTypeNames)) + " ]";
+                            ? "[]"
+                            : "[" + string.Join("->", TypeStack.Select(formatTypeNames)) + " ]";
 
             return $"({How} {typeStack} {ConstructorInfo}{parameters})";
         }
@@ -96,12 +96,12 @@ namespace ActivateAnything
         public static ActivationInfo NoConstructor(IEnumerable<Type> typesWaitingToBeBuilt)
         {
             return new ActivationInfo
-            {
-            How = "System.Activator",
-            TypeStack = typesWaitingToBeBuilt,
-            ConstructorInfo = null,
-            Parameters = null
-            };
+                   {
+                   How             = "System.Activator",
+                   TypeStack       = typesWaitingToBeBuilt,
+                   ConstructorInfo = null,
+                   Parameters      = null
+                   };
         }
     }
 
@@ -111,5 +111,5 @@ namespace ActivateAnything
         TypeFullName = 1,
         TypeAssemblyQualifiedName = 2
     }
-#pragma warning restore 1591
+    #pragma warning restore 1591
 }

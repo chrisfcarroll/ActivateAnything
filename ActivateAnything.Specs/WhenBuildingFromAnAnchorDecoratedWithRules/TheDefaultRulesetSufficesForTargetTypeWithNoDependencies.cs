@@ -4,15 +4,15 @@ using Xunit;
 
 namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules
 {
-    [ActivateDefaultRules]
+    [DefaultRules]
     public class TheDefaultRulesetSufficesForTargetTypeWithNoDependencies : TestBaseFor<ClassWithDefaultConstructor>
     {
         [Fact]
         public void AndAABuildsRequestedType()
         {
             UnitUnderTest
-            .ShouldNotBeNull()
-            .ShouldBeAssignableTo<ClassWithDefaultConstructor>();
+           .ShouldNotBeNull()
+           .ShouldBeAssignableTo<ClassWithDefaultConstructor>();
         }
     }
 }

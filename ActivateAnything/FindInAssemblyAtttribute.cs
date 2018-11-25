@@ -23,30 +23,30 @@ namespace ActivateAnything
         public FindInAssembly(string assemblyName)
         {
             this.assemblyName = assemblyName;
-            filter = t => !t.IsAbstract && !t.IsInterface;
+            filter            = t => !t.IsAbstract && !t.IsInterface;
         }
 
         /// <inheritdoc />
         protected FindInAssembly(string assemblyName, Func<Type, bool> filter)
         {
             this.assemblyName = assemblyName;
-            this.filter = filter;
+            this.filter       = filter;
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-        Type type,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object testFixtureType = null)
+            Type              type,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            testFixtureType       = null)
         {
             return FindTypeAssignableTo(t => filter(t) && type.IsAssignableFrom(t));
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-        string typeName,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object searchAnchor = null)
+            string            typeName,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            searchAnchor          = null)
         {
             return FindTypeAssignableTo(t => filter(t) && t.FullName.EndsWith(typeName));
         }
@@ -68,15 +68,20 @@ namespace ActivateAnything
         Type FindBestMatchFromAssembliesInBaseDirectory(Func<Type, bool> filterBy)
         {
             var possibleAssembliesInApplicationBase = BaseDirectory.EnumerateFiles(assemblyName + ".dll")
-            .Union(BaseDirectory.EnumerateFiles(assemblyName + ".exe"))
-            .OrderByDescending(a => a.FullName.Length);
+                                                                   .Union(BaseDirectory.EnumerateFiles(assemblyName + ".exe"))
+                                                                   .OrderByDescending(a => a.FullName.Length);
             //Assembly name can contain wildcards 
             var allTypesInBaseDirectory = possibleAssembliesInApplicationBase.Select(a =>
-            {
-                try { return Assembly.Load(Path.GetFileNameWithoutExtension(a.Name)); } catch { return null; }
-            })
-            .Where(a => a != null)
-            .SelectMany(a => a.GetTypes());
+                                                                                     {
+                                                                                         try
+                                                                                         {
+                                                                                             return Assembly
+                                                                                            .Load(Path
+                                                                                                 .GetFileNameWithoutExtension(a.Name));
+                                                                                         } catch { return null; }
+                                                                                     })
+                                                                             .Where(a => a != null)
+                                                                             .SelectMany(a => a.GetTypes());
             var relevantTypes = allTypesInBaseDirectory.Where(filterBy);
             return relevantTypes.FirstOrDefault();
         }

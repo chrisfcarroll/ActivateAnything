@@ -4,11 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-#if NET45
-#elif NET40
-#endif
-
-
 namespace ActivateAnything
 {
     /// <summary>
@@ -33,78 +28,8 @@ namespace ActivateAnything
     ///         </item>
     ///     </list>
     /// </summary>
-    public partial class AnythingActivator
+    public class AnythingActivator
     {
-        /// <summary>
-        ///     If the attempt to construct an instance recurses to this depth, recursion will stop
-        ///     by returning (at the <see cref="RecursionLimit" />th level) the result of evaluating
-        ///     <see cref="RecursionLimitReturnFunc" />
-        /// </summary>
-        public int RecursionLimit { get; set; } = 99;
-
-        /// <summary>
-        ///     The function used to create an instance if the recursion depth of <see cref="New" /> reaches
-        ///     <see cref="RecursionLimit" />. Defaults to returning <c>default(T)</c> where typeof(T) is the
-        ///     <see cref="Type" /> being constructed at the level of the recursion limit.
-        ///     If you prefer that reaching the recursion limit should cause an Exception, then set this to throw.
-        /// </summary>
-        public Func<Type, IEnumerable<Type>, object, object> RecursionLimitReturnFunc =
-        (type, types, anchor) => type.DefaultValue();
-
-        /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and no
-        ///     <see cref="SearchAnchor" />.
-        /// </summary>
-        /// <param name="rules">The <see cref="Rules" /></param>
-        public AnythingActivator(IEnumerable<IActivateAnythingRule> rules = null) { Rules = rules?.ToArray() ?? DefaultRules; }
-
-        /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and no
-        ///     <see cref="SearchAnchor" />.
-        /// </summary>
-        /// <param name="rules">The <see cref="Rules" /></param>
-        public AnythingActivator(params IActivateAnythingRule[] rules) { Rules = rules ?? DefaultRules; }
-
-        /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and <see cref="SearchAnchor" />.
-        /// </summary>
-        /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use.</param>
-        /// <param name="rules">The <see cref="Rules" /></param>
-        public AnythingActivator(object searchAnchor, IEnumerable<IActivateAnythingRule> rules = null)
-        {
-            SearchAnchor = searchAnchor;
-            Rules = rules?.ToArray() ?? DefaultRules;
-        }
-
-        /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> with the given <see cref="Rules" /> and <see cref="SearchAnchor" />.
-        /// </summary>
-        /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use.</param>
-        /// <param name="rules">The <see cref="Rules" /></param>
-        public AnythingActivator(object searchAnchor, params IActivateAnythingRule[] rules)
-        {
-            SearchAnchor = searchAnchor;
-            Rules = rules;
-        }
-
-        /// <summary>
-        ///     Create an <see cref="AnythingActivator" /> using <paramref name="searchAnchorAndRuleProvider" /> as
-        ///     the <see cref="SearchAnchor" /> and also as the source <see cref="IActivateAnythingRule" />s.
-        ///     Rules are obtained from the <see cref="Type.CustomAttributes" /> of
-        ///     <paramref name="searchAnchorAndRuleProvider" />.
-        ///     <seealso cref="TypeExtensions.GetActivateAnythingRuleAttributes" />
-        /// </summary>
-        /// <param name="searchAnchorAndRuleProvider">
-        ///     will be used as the <see cref="SearchAnchor" /> and as the sources of
-        ///     <see cref="Rules" />
-        /// </param>
-        public AnythingActivator(object searchAnchorAndRuleProvider)
-        {
-            SearchAnchor = searchAnchorAndRuleProvider;
-            Rules = (IReadOnlyCollection<IActivateAnythingRule>)
-            searchAnchorAndRuleProvider.GetType().GetActivateAnythingRuleAttributes();
-        }
-
         /// <summary>
         ///     Each <see cref="IActivateAnythingRule" /> guides the choices needed to activate an instance of a type,
         ///     and, transitively, the dependencies, if any, of the type.
@@ -124,8 +49,15 @@ namespace ActivateAnything
         ///         </item>
         ///     </list>
         /// </summary>
-        public IReadOnlyCollection<IActivateAnythingRule> Rules { get; }
+        public List<IActivateAnythingRule> Rules { get; }
 
+        /// <summary>Existing instances which you give to the <see cref="AnythingActivator"/>.  Whenever an 
+        /// instance of a Type is required, whether directly or as a dependency, if it can be fulfilled from
+        /// one of these instances then the first matching instance will be used.
+        /// <see cref="Instances"/> take precedence over <see cref="Rules"/>, including any other
+        /// <see cref="IActivateInstanceRule"/> in the <see cref="Rules"/>.
+        /// </summary>
+        public List<object> Instances {get; }
 
         /// <summary>
         ///     An object used by some <see cref="Rules" />, especially, <see cref="IFindTypeRule" />
@@ -153,6 +85,149 @@ namespace ActivateAnything
         public List<ActivationInfo> LastActivationTree { get; private set; } = new List<ActivationInfo>();
 
         /// <summary>
+        ///     If the attempt to construct an instance recurses to this depth, recursion will stop
+        ///     by returning (at the <see cref="RecursionLimit" />th level) the result of evaluating
+        ///     <see cref="RecursionLimitReturnFunc" />
+        /// </summary>
+        public int RecursionLimit { get; set; } = 99;
+
+        /// <summary>
+        ///     The function used to create an instance if the recursion depth of <see cref="New" /> reaches
+        ///     <see cref="RecursionLimit" />. Defaults to returning <c>default(T)</c> where typeof(T) is the
+        ///     <see cref="Type" /> being constructed at the level of the recursion limit.
+        ///     If you prefer that reaching the recursion limit should cause an Exception, then set this to throw.
+        /// </summary>
+        public Func<Type, IEnumerable<Type>, object, object> RecursionLimitReturnFunc =
+                (type, types, anchor) => type.DefaultValue();
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The default Rules <see cref="DefaultRules.All" /></item>
+        ///         <item>No Instances</item>
+        ///         <item>No SearchAnchor</item>
+        ///     </list>
+        /// </summary>
+        public AnythingActivator() { Rules = new List<IActivateAnythingRule>(DefaultRules.All); }
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The given <paramref name="rules"/>, optionally followed by the default rules
+        ///               <see cref="DefaultRules.All" />.</item>
+        ///         <item>The given <paramref name="instances"/></item>
+        ///         <item>No SearchAnchor</item>
+        ///     </list>
+        /// </summary>
+        /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
+        /// <param name="rules">The <see cref="Rules" /></param>
+        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <paramref name="rules"/></param>
+        public AnythingActivator(IEnumerable<object> instances,
+                                 IEnumerable<IActivateAnythingRule> rules, 
+                                 bool andDefaultRules = true)
+        {
+            Instances = (instances ?? new List<object>()).ToList();
+            rules.EnsureNotNull(new ArgumentNullException("rules"));
+            Rules = andDefaultRules
+                    ? rules.Union(DefaultRules.All).ToList()
+                    : rules.ToList();
+        }
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The given <paramref name="rules"/>, optionally followed by the default rules
+        ///               <see cref="DefaultRules.All" />.</item>
+        ///         <item>No Instances</item>
+        ///         <item>No SearchAnchor</item>
+        ///     </list>
+        /// </summary>
+        /// <param name="rules">The <see cref="Rules" /></param>
+        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <paramref name="rules"/></param>
+        public AnythingActivator(IEnumerable<IActivateAnythingRule> rules, 
+                                 bool andDefaultRules = true)
+        {
+            Instances = new List<object>();
+            rules.EnsureNotNull(new ArgumentNullException("rules"));
+            Rules = andDefaultRules
+                    ? rules.Union(DefaultRules.All).ToList()
+                    : rules.ToList();
+        }
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The given <paramref name="rules"/>, optionally followed by the default rules
+        ///               <see cref="DefaultRules.All" />.</item>
+        ///         <item>The given <paramref name="instances"/></item>
+        ///         <item>No SearchAnchor</item>
+        ///     </list>
+        /// </summary>
+        /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
+        /// <param name="rules">The <see cref="Rules" /></param>
+        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <paramref name="rules"/></param>
+        public AnythingActivator(IEnumerable<object> instances, 
+                                 bool andDefaultRules = true, 
+                                 params IActivateAnythingRule[] rules):this(instances,rules,andDefaultRules){}
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The given <paramref name="rules"/>, followed by any <see cref="IActivateAnythingRule"/>s found
+        ///         on the <paramref name="searchAnchor"/>, optionally followed by the default rules
+        ///         <see cref="DefaultRules.All" />.</item>
+        ///         <item>The given <paramref name="instances"/></item>
+        ///         <item><paramref name="searchAnchor"/> as the <see cref="SearchAnchor"/>.</item>
+        ///     </list>
+        /// </summary>
+        /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
+        /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use. Any <see cref="IActivateAnythingRule"/>s
+        /// which decorate <paramref name="searchAnchor"/> will also be discovered and used</param>
+        /// <param name="rules"><see cref="Rules" /> to use.</param>
+        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <paramref name="rules"/></param>
+        public AnythingActivator(object searchAnchor, 
+                                 IEnumerable<object> instances = null, 
+                                 IEnumerable<IActivateAnythingRule> rules = null, 
+                                 bool andDefaultRules = true)
+        {
+            Instances = (instances ?? new List<object>()).ToList();
+            SearchAnchor = searchAnchor;
+            var givenRules = rules??new IActivateAnythingRule[0];
+            if (searchAnchor != null)
+            {
+                givenRules = givenRules.Union(searchAnchor.GetType().GetActivateAnythingRuleAttributes());
+            }
+            Rules = andDefaultRules
+                    ? givenRules.Union(DefaultRules.All).ToList()
+                    : givenRules.ToList();
+        }
+
+        /// <summary>
+        ///     Create an <see cref="AnythingActivator" /> with
+        ///     <list type="bullet">
+        ///         <item>The given <paramref name="rules"/>, followed by any <see cref="IActivateAnythingRule"/>s found
+        ///         on the <paramref name="searchAnchor"/>, optionally followed by the default rules
+        ///         <see cref="DefaultRules.All" />.</item>
+        ///         <item>The given <paramref name="instances"/></item>
+        ///         <item><paramref name="searchAnchor"/> as the <see cref="SearchAnchor"/>.</item>
+        ///     </list>
+        /// </summary>
+        /// <param name="instances">The <see cref="Instances"/> to prefer when searching for an instance of a Type.</param>
+        /// <param name="searchAnchor">The <see cref="SearchAnchor" /> to use. Any <see cref="IActivateAnythingRule"/>s
+        /// which decorate <paramref name="searchAnchor"/> will also be discovered and used</param>
+        /// <param name="rules"><see cref="Rules" /> to use.</param>
+        /// <param name="andDefaultRules">If <c>true</c> then append <see cref="DefaultRules.All"/> to
+        /// <paramref name="rules"/></param>
+        public AnythingActivator(object searchAnchor, 
+                                 IEnumerable<object> instances = null, 
+                                 bool andDefaultRules = true, 
+                                 params IActivateAnythingRule[] rules) : this(searchAnchor,instances,rules,andDefaultRules){}
+        
+        /// <summary>
         ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="Rules" />
         ///     and <see cref="SearchAnchor" />
         /// </summary>
@@ -160,7 +235,7 @@ namespace ActivateAnything
         /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
         public T New<T>()
         {
-            LastErrorList = new List<KeyValuePair<ActivationInfo, Exception>>();
+            LastErrorList      = new List<KeyValuePair<ActivationInfo, Exception>>();
             LastActivationTree = new List<ActivationInfo>();
             return (T) New(typeof(T), null);
         }
@@ -173,7 +248,7 @@ namespace ActivateAnything
         /// <returns>An instance of type <paramref name="type" /></returns>
         public object New(Type type)
         {
-            LastErrorList = new List<KeyValuePair<ActivationInfo, Exception>>();
+            LastErrorList      = new List<KeyValuePair<ActivationInfo, Exception>>();
             LastActivationTree = new List<ActivationInfo>();
             return New(type, null);
         }
@@ -198,8 +273,8 @@ namespace ActivateAnything
             typesWaitingToBeBuilt = (typesWaitingToBeBuilt ?? new List<Type>()).Union(type);
 
             var customRuleResult = Rules.OfType<IActivateInstanceRule>()
-            .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
-            .FirstOrDefault();
+                                        .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
+                                        .FirstOrDefault();
 
             var ainfo = new ActivationInfo {TypeStack = typesWaitingToBeBuilt};
             try
@@ -213,8 +288,8 @@ namespace ActivateAnything
                 {
                     ainfo = new ActivationInfo {How = "type.IsAbstract || type.IsInterface", TypeStack = typesWaitingToBeBuilt};
                     return New(
-                    TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
-                    typesWaitingToBeBuilt);
+                               TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
+                               typesWaitingToBeBuilt);
                 }
                 else if (type == typeof(string))
                 {
@@ -274,15 +349,15 @@ namespace ActivateAnything
         /// </param>
         /// <returns>An instance of type <paramref name="type" /> if possible; default(Type) if unable to construct one.</returns>
         protected object InstanceFromConstructorRules(
-        Type type,
-        IEnumerable<IActivateAnythingRule> rules,
-        IEnumerable<Type> typesWaitingToBeBuilt,
-        object searchAnchor)
+            Type                               type,
+            IEnumerable<IActivateAnythingRule> rules,
+            IEnumerable<Type>                  typesWaitingToBeBuilt,
+            object                             searchAnchor)
         {
             var constructor = ChooseConstructor(type,
-            rules.OfType<IChooseConstructorRule>(),
-            typesWaitingToBeBuilt,
-            searchAnchor);
+                                                rules.OfType<IChooseConstructorRule>(),
+                                                typesWaitingToBeBuilt,
+                                                searchAnchor);
 
             if (constructor == null)
             {
@@ -307,12 +382,12 @@ namespace ActivateAnything
                 var bindingFlags = constructor.IsPublic ? BindingFlags.Public : BindingFlags.NonPublic;
                 bindingFlags |= BindingFlags.Instance;
                 var pars = constructor.GetParameters()
-                .Select(p =>
-                typesWaitingToBeBuilt.Contains(p.ParameterType) && p.IsOptional
-                ? p.ParameterType.DefaultValue()
-                : New(p.ParameterType, typesWaitingToBeBuilt)
-                )
-                .ToArray();
+                                      .Select(p =>
+                                              typesWaitingToBeBuilt.Contains(p.ParameterType) && p.IsOptional
+                                              ? p.ParameterType.DefaultValue()
+                                              : New(p.ParameterType, typesWaitingToBeBuilt)
+                                             )
+                                      .ToArray();
                 var instance = constructor.Invoke(bindingFlags, null, pars, CultureInfo.CurrentCulture);
                 LastActivationTree.Add(ActivationInfo.Constructed(typesWaitingToBeBuilt, constructor, pars));
                 return instance;
@@ -345,17 +420,16 @@ namespace ActivateAnything
         /// <returns>An instance of type <paramref name="type" /> if possible, default(Type) if unable to construct one.</returns>
         /// <returns>An <see cref="ConstructorInfo" /> for type <paramref name="type" /></returns>
         protected internal ConstructorInfo ChooseConstructor(
-        Type type,
-        IEnumerable<IChooseConstructorRule> chooseConstructorRules,
-        IEnumerable<Type> typesWaitingToBeBuilt,
-        object searchAnchor)
+            Type                                type,
+            IEnumerable<IChooseConstructorRule> chooseConstructorRules,
+            IEnumerable<Type>                   typesWaitingToBeBuilt,
+            object                              searchAnchor)
         {
             var possibleConstructors = chooseConstructorRules
-            .Union(new ConstructorWithFewestParametersRule {PreferPublic = false})
-            .Select(r => r.ChooseConstructor(type, typesWaitingToBeBuilt, searchAnchor));
+                                      .Union(new ConstructorWithFewestParametersRule {PreferPublic = false})
+                                      .Select(r => r.ChooseConstructor(type, typesWaitingToBeBuilt, searchAnchor));
             var chosenConstructor = possibleConstructors.FirstOrDefault(r => r != null);
             return chosenConstructor;
         }
-#pragma warning restore 1591
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace ActivateAnything
@@ -33,12 +34,18 @@ namespace ActivateAnything
     public static class Activate
     {
         /// <summary>
-        ///     Creates an instance of something assignable to <typeparamref name="T" /> using
-        ///     <see cref="AnythingActivator.DefaultRules" />
+        ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="DefaultRules.All" />
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
-        public static T New<T>() { return AnythingActivator.Instance.New<T>(); }
+        public static T New<T>() { return new AnythingActivator(DefaultRules.All).New<T>(); }
+
+        /// <summary>
+        ///     Creates an instance of something assignable to <typeparamref name="T" /> using <see cref="DefaultRules.All" />
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
+        public static object New(Type type) { return new AnythingActivator(DefaultRules.All).New(type); }
 
         /// <summary>
         /// </summary>
@@ -51,12 +58,12 @@ namespace ActivateAnything
         /// </param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T New<T>(object searchAnchor) { return AnythingActivator.FromDefaultRules(searchAnchor).New<T>(); }
+        public static T New<T>(object searchAnchor) { return new AnythingActivator(searchAnchor, DefaultRules.All).New<T>(); }
 
         /// <summary>
         ///     Creates an instance of something assignable to <typeparamref name="T" /> using rules found
         ///     on <paramref name="searchAnchor" />, then <paramref name="moreRules" />, then
-        ///     <see cref="AnythingActivator.DefaultRules" />
+        ///     <see cref="DefaultRules.All" />
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="searchAnchor">
@@ -70,19 +77,21 @@ namespace ActivateAnything
         /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
         public static T FromDefaultRulesAnd<T>(object searchAnchor, params IActivateAnythingRule[] moreRules)
         {
-            return AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(searchAnchor, moreRules).New<T>();
+            return new AnythingActivator(searchAnchor,
+                                         moreRules.Union(searchAnchor.GetType().GetActivateAnythingRuleAttributes())
+                                                  .Union(DefaultRules.All)).New<T>();
         }
 
         /// <summary>
         ///     Creates an instance of something assignable to <typeparamref name="T" /> using
-        ///     <paramref name="moreRules" /> then <see cref="AnythingActivator.DefaultRules" />
+        ///     <paramref name="moreRules" /> then <see cref="DefaultRules.All" />
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="moreRules">Rules to override the default <see cref="AnythingActivator.Rules" /></param>
         /// <returns>An instance of type <typeparamref name="T" /> if possible, <c>default(T)</c> if unable to construct one</returns>
         public static T FromDefaultRulesAnd<T>(params IActivateAnythingRule[] moreRules)
         {
-            return AnythingActivator.FromDefaultRulesAnd(moreRules).New<T>();
+            return new AnythingActivator(moreRules.Union(DefaultRules.All)).New<T>();
         }
     }
 }

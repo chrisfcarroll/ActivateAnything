@@ -25,7 +25,7 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
     }
 
     public class GivenTargetTypeWithDependencyOnTypeWithItself1ConstructorDependency : TestBaseFor<
-    ClassWith1ConstructorParam<ClassWith1ConstructorParam<string>>>
+        ClassWith1ConstructorParam<ClassWith1ConstructorParam<string>>>
     {
         [Fact]
         public void AAInstantiatesIt()

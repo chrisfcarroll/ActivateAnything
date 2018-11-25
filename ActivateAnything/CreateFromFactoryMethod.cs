@@ -34,15 +34,15 @@ namespace ActivateAnything
         /// </param>
         /// <param name="args">any arguments needed for the factory method</param>
         public CreateFromFactoryMethod(
-        Type targetType,
-        Type factoryClass,
-        string factoryMethodName,
-        params object[] args)
+            Type            targetType,
+            Type            factoryClass,
+            string          factoryMethodName,
+            params object[] args)
         {
-            this.targetType = targetType;
-            this.factoryClass = factoryClass;
+            this.targetType        = targetType;
+            this.factoryClass      = factoryClass;
             this.factoryMethodName = factoryMethodName;
-            this.args = args;
+            this.args              = args;
             if (factoryClass != null) EnsureFactoryMethodElseThrow(factoryClass, null);
         }
 
@@ -59,9 +59,9 @@ namespace ActivateAnything
         /// <param name="args">any arguments needed for the factory method</param>
         public CreateFromFactoryMethod(Type targetType, string factoryMethodName, params object[] args)
         {
-            this.targetType = targetType;
+            this.targetType        = targetType;
             this.factoryMethodName = factoryMethodName;
-            this.args = args;
+            this.args              = args;
             if (factoryClass != null) EnsureFactoryMethodElseThrow(factoryClass, null);
         }
 
@@ -87,19 +87,19 @@ namespace ActivateAnything
             //
             if (factoryClass == null && searchAnchor == null)
                 throw new InvalidOperationException("You called CreateFromFactoryMethod.CreateInstance() without "
-                                                    + "specifying a Type for the Factory. Either specify a Type in the CreateFromFactoryMethod constructor, "
-                                                    + "or use an AnythingActivator with a searchAnchor which declares a factoryMethod.");
+                                                  + "specifying a Type for the Factory. Either specify a Type in the CreateFromFactoryMethod constructor, "
+                                                  + "or use an AnythingActivator with a searchAnchor which declares a factoryMethod.");
             //
             var factory = searchAnchor
-                          ?? new AnythingActivator(
-                          ActivateDefaultRules.DefaultFindConcreteTypeRuleSequence
-                          .Union(
-                          (IEnumerable<IActivateAnythingRule>)
-                          new[]
-                          {
-                          new ConstructorWithFewestParametersRule()
-                          }
-                          )).New(factoryClass);
+                       ?? new AnythingActivator(
+                                                DefaultRules.DefaultFindConcreteTypeRuleSequence
+                                                            .Union(
+                                                                   (IEnumerable<IActivateAnythingRule>)
+                                                                   new[]
+                                                                   {
+                                                                   new ConstructorWithFewestParametersRule()
+                                                                   }
+                                                                  )).New(factoryClass);
             //nb if the factory method is static, then it's okay for factory to be null.
 
             var factoryClassToUse = factory == null ? factoryClass : factory.GetType();
@@ -115,19 +115,19 @@ namespace ActivateAnything
             //
             if (m == null)
                 throw new InvalidOperationException(
-                string.Format(MethodNotFoundFormat,
-                targetType,
-                factoryClass,
-                factoryMethodName,
-                searchAnchor,
-                factoryClassToUse));
+                                                    string.Format(MethodNotFoundFormat,
+                                                                  targetType,
+                                                                  factoryClass,
+                                                                  factoryMethodName,
+                                                                  searchAnchor,
+                                                                  factoryClassToUse));
             if (!m.ReturnType.IsAssignableFrom(targetType))
                 throw new ArgumentOutOfRangeException(targetType.FullName,
-                string.Format(ReturnTypeNotAssignableToTargetFormat,
-                targetType,
-                factoryClassToUse,
-                factoryMethodName,
-                m.ReturnType));
+                                                      string.Format(ReturnTypeNotAssignableToTargetFormat,
+                                                                    targetType,
+                                                                    factoryClassToUse,
+                                                                    factoryMethodName,
+                                                                    m.ReturnType));
             return m;
         }
     }

@@ -14,15 +14,15 @@ namespace ActivateAnything
         /// <param name="searchAnchor"></param>
         /// <returns>A <see cref="Type" />, if one is founnd or null if not.</returns>
         public static Type FindConcreteTypeAssignableTo(
-        Type type,
-        IEnumerable<IActivateAnythingRule> rules,
-        IEnumerable<Type> typesWaitingToBeBuilt,
-        object searchAnchor)
+            Type                               type,
+            IEnumerable<IActivateAnythingRule> rules,
+            IEnumerable<Type>                  typesWaitingToBeBuilt,
+            object                             searchAnchor)
         {
             var result = rules
-            .OfType<IFindTypeRule>()
-            .Select(r => r.FindTypeAssignableTo(type, typesWaitingToBeBuilt, searchAnchor))
-            .FirstOrDefault(t => t != null);
+                        .OfType<IFindTypeRule>()
+                        .Select(r => r.FindTypeAssignableTo(type, typesWaitingToBeBuilt, searchAnchor))
+                        .FirstOrDefault(t => t != null);
             return result;
         }
     }

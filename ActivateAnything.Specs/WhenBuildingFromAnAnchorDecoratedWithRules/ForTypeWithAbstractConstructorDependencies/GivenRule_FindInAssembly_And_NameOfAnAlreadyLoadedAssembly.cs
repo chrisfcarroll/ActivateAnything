@@ -6,7 +6,7 @@ namespace ActivateAnything.Specs.WhenBuildingFromAnAnchorDecoratedWithRules.ForT
 {
     [FindInAssembly("ActivateAnything.Specs")]
     public class GivenRule_FindInAssembly_And_NameOfAnAlreadyLoadedAssembly : TestBaseFor<
-    ClassWith1ConstructorParam<INterfaceWithFakeInTestAssembly>>
+        ClassWith1ConstructorParam<INterfaceWithFakeInTestAssembly>>
     {
         [Fact]
         public void AAFindsConcreteTypeForInterfaceInNamedAssembly()

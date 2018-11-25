@@ -4,7 +4,7 @@ namespace ActivateAnything.Specs
 {
     public class TestTimeDependencyAttribute : FactAttribute
     {
-        public TestTimeDependencyAttribute() { DisplayName = "[TestTime Dependency]"; }
+        public TestTimeDependencyAttribute() { DisplayName              = "[TestTime Dependency]"; }
         public TestTimeDependencyAttribute(string detail) { DisplayName = $"[TestTime Dependency:{detail}]"; }
     }
 }

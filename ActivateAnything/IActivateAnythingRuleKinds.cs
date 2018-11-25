@@ -39,8 +39,8 @@ namespace ActivateAnything
     public interface IFindTypeByNameRule : IActivateAnythingRule
     {
         Type FindTypeAssignableTo(
-        string typeNameEndingWith,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object searchAnchor = null);
+            string            typeNameEndingWith,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            searchAnchor          = null);
     }
 }

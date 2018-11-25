@@ -12,14 +12,17 @@
 
         protected TestBaseFor()
         {
-            Activator = new AnythingActivator(this);
+            Activator     = new AnythingActivator(this);
             UnitUnderTest = Activator.New<T>();
         }
 
         protected TestBaseFor(params object[] useInstances)
         {
             var instances = new ActivateInstances(useInstances);
-            Activator = AnythingActivator.FromDefaultAndSearchAnchorRulesAnd(this, instances);
+            var rules = DefaultRules.All
+                                    .After(this.GetType().GetActivateAnythingRuleAttributes())
+                                    .After(instances);
+            Activator = new AnythingActivator(this,rules);
         }
     }
 }

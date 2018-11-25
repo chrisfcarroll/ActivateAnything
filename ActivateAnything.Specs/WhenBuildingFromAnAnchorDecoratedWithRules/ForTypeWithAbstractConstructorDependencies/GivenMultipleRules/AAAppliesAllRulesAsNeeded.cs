@@ -15,10 +15,10 @@ GivenMultipleRules
     public class AAAppliesAllRulesAsNeeded :
     TestBaseFor
     <ClassWith4ConstructorParams
-    <INterfaceWithClassInSameAssembly,
-    INterfaceWithFakeInTestAssembly,
-    INterfaceWithClassInNotReferencedAssembly,
-    ICloneable>>
+        <INterfaceWithClassInSameAssembly,
+            INterfaceWithFakeInTestAssembly,
+            INterfaceWithClassInNotReferencedAssembly,
+            ICloneable>>
     {
         [Fact]
         public void AndBuildsRequestedType()
@@ -26,10 +26,10 @@ GivenMultipleRules
             UnitUnderTest.ShouldNotBeNull();
             UnitUnderTest.ShouldBeAssignableTo
             <ClassWith4ConstructorParams
-            <INterfaceWithClassInSameAssembly,
-            INterfaceWithFakeInTestAssembly,
-            INterfaceWithClassInNotReferencedAssembly,
-            ICloneable>>();
+                <INterfaceWithClassInSameAssembly,
+                    INterfaceWithFakeInTestAssembly,
+                    INterfaceWithClassInNotReferencedAssembly,
+                    ICloneable>>();
         }
 
         [Fact]

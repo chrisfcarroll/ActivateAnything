@@ -22,13 +22,13 @@ namespace ActivateAnything
         public CreateFromMock(Type typeToMock, params object[] mockConstructorArgs)
         {
             this.mockConstructorArgs = mockConstructorArgs;
-            typesToMock = new[] {typeToMock};
+            typesToMock              = new[] {typeToMock};
         }
 
         /// <inheritdoc />
         public CreateFromMock(params Type[] typesToMock)
         {
-            this.typesToMock = typesToMock;
+            this.typesToMock    = typesToMock;
             mockConstructorArgs = new object[0];
         }
 
@@ -40,7 +40,7 @@ namespace ActivateAnything
         /// <param name="mockConstructorArgs"></param>
         public CreateFromMock(Type[] typesToMock, params object[] mockConstructorArgs)
         {
-            this.typesToMock = typesToMock;
+            this.typesToMock         = typesToMock;
             this.mockConstructorArgs = mockConstructorArgs;
         }
 
@@ -76,8 +76,8 @@ namespace ActivateAnything
         public static bool IsAKnownMock(object value)
         {
             return KnownMockingLibraryAdapters
-            .OfType<IMockingAdapterInspections>()
-            .Any(m => m.IsThisMyMockObject(value));
+                  .OfType<IMockingAdapterInspections>()
+                  .Any(m => m.IsThisMyMockObject(value));
         }
 
         void EnsureMockingLibraryAdapter() { MockingAdapter = MockingAdapter ?? MoqMocker.Instance; }

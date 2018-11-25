@@ -33,8 +33,8 @@ namespace FixtureBase.Specs
         {
             var contentFromService = "IGotThis!";
             HttpClient
-            .Setup(m => true)
-            .Returns(new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(contentFromService)});
+           .Setup(m => true)
+           .Returns(new HttpResponseMessage(HttpStatusCode.OK) {Content = new StringContent(contentFromService)});
 
             (await UnitUnderTest.GetHttp()).ShouldBe(contentFromService);
 
@@ -56,15 +56,15 @@ namespace FixtureBase.Specs
         public void UUTreturnsDataFromDbQuery()
         {
             var dataToReturn = new[]
-            {
-            new Datum {Id = 11, Name = "cell 1,2"},
-            new Datum {Id = 21, Name = "cell 2,2"}
-            };
+                               {
+                               new Datum {Id = 11, Name = "cell 1,2"},
+                               new Datum {Id = 21, Name = "cell 2,2"}
+                               };
             Db.SetUpForQuery(dataToReturn, new[] {"Id", "Name"});
 
             UnitUnderTest
-            .FromDbIdAndNames()
-            .ShouldEqualByValue(dataToReturn);
+           .FromDbIdAndNames()
+           .ShouldEqualByValue(dataToReturn);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace FixtureBase.Specs
 
     public class Datum
     {
-        public int Id { get; set; }
+        public int    Id   { get; set; }
         public string Name { get; set; }
     }
 
@@ -126,12 +126,12 @@ namespace FixtureBase.Specs
 
     public interface IServiceRequiringDBandHttp
     {
-        Task<bool> PutHttp(string name);
+        Task<bool>   PutHttp(string name);
         Task<string> GetHttpAsync();
-        List<Datum> GetFromDbIdAndNames();
-        List<int> GetFromDb();
+        List<Datum>  GetFromDbIdAndNames();
+        List<int>    GetFromDb();
         List<string> GetFromDbStrings();
-        bool InsertDb(Datum newDatum);
+        bool         InsertDb(Datum newDatum);
     }
 
     class AServiceRequiringDBandHttp : IServiceRequiringDBandHttp
@@ -141,7 +141,7 @@ namespace FixtureBase.Specs
 
         public AServiceRequiringDBandHttp(IDbConnection db, HttpClient httpClient)
         {
-            this.db = db;
+            this.db         = db;
             this.httpClient = httpClient;
         }
 

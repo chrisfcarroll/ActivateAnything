@@ -13,21 +13,21 @@ namespace ActivateAnything
     {
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-        Type type,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object testFixtureType = null)
+            Type              type,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            testFixtureType       = null)
         {
             return FindTypeAssignableTo(testFixtureType, t => !t.IsAbstract && !t.IsInterface && type.IsAssignableFrom(t));
         }
 
         /// <inheritdoc />
         public override Type FindTypeAssignableTo(
-        string typeNameRightPart,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object searchAnchor = null)
+            string            typeNameRightPart,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            searchAnchor          = null)
         {
             return FindTypeAssignableTo(searchAnchor,
-            t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeNameRightPart));
+                                        t => !t.IsAbstract && !t.IsInterface && t.FullName.EndsWith(typeNameRightPart));
         }
 
         static Type FindTypeAssignableTo(object testFixtureType, Func<Type, bool> filterBy)

@@ -39,18 +39,18 @@ namespace ActivateAnything
         object CreateFactory(Type type)
         {
             if (AlsoReturnFuncOfType
-                && type.IsConstructedGenericType
-                && type.GetGenericTypeDefinition() == typeof(Func<>)
-                && type.GetGenericArguments().Length == 1)
+             && type.IsConstructedGenericType
+             && type.GetGenericTypeDefinition()   == typeof(Func<>)
+             && type.GetGenericArguments().Length == 1)
             {
                 var targetType = type.GetGenericArguments()[0];
-                var instance = Instances.FirstOrDefault(targetType.IsInstanceOfType);
+                var instance   = Instances.FirstOrDefault(targetType.IsInstanceOfType);
                 if (instance != null)
                 {
-                    var funcTyped = typeof(Func<>).MakeGenericType(targetType);
-                    var wrappedType = typeof(TypeWrapper<>).MakeGenericType(targetType);
-                    var constructor = wrappedType.GetConstructor(new[] {typeof(object)});
-                    var wrapper = constructor.Invoke(new[] {instance});
+                    var funcTyped      = typeof(Func<>).MakeGenericType(targetType);
+                    var wrappedType    = typeof(TypeWrapper<>).MakeGenericType(targetType);
+                    var constructor    = wrappedType.GetConstructor(new[] {typeof(object)});
+                    var wrapper        = constructor.Invoke(new[] {instance});
                     var instanceMethod = wrapper.GetType().GetMethod("Instance", BindingFlags.Public | BindingFlags.Instance);
                     return Delegate.CreateDelegate(funcTyped, wrapper, instanceMethod);
                 }

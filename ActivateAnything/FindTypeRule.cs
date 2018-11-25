@@ -13,14 +13,14 @@ namespace ActivateAnything
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public abstract class FindTypeRule : Attribute,
-    IFindTypeRule,
-    IFindTypeByNameRule
+                                         IFindTypeRule,
+                                         IFindTypeByNameRule
     {
         /// <inheritdoc />
         public abstract Type FindTypeAssignableTo(
-        string typeName,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object searchAnchor = null);
+            string            typeName,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            searchAnchor          = null);
 
         /// <summary>
         ///     Implementing subclasses should attempt to find a concrete type, assignable to <paramref name="type" /> by
@@ -39,8 +39,8 @@ namespace ActivateAnything
         ///     </list>
         /// </returns>
         public abstract Type FindTypeAssignableTo(
-        Type type,
-        IEnumerable<Type> typesWaitingToBeBuilt = null,
-        object searchAnchor = null);
+            Type              type,
+            IEnumerable<Type> typesWaitingToBeBuilt = null,
+            object            searchAnchor          = null);
     }
 }

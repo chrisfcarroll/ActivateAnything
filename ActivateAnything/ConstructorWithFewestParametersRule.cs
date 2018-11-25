@@ -22,17 +22,17 @@ namespace ActivateAnything
 
         /// <inheritdoc />
         public override ConstructorInfo ChooseConstructor(
-        Type type,
-        IEnumerable<Type> typesWaitingToBeBuilt,
-        object searchAnchor = null)
+            Type              type,
+            IEnumerable<Type> typesWaitingToBeBuilt,
+            object            searchAnchor = null)
         {
             Func<ConstructorInfo, bool> noCircularDependency = c => VetoCircularDependency(typesWaitingToBeBuilt, c);
 
             return type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(noCircularDependency)
-            .OrderByDescending(c => PreferPublic && c.IsPublic)
-            .ThenBy(c => c.GetParameters().Length)
-            .FirstOrDefault();
+                       .Where(noCircularDependency)
+                       .OrderByDescending(c => PreferPublic && c.IsPublic)
+                       .ThenBy(c => c.GetParameters().Length)
+                       .FirstOrDefault();
         }
     }
 }
