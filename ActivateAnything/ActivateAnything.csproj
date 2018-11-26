@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyVersion>0.2.1.0</AssemblyVersion>
-    <AssemblyFileVersion>0.2.1.0</AssemblyFileVersion>
-    <PackageVersion>0.2.1.0</PackageVersion>
+    <AssemblyVersion>0.3.0</AssemblyVersion>
+    <AssemblyFileVersion>0.3.0</AssemblyFileVersion>
+    <PackageVersion>0.3.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[ActivateAnything — abstract types, concrete types, constructor dependencies — ActivateAnything 
     just resolves it all and gives you a result.]]></Title>
@@ -24,6 +24,8 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
 ]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
+      0.3.0 AnythingActivator.Instances as well as Rules. Breaking: refactored constructors &amp; FixtureBase startup
+      0.2.2 FixtureBase
       0.2.1.0 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
       0.2.0.0 Expose LastActivationTree and LastErrorList after a call to New()
       0.1.0.2 fix non-public constructors. ChooseConstructorWith(Most|Fewest)ParametersAttribute.PreferPublic defaults to true.
