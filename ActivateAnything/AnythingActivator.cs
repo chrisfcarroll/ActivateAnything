@@ -51,9 +51,10 @@ namespace ActivateAnything
         /// </summary>
         public List<IActivateAnythingRule> Rules { get; }
 
-        /// <summary>Existing instances which you give to the <see cref="AnythingActivator"/>.  Whenever an 
-        /// instance of a Type is required, whether directly or as a dependency, if it can be fulfilled from
-        /// one of these instances then the first matching instance will be used.
+        /// <summary>
+        /// Existing instances which you give to the <see cref="AnythingActivator"/> in preference to letting them be
+        /// auto-constructed.  Whenever an instance of a Type is required, whether directly or as a dependency, if it can
+        /// be fulfilled from one of these instances then the first matching instance will be used.
         /// <see cref="Instances"/> take precedence over <see cref="Rules"/>, including any other
         /// <see cref="IActivateInstanceRule"/> in the <see cref="Rules"/>.
         /// </summary>
@@ -258,9 +259,12 @@ namespace ActivateAnything
 
             typesWaitingToBeBuilt = (typesWaitingToBeBuilt ?? new List<Type>()).Union(type);
 
-            var customRuleResult = Rules.OfType<IActivateInstanceRule>()
-                                        .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
-                                        .FirstOrDefault();
+            var instanceResult = new ActivateInstances(Instances).CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor);
+            var customRuleResult = 
+                    instanceResult
+                        ?? Rules.OfType<IActivateInstanceRule>()
+                                .Select(r => r.CreateInstance(type, typesWaitingToBeBuilt, SearchAnchor))
+                                .FirstOrDefault();
 
             var ainfo = new ActivationInfo {TypeStack = typesWaitingToBeBuilt};
             try
@@ -273,9 +277,10 @@ namespace ActivateAnything
                 else if (type.IsAbstract || type.IsInterface)
                 {
                     ainfo = new ActivationInfo {How = "type.IsAbstract || type.IsInterface", TypeStack = typesWaitingToBeBuilt};
-                    return New(
-                               TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor),
-                               typesWaitingToBeBuilt);
+                    var concreteTypeFound = TypeFinder.FindConcreteTypeAssignableTo(type, Rules, typesWaitingToBeBuilt, SearchAnchor);
+                    return concreteTypeFound == null 
+                                           ? null 
+                                           : New(concreteTypeFound, typesWaitingToBeBuilt);
                 }
                 else if (type == typeof(string))
                 {

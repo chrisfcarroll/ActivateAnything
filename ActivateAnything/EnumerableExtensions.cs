@@ -48,5 +48,15 @@ namespace ActivateAnything
         ///     <c>item.Union(more)</c>
         /// </returns>
         public static IEnumerable<T> And<T>(this IEnumerable<T> items, params T[] more) { return items.Union(more); }
+        
+        /// <summary>Return <paramref name="item"/>.Union(<paramref name="items"/>) where <paramref name="item"/>
+        /// is first wrapped as an <see cref="IEnumerable{T}"/>.</summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="items"></param>
+        /// <returns>
+        ///     <c>new []{item}.Union(more)</c>
+        /// </returns>
+        public static IEnumerable<T> Union<T>(this T item, IEnumerable<T> items) { return new []{item}.Union(items); }
     }
 }

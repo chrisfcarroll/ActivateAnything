@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ActivateAnything;
@@ -14,76 +15,30 @@ namespace FixtureBase
     public class FixtureBase
     {
         readonly object aalocker = new object();
-        bool activateIsStale = true;
         AnythingActivator activator;
 
         /// <summary>
-        ///     Create an instance of <see cref="FixtureBase" /> which will automatically create a
-        ///     new <see cref="Activator" /> whenever <see cref="Instances" /> or <see cref="Rules" /> change.
+        ///     A reference to <see cref="AnythingActivator.Instances"/>
+        ///     <seealso cref="AnythingActivator" />
+        ///     <seealso cref="IActivateInstanceRule" />
         /// </summary>
-        protected FixtureBase()
-        {
-            Instances.CollectionChanged += (sender, args) => activateIsStale = true;
-            Rules.CollectionChanged     += (sender, args) => activateIsStale = true;
-        }
+        public List<object> Instances => Activator.Instances;
 
         /// <summary>
-        ///     A collection of objects that you have manually constructed in preference to letting
-        ///     them be auto-constructed. Use this when it is simpler to construct an instance yourself than to specify rules for
-        ///     its construction.
-        ///     Items in this collection are used as a first preference by <see cref="Activator" /> whenever then can fulfill a
-        ///     dependency.
+        ///     A reference to <see cref="AnythingActivator.Rules" />
         ///     <seealso cref="AnythingActivator" />
         ///     <seealso cref="IActivateAnythingRule" />
         /// </summary>
-        public ObservableCollection<object> Instances { get; } = new ObservableCollection<object>();
-
-        /// <summary>
-        ///     Rules to be used by <see cref="Activator" />, to be used in priority ahead of the default rules but after
-        ///     the use of <see cref="Instances" />
-        /// </summary>
-        public ObservableCollection<IActivateAnythingRule> Rules { get; } = new ObservableCollection<IActivateAnythingRule>();
+        public List<IActivateAnythingRule> Rules => Activator.Rules;
 
         /// <summary>
         ///     An <see cref="AnythingActivator" /> which uses <c>this</c> as a <see cref="AnythingActivator.SearchAnchor" />
-        ///     and uses the union of
-        ///     <list type="bullet">
-        ///         <item>
-        ///             <see cref="Instances" />
-        ///         </item>
-        ///         <item>
-        ///             <see cref="Rules" />
-        ///         </item>
-        ///         <item>Any <see cref="IActivateAnythingRule" />s decorating <c>this</c> as <c>Attributes</c></item>
-        ///         <item>
-        ///             <see cref="DefaultRules.All" />
-        ///         </item>
-        ///     </list>
-        ///     in that order.
-        ///     <seealso cref="AnythingActivator" />
-        ///     <seealso cref="IActivateAnythingRule" />
         /// </summary>
         public AnythingActivator Activator
         {
             get
             {
-                if (activateIsStale || activator == null)
-                    lock (aalocker)
-                    {
-                        if (activateIsStale || activator == null)
-                        {
-                            var rules =
-                            Rules
-                           .After(new ActivateInstances(Instances.ToArray()));
-
-                            activator = new AnythingActivator(this,
-                                                              rules
-                                                             .Union(GetType().GetActivateAnythingRuleAttributes())
-                                                             .Union(DefaultRules.All));
-                            activateIsStale = false;
-                        }
-                    }
-
+                if (activator == null)lock (aalocker)if (activator == null) { activator = new AnythingActivator(this); }
                 return activator;
             }
         }
@@ -104,19 +59,6 @@ namespace FixtureBase
     {
         readonly object uutlocker = new object();
         T uut;
-        bool uutIsStale = true;
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Create an instance of <see cref="FixtureBase" /> which will automatically create a
-        ///     new <see cref="UnitUnderTest" /> whenever <see cref="FixtureBase.Instances" /> or <see cref="FixtureBase.Rules" />
-        ///     change.
-        /// </summary>
-        protected FixtureBaseFor()
-        {
-            Instances.CollectionChanged += (sender, args) => uutIsStale = true;
-            Rules.CollectionChanged     += (sender, args) => uutIsStale = true;
-        }
 
         /// <summary>
         ///     The unit under test, which will be auto-constructed by <see cref="FixtureBase.Activator" />.
@@ -141,18 +83,13 @@ namespace FixtureBase
         {
             get
             {
-                if (uutIsStale || uut == null)
-                    lock (uutlocker)
-                    {
-                        if (uutIsStale || uut == null)
-                        {
-                            uut        = Activator.New<T>();
-                            uutIsStale = false;
-                        }
-                    }
-
+                if ( uut == null)lock(uutlocker)if(uut == null)
+                {
+                    uut = Activator.New<T>();
+                }
                 return uut;
             }
+            set { uut = value; }
         }
     }
 }

@@ -13,6 +13,13 @@ namespace ActivateAnything
         ///     then that object will be returned.
         /// </summary>
         /// <param name="instances"></param>
+        public ActivateInstances(IEnumerable<object> instances) { Instances = instances.ToArray(); }
+        
+        /// <summary>
+        ///     If this rule is asked for a type which can be instantiated by one of <paramref name="instances" />
+        ///     then that object will be returned.
+        /// </summary>
+        /// <param name="instances"></param>
         public ActivateInstances(params object[] instances) { Instances = instances; }
 
         /// <summary>
