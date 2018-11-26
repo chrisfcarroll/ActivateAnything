@@ -1,7 +1,7 @@
 # ActivateAnything
 
 ```
-AnythingActivator.Instance.New<T>()
+Activate.New<T>()
 ``` 
 …will make an extreme effort to find and instantiate a concrete class which is assignable to a `Type`, whether or not the Type is concrete, whether or not the Type has constructor dependencies, whether or not a suitable concrete subtype is found in any currently loaded `Assembly`.
 
