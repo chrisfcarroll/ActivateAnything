@@ -5,10 +5,7 @@ FixtureBase
 all your dependencies setup and ready to go.
 
 Don't spend hours writing code to mock a dozen dependencies, and more hours debugging it. Just write your test code, and let 
-FixtureBase create the dependencies for you.
-
-FixtureBase constructs your UnitUnderTest to test your codebase end-to-end, with external dependencies auto-faked and automatically 
-injected in just the right place; even constructor dependencies that are several layers deep. 
+FixtureBase create the dependencies for you. FixtureBase constructs your UnitUnderTest for full end-to-end test of your codebase, with external dependencies auto-faked and automatically injected in just the right place; even constructor dependencies that are several layers deep. 
 
 You just write your tests:
 ```
@@ -48,14 +45,12 @@ public class FixtureBaseExample : FixtureBaseWithDbAndHttpFor<AUseCase>
     }
 }
 ```
-The included examples demonstrate FixtureBases for applications which depend on
-Ado.Net IDbConnections and on HttpClient network connections.
+The included examples demonstrate FixtureBases for applications which depend on Ado.Net IDbConnections and on HttpClient network connections.
 
--   To create your own FixtureBase with your own preferred Fakes, see the
-    examples at
-    <https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureExample.cs.md>
+-   To create your own FixtureBase with your own preferred Fakes, see the examples at
+    [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureExample.cs.md](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureExample.cs.md)
 -   For how it's done, see
-    <https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs>
+    [https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs](https://github.com/chrisfcarroll/ActivateAnything/blob/master/FixtureBase/FixtureBase.cs)
 
 Construction is done by
 -   [ActivateAnything](https://www.nuget.org/packages/ActivateAnything)
