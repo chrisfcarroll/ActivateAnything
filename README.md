@@ -11,7 +11,7 @@ The attempt to find and instantiate suitable Types is driven by three kinds of `
 - `IFindTypeRule` provides rules for where to look for candidate concrete subtypes of an abstract type
 - `IChooseConstructorRule` rules for how to choose between constructors when a concrete `Type` has been chosen.
 
-The <em>extremity</em> of the effort lies in its recursive attempt to find and construct the <em>dependencies</em>.
+The _extremity_ of the effort lies in its recursive attempt to find and construct the _dependencies_.
 
 The default ruleset will
 - Search first the currently executing assembly, then its references, then its base directory, then the current working directory
