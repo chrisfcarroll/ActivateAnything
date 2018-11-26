@@ -4,8 +4,7 @@ FixtureBase
 **FixtureBase** cuts the cost of unit testing. Intelligent, rule-driven, autofaking fixtures get you straight to your test with 
 all your dependencies setup and ready to go.
 
-Don't spend hours writing code to mock a dozen dependencies, and more hours debugging it. Just write your test code, and let 
-FixtureBase create the dependencies for you. FixtureBase constructs your UnitUnderTest for full end-to-end test of your codebase, with external dependencies auto-faked and automatically injected in just the right place; even constructor dependencies that are several layers deep. 
+Don't spend hours on code to mock a dozen dependencies. Write your test code, let FixtureBase create the dependencies for you. FixtureBase constructs your UnitUnderTest for full end-to-end tests of your codebase, with external dependencies auto-faked and automatically injected in just the right place; even constructor dependencies that are several layers deep. 
 
 You just write your tests:
 ```
