@@ -1,3 +1,5 @@
+[![.NET](https://github.com/chrisfcarroll/ActivateAnything/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/chrisfcarroll/ActivateAnything/actions/workflows/dotnet-build.yml)
+
 # ActivateAnything
 
 ```
