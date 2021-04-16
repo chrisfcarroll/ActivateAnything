@@ -1,4 +1,4 @@
-name: .NET Build and Test
+name: .NetCore 2.1 Build and Test
 
 on:
   push:
