@@ -1,4 +1,4 @@
-name: Build
+name: SonarCloud Analyse [Disabled | Waiting for AA upgrade to Net3 or 5]
 on:
   push:
     branches:
