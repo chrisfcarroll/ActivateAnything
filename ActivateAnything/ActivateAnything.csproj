@@ -37,6 +37,7 @@ The <em>extremity</em> of the effort lies in its recursive attempt to find and c
     <Owners>Chris F Carroll</Owners>
     <PackageProjectUrl>https://github.com/chrisfcarroll/ActivateAnything</PackageProjectUrl>
     <RepositoryUrl>https://github.com/chrisfcarroll/ActivateAnything</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <IncludeSymbols>true</IncludeSymbols>
     <PackageTags>activate;create;test;unittest;tdd;mock;fake</PackageTags>
