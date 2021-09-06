@@ -34,7 +34,9 @@ namespace ActivateAnything
         {
             if (testFixtureType == null) return null;
             //
-            return testFixtureType.GetType().Assembly.GetTypes().FirstOrDefault(filterBy);
+            var candidates = testFixtureType.GetType().Assembly.GetTypes().FirstOrDefault(filterBy);
+            
+            return candidates;
         }
     }
 }

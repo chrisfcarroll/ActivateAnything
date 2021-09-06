@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <AssemblyVersion>0.3.0</AssemblyVersion>
-    <AssemblyFileVersion>0.3.0</AssemblyFileVersion>
-    <PackageVersion>0.3.0</PackageVersion>
+    <AssemblyVersion>0.3.1</AssemblyVersion>
+    <AssemblyFileVersion>0.3.1</AssemblyFileVersion>
+    <PackageVersion>0.3.1</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Title><![CDATA[FixtureBase cuts the cost of unit testing. Intelligent, rule-driven, autofaking fixtures get you straight to your test with all 
 your dependencies setup and ready to go.]]></Title>
@@ -74,6 +74,7 @@ For more tools focussed on cutting the cost of unit testing, see also:
 -   [Extensions.Logging.ListOfString](https://www.nuget.org/packages/Extensions.Logging.ListOfString)]]></PackageDescription>
     <PackageReleaseNotes>ChangeLog
       ---------
+      0.3.1 ActivateAnything added rules ActivateUsingInstance and ChooseType for declaring instances to use
       0.3.0 AnythingActivator.Instances as well as Rules. Breaking: refactored constructors &amp; FixtureBase startup
       0.2.2 FixtureBase
       0.2.1 ActivateInstance Rule can activate a Func&lt;Type&gt; as well as a Type
@@ -81,8 +82,8 @@ For more tools focussed on cutting the cost of unit testing, see also:
       0.1.0.2 fix non-public constructors. ChooseConstructorWith(Most|Fewest)ParametersAttribute.PreferPublic defaults to true.
       0.1.0.1 ActivateAnything first release.
     </PackageReleaseNotes>
-    <Copyright>(c) Chris F. Carroll, 2018</Copyright>
-    <Authors>Chris F Carroll</Authors>
+    <Copyright>(c) Chris F. Carroll, 2018,2021</Copyright>
+    <Authors>https://github.com/chrisfcarroll</Authors>
     <Owners>Chris F Carroll</Owners>
     <PackageProjectUrl>https://github.com/chrisfcarroll/ActivateAnything</PackageProjectUrl>
     <RepositoryUrl>https://github.com/chrisfcarroll/ActivateAnything</RepositoryUrl>
