@@ -1,3 +1,5 @@
+[![.NetCore 2.1 Build and Test](https://github.com/chrisfcarroll/ActivateAnything/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/chrisfcarroll/ActivateAnything/actions/workflows/dotnet-build.yml)
+
 # ActivateAnything
 
 ```
